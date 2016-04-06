@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html>
-  <head><title>My Test Extension Options</title></head>
+  <head>
+    <title>My Test Extension Options</title>
+    <script src="jquery-2.2.2.js"></script>
+  </head>
   <body>
     MAL Login Preferences:<br>
     <label>
       Username:
       <input type="text" id="username">
+      <input type="checkbox" class="verified" disabled>
     </label>
     <br>
     <label>
       Password:
       <input type="password" id="password">
+      <input type="checkbox" class="verified" disabled>
     </label>
     <div id="status"></div>
     <button id="save">Save</button>
