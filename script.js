@@ -55,6 +55,13 @@ $(document).ready(function() {
   $("#preview").hide();
   $("#status").hide();
   $("#information").hide();
+  chrome.storage.sync.get({
+    verified: false
+  }, function(items) {
+    if(items.verified === false) {
+      $("body").html("You have not verified your credentials. Do so in the options.");
+    }
+  });
 });
 
 var animeName = document.getElementById("animeName");
