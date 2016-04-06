@@ -11,8 +11,14 @@
   },
   
   "permissions": [
-    "http://myanimelist.net/api"
+    "http://myanimelist.net/api",
+    "storage"
   ],
+  
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
   
   "icons": {
 		"128": "icon.png"
