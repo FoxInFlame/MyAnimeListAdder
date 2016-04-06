@@ -53,6 +53,7 @@ function predictAnime() {
 
 $(document).ready(function() {
   $("#preview").hide();
+  $("#status").hide();
   $("#information").hide();
 });
 
@@ -74,8 +75,11 @@ function selectAnime() {
   //Informations
   $("#information").show();
   document.getElementById("information_originalTitle").innerHTML = animeNamesInList[animeid];
+  document.getElementById("information_englishTitle").innerHTML = animeEnglishNames[animeid];
+  document.getElementById("information_synonyms").innerHTML = animeSynonyms[animeid];
   
   //Check the User's MAL List
+  $("#status").show();
   $.ajax({
     url: "http://myanimelist.net/malappinfo.php?u="+loginUsername+"&status=all&type=anime",
     type: "GET",
