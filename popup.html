@@ -1,37 +1,52 @@
 <!DOCTYPE HTML>
-<html>
+<html style="width:500px">
   <head>
     <title>Add a video to your MAL</title>
     <script src="jquery-2.2.2.js"></script>
     <link rel="stylesheet" href="styles.css" type="text/css">
-    <!--<link rel="stylesheet prefetch" href="bootstrap.min.css">-->
+    <link rel="stylesheet" href="waves.min.css" type="text/css">
   </head>
   <body>
-    <form style="column-count:2">
+    <button id="openPopup" class="btn blue small">Open Current List in Popup</button>
+    <form id="mainForm">
       <fieldset>
-        <legend>Anime Selection</legend>
-        <input id="animeInput" style="width:225px" placeholder="Input Name of Anime" name="animeInput"><br><br>
+        <input placeholder="Input Name of Anime" id="animeInput" style="width:225px" name="animeInput">
         <select id="animeName" style="width:225px" name="animeName">
           <option disabled selected>Choose an Anime</option>
         </select>
+        <div id="preview">
+          <hr>
+          <div style="float:left;margin-right:5px;background-size:100% auto;width:225px" class="previewCover"><img style="visibility:hidden;" id="previewCoverSize" src="#"></div>
+        </div>
+        <div id="status">
+          <b>Your Status:</b> <span id="status_status"></span><br>
+          <b>Episode Count:</b> <span id="status_episodecount"></span>
+          <hr>
+        </div>
+        <div id="information">
+          <b>Original Title:</b> <span id="information_originalTitle"></span><br>
+          <b>English Title:</b> <span id="information_englishTitle"></span><br>
+          <b>Other Titles:</b> <span id="information_synonyms"></span><br>
+          <b>Synopsis: </b> <a href="#" id="information_synopsis_toggle">[Show Synopsis]</a>
+          <p id="information_synopsis"></p>
+        </div>
+        <br>
+        <hr>
+        <button class="btn red next" type="button" id="stage1_next">Next</button>
       </fieldset>
-      <fieldset id="preview">
-        <legend>Preview</legend>
-        <div style="background-size:100% auto;width:225px" class="previewCover"><img style="visibility:hidden;" id="previewCoverSize" src="#"></div>
+      <fieldset>
+        <select id="anime_stage2_status" style="width:225px" name="animeStatus">
+          <option value="1">Watching</option>
+          <option value="2">Completed</option>
+          <option value="3">On Hold</option>
+          <option value="4">Dropped</option>
+          <option value="6" selected>Plan to watch</option>
+        </select>
+        <br>
+        <button class="btn red submit" id="submit_add">Add Anime</button>
       </fieldset>
-      <fieldset id="status">
-        <legend>Your Status on this Anime</legend>
-        <b>Status:</b> <span id="status_status"></span><br>
-        <b>Episode Count:</b> <span id="status_episodecount"></span>
-      </fieldset>
-      <fieldset id="information">
-        <legend>Information</legend>
-        <b>Original Title:</b> <span id="information_originalTitle"></span><br>
-        <b>English Title:</b> <span id="information_englishTitle"></span><br>
-        <b>Other Titles:</b> <span id="information_synonyms"></span><br>
-      </fieldset>
-      <button id="submit_add">Add Anime</button>
     </form>
     <script src="script.js"></script>
+    <script src="waves.min.js"></script>
   </body>
 </html>
