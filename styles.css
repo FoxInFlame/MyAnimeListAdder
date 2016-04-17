@@ -10,6 +10,8 @@ form fieldset:not(:first-of-type) {
 	display: none;
 }
 
+/*
+
 .btn {
   background: #3498db;
   -webkit-border-radius: 5;
@@ -74,3 +76,5 @@ form fieldset:not(:first-of-type) {
   background: #009602;}.btn.green:disabled {
   background: #58c55a;
 }
+
+*/

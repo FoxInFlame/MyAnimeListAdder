@@ -4,16 +4,19 @@
     <title>Add a video to your MAL</title>
     <script src="jquery-2.2.2.js"></script>
     <link rel="stylesheet" href="styles.css" type="text/css">
-    <link rel="stylesheet" href="waves.min.css" type="text/css">
+    <link rel="stylesheet" href="bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="mdb.min.css" type="text/css">
+    <link rel="stylesheet" href="jquery.rateyo.min.css" type="text/css">
   </head>
   <body>
-    <button id="openPopup" class="btn blue small">Open Current List in Popup</button>
+    <button id="openPopup" class="btn btn-primary waves-effect waves-light">Open Current List in Popup</button>
     <form id="mainForm">
       <fieldset>
-        <input placeholder="Input Name of Anime" id="animeInput" style="width:225px" name="animeInput">
+        <input placeholder="Input Name of Anime" required id="animeInput" style="width:225px" name="animeInput">
         <select id="animeName" style="width:225px" name="animeName">
           <option disabled selected>Choose an Anime</option>
         </select>
+        <span id="stage1_warning" style="color:red;font-weight:bold"></span><br>
         <div id="preview">
           <hr>
           <div style="float:left;margin-right:5px;background-size:100% auto;width:225px" class="previewCover"><img style="visibility:hidden;" id="previewCoverSize" src="#"></div>
@@ -28,14 +31,13 @@
           <b>English Title:</b> <span id="information_englishTitle"></span><br>
           <b>Other Titles:</b> <span id="information_synonyms"></span><br>
           <b>Synopsis: </b> <a href="#" id="information_synopsis_toggle">[Show Synopsis]</a>
-          <p id="information_synopsis"></p>
+          <p style="font-size:12px" id="information_synopsis"></p>
         </div>
         <br>
-        <hr>
-        <button class="btn red next" type="button" id="stage1_next">Next</button>
+        <button class="btn next btn-default waves-effect waves-light" type="button" id="stage1_next">Next</button>
       </fieldset>
       <fieldset>
-        <select id="anime_stage2_status" style="width:225px" name="animeStatus">
+        Anime Status : <select required id="anime_stage2_status" style="width:225px" name="animeStatus">
           <option value="1">Watching</option>
           <option value="2">Completed</option>
           <option value="3">On Hold</option>
@@ -43,10 +45,27 @@
           <option value="6" selected>Plan to watch</option>
         </select>
         <br>
-        <button class="btn red submit" id="submit_add">Add Anime</button>
+        Watched Episodes : <input required type="number" name="animeEpisodes" id="anime_stage2_episodeInput" style="width:50px">/<span id="anime_stage2_totalEpisodes"></span><br>
+        <span id="stage2_warning" style="color:red;font-weight:bold"></span><br>
+        <button class="btn previous btn-primary waves-effect waves-light" type="button" id="stage2_previous">Previous</button>
+        <button class="btn next btn-default waves-effect waves-light" type="button" id="stage2_next">Next</button>
+      </fieldset>
+      <fieldset>
+        Your Rating (Leave empty for none) : <br>
+        <div id="anime_stage3_rating"></div>
+        <button class="btn previous btn-primary waves-effect waves-light" type="button" id="stage3_previous">Previous</button>
+        <button class="btn next btn-default waves-effect waves-light" type="button" id="stage3_next">Next</button>
+      </fieldset>
+      <fieldset>
+        Confirm information:
+        <div id="anime_stage4_confirmInfo"></div>
+        <button class="btn previous btn-primary waves-effect waves-light" type="button" id="stage4_previous">Previous</button>
+        <button class="btn submit btn-default waves-effect waves-light" id="submit_add">Add Anime</button>
       </fieldset>
     </form>
     <script src="script.js"></script>
-    <script src="waves.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="mdb.min.js"></script>
+    <script src="jquery.rateyo.min.js"></script>
   </body>
 </html>

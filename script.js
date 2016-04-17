@@ -119,10 +119,8 @@ function selectAnime() {
         var watchedEpisodes;
         var totalEpisodes;
         if($("series_animedb_id", this).text() == animeid) {
-          console.log("The chosen anime is in the list.");
           //It's in the list! And it's in this "each" module
           var series_status = $("my_status", this).text();
-          console.log("Status in List: " + series_status);
           if(series_status == "1") {
             //Watching
             $("#status_status").html("Currently Watching");
@@ -163,8 +161,42 @@ $("#openPopup").on("click", function() {
    });
 });
 
+var fieldsetNumber = 1;
+
 //Fading Forms
 $(".next").on("click", function() {
+  //On the first slide
+  if(fieldsetNumber == 1) {
+    if(!$("#animeName").val()){
+      $("#stage1_warning").show();
+      $("#stage1_warning").html("Anime has not been selected!");
+      window.setTimeout(function() {
+        $("#stage1_warning").fadeOut(500);
+      }, 5000);
+      return false;
+    }
+  } else if(fieldsetNumber == 2){
+    var anime_stage2_episodeInput = parseInt($("#anime_stage2_episodeInput").val());
+    var animeTotalEpisodes = parseInt(animeEpisodes[animeid]);
+    console.log(animeEpisodes[animeid]);
+    if(anime_stage2_episodeInput > animeTotalEpisodes){
+      $("#stage2_warning").show();
+      $("#stage2_warning").html("Episode count over " + animeid + "!");
+      window.setTimeout(function() {
+        $("#stage2_warning").fadeOut(500);
+      }, 5000);
+      return;
+    }
+    if(!$("#anime_stage2_episodeInput")) {
+      $("#stage2_warning").show();
+      $("#stage2_warning").html("Episode count empty!");
+      window.setTimeout(function() {
+        $("#stage2_warning").fadeOut(500);
+      }, 5000);
+      return;
+    }
+  }
+  
   var current_fieldset = $(this).parent();
   var next_fieldset = $(this).parent().next("fieldset");
   if(next_fieldset.length === 0) {
@@ -173,6 +205,21 @@ $(".next").on("click", function() {
   } else {
     current_fieldset.fadeOut(500, function() {
       next_fieldset.fadeIn(500);
+      fieldsetNumber++;
+    });
+  }
+});
+
+$(".previous").on("click", function() {
+  var current_fieldset = $(this).parent();
+  var previous_fieldset = $(this).parent().prev("fieldset");
+  if(previous_fieldset.length === 0) {
+    return false;
+    //Do nothing because there's nothing before
+  } else {
+    current_fieldset.fadeOut(500, function() {
+      previous_fieldset.fadeIn(500);
+      fieldsetNumber--;
     });
   }
 });
@@ -242,24 +289,62 @@ $("#information_synopsis_toggle").on("click", function() {
 
 // --- Second Slide ---
 
+$("#stage1_next").on("click", function(event) {
+  $("#anime_stage2_totalEpisodes").html(animeEpisodes[animeid]);
+  $("#anime_stage2_episodeInput").attr("max", animeEpisodes[animeid]);
+  $("#anime_stage2_episodeInput").attr("min", "0");
+  $("#anime_stage2_episodeInput").show();
+  secondSlide_animeStatus_selector();
+})
+
 var secondSlide_animeStatus = document.getElementById("anime_stage2_status");
 secondSlide_animeStatus.oninput = secondSlide_animeStatus_selector;
 secondSlide_animeStatus.onpropertychange = secondSlide_animeStatus.oninput;
 
 function secondSlide_animeStatus_selector() {
-  var selectedStatus = secondSlide_animeStatus.value;
-  console.log(selectedStatus);
-  $("#anime_stage2_episodeInput").show();
+  var selectedStatus = $("#anime_stage2_status").val();
   if(selectedStatus == 1) {
     //Watching - Show episode count input
-    
+    $("#anime_stage2_episodeInput").prop("disabled", false);
   } else if(selectedStatus == 2) {
     //Completed - Show full episode count
+    $("#anime_stage2_episodeInput").prop("disabled", true);
+    $("#anime_stage2_episodeInput").val(animeEpisodes[animeid]);
   } else if(selectedStatus == 3) {
     //On Hold - Show episode count input
+    $("#anime_stage2_episodeInput").prop("disabled", false);
   } else if(selectedStatus == 4) {
     //Dropped - Show episode count input
+    $("#anime_stage2_episodeInput").prop("disabled", false);
   } else if(selectedStatus == 6) {
     //Plan to Watch - Show empty episode count
+    $("#anime_stage2_episodeInput").prop("disabled", true);
+    $("#anime_stage2_episodeInput").val("0");
   }
 }
+
+//-----Third Slide------
+
+$("#stage2_next").on("click", function() {
+  $("#anime_stage3_rating").rateYo({
+    starWidth: "40px",
+    numStars: 10,
+    fullStar: true,
+    maxValue: 10
+  })
+})
+
+
+//-----Fourth Slide-----
+
+$("#stage3_next").on("click", function() {
+  var confirm_animetitle = animeNamesInList[animeid];
+  var confirm_animestatus = $("#anime_stage2_status").val();
+  var confirm_animeepisodes = $("#anime_stage2_episodeInput").val();
+  var confirm_rating = $("#anime_stage3_rating").rateYo("rating");
+  $("#anime_stage4_confirmInfo").html("<b>Anime Title : </b>" + confirm_animetitle +
+  "<br><b>Anime Status : </b>" + confirm_animestatus +
+  "<br><b>Watched Episodes : </b>" + confirm_animeepisodes + "/" + animeEpisodes[animeid] +
+  "<br><b>Your Rating : </b>" + confirm_rating);
+  $("#")
+});
