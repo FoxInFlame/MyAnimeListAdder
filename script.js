@@ -225,8 +225,15 @@ $(".previous").on("click", function() {
 });
 
 $("#mainForm").submit(function() {
-  var id = animeid;
-  addAnimeInList(id, "1", "6", "7");
+  var submit_id = animeid;
+  var submit_animetitle = animeNamesInList[animeid];
+  var submit_animestatus = $("#anime_stage2_status").val();
+  var submit_animeepisodes = $("#anime_stage2_episodeInput").val();
+  var submit_rating = $("#anime_stage3_rating").rateYo("rating");
+  if(submit_rating == "0") {
+    submit_rating = "";
+  }
+  addAnimeInList(submit_id, submit_animeepisodes, submit_animestatus, submit_rating);
 })
 
 function addAnimeInList(id, episode, status, score, storage_type, storage_value, times_rewatched, rewatch_value, date_start, date_finish, priority, enable_discussion, enable_rewatching, comments, tags) {
@@ -253,20 +260,22 @@ function addAnimeInList(id, episode, status, score, storage_type, storage_value,
   console.log("[ADD] Watched Episodes: " + episode);
   
   $.ajax({
-    url: "http://myanimelist.net/api/animelist/add/" + id + ".xml?data=" + myXML,
-    type: "POST",
+    url: "http://myanimelist.net/api/animelist/add/" + id + ".xml",
+    type: "GET",
+    data: {"data": myXML},
     username: loginUsername,
     password: loginPassword,
-    contentType: "application/x-www-form-urlencoded",
+    contentType: "application/xml",
+    async: false,
     success: function(ajaxData) {
       console.log("Anime ID " + id + " has been added to " + loginUsername + "'s list!");
     },
-    error: function(xhr, ajaxOptions, thrownError) {
+    error: function(xhr, status, thrownError) {
       console.log(xhr.status);
       if(xhr.status == "0") {
         console.log("The Anime is already in the list or doesn't exist!! I think.");
       }
-      console.log(thrownError);
+      console.log(xhr.responseText);
     }
   })
 };
@@ -346,5 +355,4 @@ $("#stage3_next").on("click", function() {
   "<br><b>Anime Status : </b>" + confirm_animestatus +
   "<br><b>Watched Episodes : </b>" + confirm_animeepisodes + "/" + animeEpisodes[animeid] +
   "<br><b>Your Rating : </b>" + confirm_rating);
-  $("#")
 });
