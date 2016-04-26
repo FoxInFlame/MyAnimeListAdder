@@ -7,6 +7,7 @@ var formAnimeUpdateData = new Object;
 var submit = new Object;
 
 var fieldsetNumber;
+var fieldsetTotal;
 
 var animeid;
 
@@ -30,6 +31,7 @@ $(document).ready(function() {
   // Hide many stuff and change variables and check credentials.
   $("#preview").hide();
   $("#anime_stageFinal_done").hide();
+  $("#anime_delete_confirm_overlay").hide();
   $("#anime_delete_confirm").hide();
   $("#status").hide();
   $("#stage1_delete").hide();
@@ -46,10 +48,15 @@ $(document).ready(function() {
       $("body").html("You have not verified your credentials. Do so in the options.");
     }
   });
+  var marginHeightAnimeDelete = $("#anime_delete_confirm").height() + ($("#anime_delete_confirm").height())/2;
+  $("#anime_delete_confirm").css("margin", "-" + marginHeightAnimeDelete + "px 0 0 -225px");
+  var marginHeightAnimeFinal = $("#anime_stageFinal_done").height() + ($("#anime_stageFinal_done").height())/2;
+  $("#anime_stageFinal_done").css("margin", "-" + marginHeightAnimeFinal + "px 0 0 -225px");
 });
 
 // -- Next and Back buttons
 fieldsetNumber = 1;
+fieldsetTotal = $("fieldset").length;
 $(".next").on("click", function() {
   //On the first slide
   if(fieldsetNumber == 1) {
@@ -64,7 +71,6 @@ $(".next").on("click", function() {
   } else if(fieldsetNumber == 2){
     var anime_stage2_episodeInput = parseInt($("#anime_stage2_episodeInput").val());
     var animeTotalEpisodes = parseInt(animeEpisodes[animeid]);
-    console.log(animeEpisodes[animeid]);
     if(anime_stage2_episodeInput > animeTotalEpisodes){
       $("#stage2_warning").show();
       $("#stage2_warning").html("Episode count over " + animeTotalEpisodes + "!");
@@ -92,6 +98,7 @@ $(".next").on("click", function() {
     current_fieldset.fadeOut(500, function() {
       next_fieldset.fadeIn(500);
       fieldsetNumber++;
+      $("#anime_form_progress").css("width", (fieldsetNumber/fieldsetTotal)*100 + "%");
     });
   }
 });
@@ -106,6 +113,7 @@ $(".previous").on("click", function() {
     current_fieldset.fadeOut(500, function() {
       previous_fieldset.fadeIn(500);
       fieldsetNumber--;
+      $("#anime_form_progress").css("width", (fieldsetNumber/fieldsetTotal)*100 + "%");
     });
   }
 });
@@ -224,8 +232,6 @@ function addAnimeInList(id, episode, status, score, storage_type, storage_value,
     }
   }
   
-  console.log(submitVars["id"]);
-  
   var myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
   "<entry>" +
   "<episode>" + submitVars["episode"] + "</episode>" +
@@ -268,6 +274,12 @@ function addAnimeInList(id, episode, status, score, storage_type, storage_value,
   })
 };
 
+// ---- Close any dialog that's open
+
+$("#anime_delete_cancel").on("click", function() {
+  $("#anime_delete_confirm").addClass("animated bounceOut");
+});
+
 
 // First Fieldset
 var animeNameInput = document.getElementById("animeInput");
@@ -283,6 +295,7 @@ var animeNamesInList = {},
 
 // -- Function to read input and change the select options
 function predictAnime() {
+  $("#anime_form_progress").css("width", "0%");
   var animeNameInput = document.getElementById("animeInput").value.replace(" ", "+");
   if(animeNameInput === "" || animeNameInput === null) {
     document.getElementById("animeName").innerHTML = "<option disabled selected>Choose an Anime</option>";
@@ -348,6 +361,9 @@ function selectAnime() {
   document.getElementById("information_synonyms").innerHTML = animeSynonyms[animeid];
   document.getElementById("information_synopsis").innerHTML = animeSynopsis[animeid];
   
+  //Change percentage
+  $("#anime_form_progress").css("width", "25%");
+  
   //Check the User's MAL List
   $("#status").show();
   $.ajax({
@@ -409,14 +425,11 @@ toggleShowHide("information_synopsis", "information_synopsis_visibility", "[Show
 
 // -- Delete button
 $("#stage1_delete").on("click", function() {
-  var marginHeight = $("#anime_delete_confirm").height() + ($("#anime_delete_confirm").height())/2
-  $("#anime_delete_confirm").css("margin", "-" + marginHeight + "px 0 0 -225px");
   $("#anime_delete_confirm").show();
+  $("#anime_delete_confirm_overlay").show();
   $("#anime_delete_confirm").addClass("animated bounceIn");
-  $("#anime_delete_confirm").on("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oAnimationEnd AnimationEnd", function() {
-    $("#anime_delete_confirm").removeClass("animated bounceIn");
-  });
 })
+
 // Second Fieldset
 
 $("#stage1_next").on("click", function(event) {
@@ -546,25 +559,36 @@ $("#mainForm").on("submit", function() {
   } else if(formAnimeStatus == "update") {
     updateAnimeInList(submit["id"], submit["episodes"], submit["status"], submit["score"], submit["storage_type"], submit["storage_value"], submit["times_rewatched"], submit["rewatch_value"], submit["date_start"], submit["date_finish"], submit["priority"], submit["enable_discussion"], submit["enable_rewatching"], submit["comments"], submit["tags"]);
   }
-  var marginHeight = $("#anime_stageFinal_done").height() + ($("#anime_stageFinal_done").height())/2
-  $("#anime_stageFinal_done").css("margin", "-" + marginHeight + "px 0 0 -225px");
   $("#anime_stageFinal_done").show();
   $("#anime_stageFinal_done").addClass("animated bounceIn");
-  $("#anime_stageFinal_done").on("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oAnimationEnd AnimationEnd", function() {
-    $("#anime_stageFinal_done").removeClass("animated bounceIn");
-  });
   return false;
 });
 
-$(".closeDialog").on("click", function() {
-  $("#anime_stageFinal_done").addClass("animated bounceOut");
-  $("#anime_stageFinal_done").on("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oAnimationEnd AnimationEnd", function() {
-    $("#anime_stageFinal_done").hide();
-    $("#anime_stageFinal_done").removeClass("animated bounceOut");
-  });
-  $("#anime_delete_confirm").addClass("animated bounceOut");
-  $("#anime_delete_confirm").on("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oAnimationEnd AnimationEnd", function() {
-    $("#anime_delete_confirm").hide();
+$("#anime_delete_confirm").on("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
+  console.log("Animation End triggered");
+  if($("#anime_delete_confirm").css("opacity") == "0") {
+    //Just got hidden
+    console.log("Just got hidden?");
     $("#anime_delete_confirm").removeClass("animated bounceOut");
-  });
-});
+    $("#anime_delete_confirm").hide();
+    $("#anime_delete_confirm_overlay").hide();
+  } else {
+    console.log("Just got visible?")
+    //Just got visible
+    $("#anime_delete_confirm").removeClass("animated bounceIn");
+  }
+})
+
+$("#anime_stageFinal_done").on("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
+  console.log("Animation End triggered");
+  if($("#anime_stageFinal_done").css("opacity") == "0") {
+    //Just got hidden
+    console.log("Just got hidden?");
+    $("#anime_stageFinal_done").removeClass("animated bounceOut");
+    $("#anime_stageFinal_done").hide();
+  } else {
+    console.log("Just got visible?")
+    //Just got visible
+    $("#anime_stageFinal_done").removeClass("animated bounceIn");
+  }
+})
