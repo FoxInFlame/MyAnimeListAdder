@@ -30,6 +30,7 @@ chrome.storage.sync.get({
 $(document).ready(function() {
   // Hide many stuff and change variables and check credentials.
   $("#preview").hide();
+  $("#anime_stageFinal_done_overlay").hide();
   $("#anime_stageFinal_done").hide();
   $("#anime_delete_confirm_overlay").hide();
   $("#anime_delete_confirm").hide();
@@ -280,6 +281,13 @@ $("#anime_delete_cancel").on("click", function() {
   $("#anime_delete_confirm").addClass("animated bounceOut");
 });
 
+$(".anime_stageFinal_done_close").on("click", function() {
+  window.close();
+})
+
+$("#anime_stageFinal_done_another").on("click", function() {
+  window.location.reload();
+})
 
 // First Fieldset
 var animeNameInput = document.getElementById("animeInput");
@@ -560,34 +568,30 @@ $("#mainForm").on("submit", function() {
     updateAnimeInList(submit["id"], submit["episodes"], submit["status"], submit["score"], submit["storage_type"], submit["storage_value"], submit["times_rewatched"], submit["rewatch_value"], submit["date_start"], submit["date_finish"], submit["priority"], submit["enable_discussion"], submit["enable_rewatching"], submit["comments"], submit["tags"]);
   }
   $("#anime_stageFinal_done").show();
+  $("#anime_stageFinal_done_overlay").show();
   $("#anime_stageFinal_done").addClass("animated bounceIn");
   return false;
 });
 
 $("#anime_delete_confirm").on("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
-  console.log("Animation End triggered");
   if($("#anime_delete_confirm").css("opacity") == "0") {
     //Just got hidden
-    console.log("Just got hidden?");
     $("#anime_delete_confirm").removeClass("animated bounceOut");
     $("#anime_delete_confirm").hide();
     $("#anime_delete_confirm_overlay").hide();
   } else {
-    console.log("Just got visible?")
     //Just got visible
     $("#anime_delete_confirm").removeClass("animated bounceIn");
   }
 })
 
 $("#anime_stageFinal_done").on("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
-  console.log("Animation End triggered");
   if($("#anime_stageFinal_done").css("opacity") == "0") {
     //Just got hidden
-    console.log("Just got hidden?");
     $("#anime_stageFinal_done").removeClass("animated bounceOut");
     $("#anime_stageFinal_done").hide();
+    $("#anime_stageFinal_done_overlay").hide();
   } else {
-    console.log("Just got visible?")
     //Just got visible
     $("#anime_stageFinal_done").removeClass("animated bounceIn");
   }
