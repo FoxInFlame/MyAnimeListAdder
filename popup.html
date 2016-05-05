@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html style="width:500px">
+<html style="width:500px;height:500px">
   <head>
     <title>Add a video to your MAL</title>
     <script src="jquery-2.2.2.js"></script>
@@ -17,8 +17,7 @@
         <div id="anime_form_progress" data-percentage="0%" style="width:0%;" class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
       <fieldset>
-        <input placeholder="Input Name of Anime" required id="animeInput" style="width:225px" name="animeInput">
-        <select id="animeName" style="width:225px" name="animeName">
+        <select id="animeName" style="width:100%" name="animeName">
           <option disabled selected>Choose an Anime</option>
         </select>
         <span id="stage1_warning" style="color:red;font-weight:bold"></span><br>
@@ -120,5 +119,8 @@
     <script src="mdb.min.js"></script>
     <script src="jquery.rateyo.min.js"></script>
     <script src="select2.full.min.js"></script>
+    <script src="maximize-select2-height.min.js"></script>
+    <script src="xmlToJSON.min.js"></script>
+    <script src="xml2json.min.js"></script>
   </body>
 </html>
