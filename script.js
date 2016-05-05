@@ -329,65 +329,32 @@ function select2_init() {
 }
 
 function formatAnimeResult(anime) {
+  //When searched run this function
   if(anime.loading) return anime.text;
-  console.log(anime);
-  return anime.title;
+  var animeId = anime.id;
+  animeNamesInList[animeId] = anime.title
+  animeEnglishNames[animeId] = anime.english;
+  if(animeEnglishNames[animeId] === "" || animeEnglishNames[animeId] === null) {
+    animeEnglishNames[animeId] = animeNamesInList[animeId];
+  }
+  animeSynonyms[animeId] = anime.synonyms;
+  animeEpisodes[animeId] = anime.episodes;
+  animeSynopsis[animeId] = anime.synopsis;
+  
+  return animeId + " : " + animeNamesInList[animeId];
 }
 
 function formatAnimeSelection(anime) {
-  return anime.title || anime.text;
+  //When selected run this function
+  return (anime.id + " : " + anime.title) || anime.text;
 }
 
-// -- Function to read input and change the select options
-/*function predictAnime() {
-  $("#anime_form_progress").css("width", "0%");
-  var animeNameInput = document.getElementById("animeInput").value.replace(" ", "+");
-  if(animeNameInput === "" || animeNameInput === null) {
-    document.getElementById("animeName").innerHTML = "<option disabled selected>Choose an Anime</option>";
-    return false;
-  }
-  $.ajax({
-    url: "http://myanimelist.net/api/anime/search.xml?q=" + animeNameInput,
-    type: "GET",
-    dataType: "xml",
-    username: loginUsername,
-    password: loginPassword,
-    success: function(data) {
-      var animeId;
-      var count = 1;
-      document.getElementById("animeName").innerHTML = "<option disabled selected>Choose an Anime</option>";
-      $("entry", data).each(function(){
-        if(count < 21){
-          animeId = $("id", this).text();
-          animeNamesInList[animeId] = $("title", this).text();
-          animeEnglishNames[animeId] = $("english", this).text();
-          if(animeEnglishNames[animeId] === "" || animeEnglishNames[animeId] === null) {
-            animeEnglishNames[animeId] = animeNamesInList[animeId];
-          }
-          animeSynonyms[animeId] = $("synonyms", this).text();
-          animeEpisodes[animeId] = $("episodes", this).text();
-          animeSynopsis[animeId] = $("synopsis", this).text();
-          
-          animeHTML = document.getElementById("animeName").innerHTML;
-          animeHTML = animeHTML+"<option>"+animeId+" : "+animeNamesInList[animeId]+"</option>";
-          document.getElementById("animeName").innerHTML = animeHTML;
-          count++;
-        }
-      });
-    }
-  });
-};*/
-
-var animeName = document.getElementById("animeName");
-animeName.oninput = selectAnime;
-animeName.onpropertychange = animeName.oninput;
-
 // -- Function to display the status and image for the selected anime
-function selectAnime() {
+$("#animeName").on("select2:select", function() {
   //Cover Preview
   $("#preview").show();
-  animeid = document.getElementById("animeName").value.split(":")[0];
-  animeid = animeid.slice(0, -1);
+  console.log(document.getElementById("animeName").value);
+  animeid = document.getElementById("animeName").value;
   $(".previewCover").attr("id", "more" + animeid);
   var coverImageSource = $(".previewCover").css("background-image");
   coverImageSource = coverImageSource.replace(/[()\"]/g, "");
@@ -464,7 +431,7 @@ function selectAnime() {
       });
     }
   });
-};
+});
 
 toggleShowHide("information_synopsis", "information_synopsis_visibility", "[Show Synopsis]", "[Hide Synopsis]");
 
