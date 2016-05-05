@@ -315,8 +315,6 @@ function select2_init() {
       processResults: function (data, params) {
         var x2js = new X2JS();
         dataXML = x2js.xml2json(data);
-        console.log(dataXML);
-        console.log(dataXML["anime"]);
         return {
           results: dataXML["anime"]["entry"]
         }
@@ -333,7 +331,7 @@ function select2_init() {
 function formatAnimeResult(anime) {
   if(anime.loading) return anime.text;
   console.log(anime);
-  return "hello world";
+  return anime.title;
 }
 
 function formatAnimeSelection(anime) {
