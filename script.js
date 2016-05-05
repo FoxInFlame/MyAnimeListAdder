@@ -41,7 +41,8 @@ $(document).ready(function() {
   information_synopsis_visibility = 0;
   $("#anime_stage3_advancedInputs").hide();
   anime_stage3_advancedInputs_visibility = 0;
-  document.getElementById("animeInput").focus();
+  //document.getElementById("animeInput").focus();
+  select2_init();
   chrome.storage.sync.get({
     verified: false
   }, function(items) {
@@ -290,10 +291,6 @@ $("#anime_stageFinal_done_another").on("click", function() {
 })
 
 // First Fieldset
-var animeNameInput = document.getElementById("animeInput");
-animeNameInput.oninput = predictAnime;
-animeNameInput.onpropertychange = animeNameInput.oninput;
-
 var animeNamesInList = {},
     animeEnglishNames = {},
     animeSynonyms = {},
@@ -301,8 +298,50 @@ var animeNamesInList = {},
     animeSynopsis = {},
     chosenAnimeInList;
 
+function select2_init() {
+  $("#animeName").select2({
+    ajax: {
+      url: "http://myanimelist.net/api/anime/search.xml",
+      dataType: "xml",
+      type: "GET",
+      username: loginUsername,
+      password: loginPassword,
+      delay: 250,
+      data: function (params) {
+        return {
+          q: params.term
+        }
+      },
+      processResults: function (data, params) {
+        var x2js = new X2JS();
+        dataXML = x2js.xml2json(data);
+        console.log(dataXML);
+        console.log(dataXML["anime"]);
+        return {
+          results: dataXML["anime"]["entry"]
+        }
+      },
+      cache: true
+    },
+    escapeMarkup: function(markup) {return markup},
+    minimumInputLength: 1,
+    templateResult: formatAnimeResult,
+    templateSelection: formatAnimeSelection
+  }).maximizeSelect2Height();
+}
+
+function formatAnimeResult(anime) {
+  if(anime.loading) return anime.text;
+  console.log(anime);
+  return "hello world";
+}
+
+function formatAnimeSelection(anime) {
+  return anime.title || anime.text;
+}
+
 // -- Function to read input and change the select options
-function predictAnime() {
+/*function predictAnime() {
   $("#anime_form_progress").css("width", "0%");
   var animeNameInput = document.getElementById("animeInput").value.replace(" ", "+");
   if(animeNameInput === "" || animeNameInput === null) {
@@ -339,7 +378,7 @@ function predictAnime() {
       });
     }
   });
-};
+};*/
 
 var animeName = document.getElementById("animeName");
 animeName.oninput = selectAnime;
