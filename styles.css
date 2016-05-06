@@ -17,15 +17,15 @@ form fieldset:not(:first-of-type) {
 }
 
 .select2-result-anime { padding-top: 4px; padding-bottom: 3px; }
-.select2-result-repository__avatar { float: left; width: 60px; margin-right: 10px; }
+.select2-result-anime__cover { float: left; width: 60px; margin-right: 10px; }
 .select2-result-anime__cover img { width: 40px; float:left; height: auto; border-radius: 2px; }
 .select2-result-anime__meta { margin-left: 70px; }
-.select2-result-anime__title { color: black; word-wrap: break-word; line-height: 1.1; margin-bottom: 4px; }
-.select2-result-repository__forks, .select2-result-repository__stargazers { margin-right: 1em; }
-.select2-result-repository__forks, .select2-result-repository__stargazers, .select2-result-repository__watchers { display: inline-block; color: #aaa; font-size: 11px; }
-.select2-result-repository__description { font-size: 13px; color: #777; margin-top: 4px; }
-.select2-results__option--highlighted .select2-result-repository__title { color: white; }
-.select2-results__option--highlighted .select2-result-repository__forks, .select2-results__option--highlighted .select2-result-repository__stargazers, .select2-results__option--highlighted .select2-result-anime__description, .select2-results__option--highlighted .select2-result-repository__watchers { color: #c6dcef; }
+.select2-result-anime__title { color: black; font-weight:bold; word-wrap: break-word; line-height: 1.1; margin-bottom: 4px; }
+.select2-result-anime__type, .select2-result-anime__status, .select2-result-anime__episodes { margin-right: 1em; }
+.select2-result-anime__type, .select2-result-anime__status, .select2-result-anime__episodes { display: inline-block; color: #aaa; font-size: 12px; }
+.select2-result-anime__communityScore { font-size: 13px; color: #777; margin-top: 4px; }
+.select2-results__option--highlighted .select2-result-anime__title { color: white; }
+.select2-results__option--highlighted .select2-result-anime__type, .select2-results__option--highlighted .select2-result-anime__status, .select2-results__option--highlighted .select2-result-anime__episodes, .select2-results__option--highlighted .select2-result-anime__communityScore { color: #c6dcef; }
 
 
 /*Progress bar*/

@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "QuickMyAnimeList - By FoxInFlame",
-  "description": "Add an Anime to your MyAnimeList",
-  "version": "0.8",
+  "description": "Quick edit/add/delete animes on your MyAnimeList account!",
+  "version": "1.0",
 
   "browser_action": {
     "default_icon": "icon.png",
