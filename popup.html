@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html style="width:500px;height:500px">
+<html style="width:500px">
   <head>
     <title>Add a video to your MAL</title>
     <script src="jquery-2.2.2.js"></script>
@@ -18,7 +18,7 @@
       </div>
       <fieldset>
         <select id="animeName" style="width:100%" name="animeName">
-          <option disabled selected>Choose an Anime</option>
+          <option disabled selected>Search for an Anime</option>
         </select>
         <span id="stage1_warning" style="color:red;font-weight:bold"></span><br>
         <div id="preview">
@@ -59,8 +59,8 @@
         <button class="btn next btn-default waves-effect waves-light" type="button" id="stage2_next">Next</button>
       </fieldset>
       <fieldset>
-        Comments on this anime :
-        <textarea rows="5" cols="10" style="padding: 10px;width:100%;height:auto;box-sizing:border-box" id="anime_stage3_comments"></textarea>
+        <!--Comments on this anime :
+        <textarea rows="5" cols="10" style="padding: 10px;width:100%;height:auto;box-sizing:border-box" id="anime_stage3_comments"></textarea>-->
         Tags (Seperate with comama) :
         <textarea rows="2" cols="10" style="padding:10px;width:100%;height:auto;box-sizing:border-box" id="anime_stage3_tags"></textarea>
         <center><button class="btn btn-sm btn-default waves-effect waves-light" id="anime_stage3_advancedInputs_toggle">More Options</button></center>
@@ -92,6 +92,12 @@
         <button class="btn submit btn-default waves-effect waves-light" id="submit_add">Add Anime</button>
       </fieldset>
     </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <span class="copyright">&copy; QuickMyAnimeList is licenced under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</span>
+    <!--Anime added/updated done popup-->
     <div style="position:relative">
       <div id="anime_stageFinal_done" style="width:450px;position:absolute;top:50%;left:50%;z-index:50" class="card success-color">
         <div class="card-content white-text">
@@ -103,17 +109,28 @@
       </div>
     </div>
     <div class="card-overlay" id="anime_stageFinal_done_overlay" style="height:100%;position:fixed;top:0;left:0;width:100%;background-color:black;opacity:0.2;z-index:40"></div>
+    <!--Anime delete ask for confirmation popup-->
     <div style="position:relative">
       <div id="anime_delete_confirm" style="width:450px;position:absolute;top:50%;left:50%;z-index:50" class="card warning-color">
         <div class="card-content white-text">
           <span class="card-title">Are you sure?</span>
           <p>Are you sure you want to delete this anime from your list? This action will remove all your tags, scores, comments, etc.</p>
-          <button class="btn btn-danger btn-md waves-effect waves-light">Delete</button>
+          <button class="btn btn-danger btn-md waves-effect waves-light" id="anime_delete_delete">Delete</button>
           <button class="btn btn-info btn-md waves-effect waves-light" id="anime_delete_cancel">Cancel</button>
         </div>
       </div>
     </div>
     <div class="card-overlay" id="anime_delete_confirm_overlay" style="height:100%;position:fixed;top:0;left:0;width:100%;background-color:black;opacity:0.2;z-index:40"></div>
+    <!--Anime deleted success popup-->
+    <div style="position:relative">
+      <div id="anime_delete_done" style="width:450px;position:absolute;top:50%;left:50%;z-index:50" class="card success-color">
+        <div class="card-content white-text">
+          <span class="card-title">Anime deleted!</span>
+          <p>Anime <b id="anime_delete_done_b"></b> has been deleted from your list!</p>
+        </div>
+      </div>
+    </div>
+    <div class="card-overlay" id="anime_delete_done_overlay" style="height:100%;position:fixed;top:0;left:0;width:100%;background-color:black;opacity:0.2;z-index:40"></div>
     <script src="script.js"></script>
     <script src="bootstrap.min.js"></script>
     <script src="mdb.min.js"></script>
