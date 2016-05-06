@@ -34,6 +34,8 @@ $(document).ready(function() {
   $("#anime_stageFinal_done").hide();
   $("#anime_delete_confirm_overlay").hide();
   $("#anime_delete_confirm").hide();
+  $("#anime_delete_done_overlay").hide();
+  $("#anime_delete_done").hide();
   $("#status").hide();
   $("#stage1_delete").hide();
   $("#information").hide();
@@ -54,6 +56,10 @@ $(document).ready(function() {
   $("#anime_delete_confirm").css("margin", "-" + marginHeightAnimeDelete + "px 0 0 -225px");
   var marginHeightAnimeFinal = $("#anime_stageFinal_done").height() + ($("#anime_stageFinal_done").height())/2;
   $("#anime_stageFinal_done").css("margin", "-" + marginHeightAnimeFinal + "px 0 0 -225px");
+  var marginHeightAnimeDeleteDone = $("#anime_delete_done").height() + ($("#anime_delete_done").height())/2;
+  console.log(marginHeightAnimeDeleteDone + ";height:" + $("#anime_delete_done").height() + ";height/2:" + ($("#anime_delete_done").height())/2);
+  $("#anime_delete_done").css("margin", "0 0 0 -225px");
+  $("#anime_delete_done").css("top", "-300px");
 });
 
 // -- Next and Back buttons
@@ -147,9 +153,9 @@ function toggleShowHide(subject, visibilityVariable, showText, hideText) {
 }
 
 // ---- Update anime function
-function updateAnimeInList(id, episode, status, score, storage_type, storage_value, times_rewatched, rewatch_value, date_start, date_finish, priority, enable_discussion, enable_rewatching, comments, tags) {
+function updateAnimeInList(id, episode, status, score, storage_type, storage_value, times_rewatched, rewatch_value, date_start, date_finish, priority, enable_discussion, enable_rewatching, tags) {
   
-  var variables = ["id", "episodes", "status", "score", "storage_type", "storage_value", "times_rewatched", "rewatch_value", "date_start", "date_finish", "priority", "enable_discussion", "enable_rewatching", "comments", "tags"];
+  var variables = ["id", "episodes", "status", "score", "storage_type", "storage_value", "times_rewatched", "rewatch_value", "date_start", "date_finish", "priority", "enable_discussion", "enable_rewatching", "tags"];
   
   var submitVars = {}; //Creates an object
   for(var i = 0; i < variables.length; i++) {
@@ -173,7 +179,6 @@ function updateAnimeInList(id, episode, status, score, storage_type, storage_val
   "<priority>" + submitVars.priority + "</priority>" +
   "<enable_discussion>" + submitVars.enable_discussion + "</enable_discussion>" +
   "<enable_rewatching>" + submitVars.enable_rewatching + "</enable_rewatching>" +
-  "<comments>" + submitVars.comments + "</comments>" +
   "<tags>" + submitVars.tags + "</tags>" +
   "</entry>";
   
@@ -204,9 +209,9 @@ function updateAnimeInList(id, episode, status, score, storage_type, storage_val
 }
 
 // ---- Add anime function
-function addAnimeInList(id, episode, status, score, storage_type, storage_value, times_rewatched, rewatch_value, date_start, date_finish, priority, enable_discussion, enable_rewatching, comments, tags) {
+function addAnimeInList(id, episode, status, score, storage_type, storage_value, times_rewatched, rewatch_value, date_start, date_finish, priority, enable_discussion, enable_rewatching, tags) {
   
-  var variables = ["id", "episode", "status", "score", "storage_type", "storage_value", "times_rewatched", "rewatch_value", "date_start", "date_finish", "priority", "enable_discussion", "enable_rewatching", "comments", "tags"];
+  var variables = ["id", "episode", "status", "score", "storage_type", "storage_value", "times_rewatched", "rewatch_value", "date_start", "date_finish", "priority", "enable_discussion", "enable_rewatching", "tags"];
   
   var submitVars = new Object;
   for(var i = 0; i < variables.length; i++) {
@@ -248,7 +253,6 @@ function addAnimeInList(id, episode, status, score, storage_type, storage_value,
   "<priority>" + submitVars["priority"] + "</priority>" +
   "<enable_discussion>" + submitVars["enable_discussion"] + "</enable_discussion>" +
   "<enable_rewatching>" + submitVars["enable_rewatching"] + "</enable_rewatching>" +
-  "<comments>" + submitVars["comments"] + "</comments>" +
   "<tags>" + submitVars["tags"] + "</tags>" +
   "</entry>";
   
@@ -276,8 +280,38 @@ function addAnimeInList(id, episode, status, score, storage_type, storage_value,
   })
 };
 
-// ---- Close any dialog that's open
+// ---- Delete anime function
+function deleteAnimeInList(id) {
+  // This function will delete without any confirmation. Be aware.
+  $.ajax({
+    url: "http://myanimelist.net/api/animelist/delete/" + id + ".xml",
+    type: "GET",
+    username: loginUsername,
+    password: loginPassword,
+    success: function(ajaxData) {
+      console.log("Anime ID " + id + " has been deleted!");
+    },
+    error: function(xhr, status, thrownError) {
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+    }
+  })
+}
 
+// ---- Trigger multiple events using a function something.triggerAll("submit next click etc")
+(function($) {
+    $.fn.extend({
+        triggerAll: function (events, params) {
+            var el = this, i, evts = events.split(' ');
+            for (i = 0; i < evts.length; i += 1) {
+                el.trigger(evts[i], params);
+            }
+            return el;
+        }
+    });
+})(jQuery);
+
+// ---- Close any dialog that's open
 $("#anime_delete_cancel").on("click", function() {
   $("#anime_delete_confirm").addClass("animated bounceOut");
 });
@@ -291,6 +325,7 @@ $("#anime_stageFinal_done_another").on("click", function() {
 })
 
 // First Fieldset
+
 var animeNamesInList = {},
     animeEnglishNames = {},
     animeSynonyms = {},
@@ -298,8 +333,9 @@ var animeNamesInList = {},
     animeSynopsis = {},
     chosenAnimeInList;
 
+var select2InputBox;
 function select2_init() {
-  $("#animeName").select2({
+  select2InputBox = $("#animeName").select2({
     ajax: {
       url: "http://myanimelist.net/api/anime/search.xml",
       dataType: "xml",
@@ -328,9 +364,10 @@ function select2_init() {
   }).maximizeSelect2Height();
 }
 
+// -- When searched in Select2 run this function
 function formatAnimeResult(anime) {
-  //When searched run this function
   if(anime.loading) return anime.text;
+  
   var animeId = anime.id;
   animeNamesInList[animeId] = anime.title
   animeEnglishNames[animeId] = anime.english;
@@ -341,11 +378,23 @@ function formatAnimeResult(anime) {
   animeEpisodes[animeId] = anime.episodes;
   animeSynopsis[animeId] = anime.synopsis;
   
-  return animeId + " : " + animeNamesInList[animeId];
+  var animeResultMarkup = "<div class='select2-result-anime clearfix'>" +
+  "<div class='select2-result-anime__cover'><img src='" + anime.image + "'/></div>" +
+  "<div class='select2-result-anime__meta'>" +
+    "<div class='select2-result-anime__title'>" + anime.title + "</div>" +
+    "<div class='select2-result-anime__communityScore'>MAL Community Score : " + anime.score + "</div>" +
+    "<div class='select2-result-anime__moreMeta'>" +
+      "<div class='select2-result-anime__type'>" + anime.type + "</div>" +
+      "<div class='select2-result-anime__status'><i>" + anime.status + "</i></div>" +
+      "<div class='select2-result-anime__episodes'>" + anime.episodes + " Episodes</div>" +
+    "</div>" +
+  "</div></div>";
+  
+  return animeResultMarkup;
 }
 
+// -- When selected in Select2 run this function
 function formatAnimeSelection(anime) {
-  //When selected run this function
   return (anime.id + " : " + anime.title) || anime.text;
 }
 
@@ -353,7 +402,6 @@ function formatAnimeSelection(anime) {
 $("#animeName").on("select2:select", function() {
   //Cover Preview
   $("#preview").show();
-  console.log(document.getElementById("animeName").value);
   animeid = document.getElementById("animeName").value;
   $(".previewCover").attr("id", "more" + animeid);
   var coverImageSource = $(".previewCover").css("background-image");
@@ -442,6 +490,24 @@ $("#stage1_delete").on("click", function() {
   $("#anime_delete_confirm").addClass("animated bounceIn");
 })
 
+$("#anime_delete_delete").on("click", function() {
+  $("#anime_delete_confirm").addClass("animated bounceOut");
+  deleteAnimeInList(animeid);
+  window.setTimeout(function() {
+    $("#anime_delete_done").show();
+    $("#anime_delete_done_overlay").show();
+    $("#anime_delete_done").addClass("animated bounceIn");
+    $("#anime_delete_done_b").html(animeNamesInList[animeid]);
+    window.setTimeout(function() {
+      $("#anime_delete_done").addClass("animated bounceOut");
+      window.setTimeout(function() {
+        window.location.reload();
+      }, 500)
+    }, 3000)
+  }, 1000);
+})
+
+
 // Second Fieldset
 
 $("#stage1_next").on("click", function(event) {
@@ -512,7 +578,6 @@ function secondSlide_animeStatus_selector() {
 
 $("#stage2_next").on("click", function() {
   if(formAnimeStatus == "update") {
-    $("#anime_stage3_comments").html();
     $("#anime_stage3_tags").html(formAnimeUpdateData["tags"]);
   }
 })
@@ -541,7 +606,6 @@ $("#stage3_next").on("click", function() {
   } else {
     submit["enable_rewatching"] = "0";
   }
-  submit["comments"] = $("#anime_stage3_comments").val();;
   submit["tags"] = $("#anime_stage3_tags").val();
   $("#anime_stage4_normalInfo").html("<b>Action : </b>" + formAnimeStatus +
   "<br><b>Anime Title : </b>" + submit["title"] +
@@ -557,7 +621,6 @@ $("#stage3_next").on("click", function() {
   "<br><b>Priority : </b>" + submit["priority"] +
   "<br><b>Enable Discussion? : </b>" + submit["enable_discussion"] +
   "<br><b>Enable Rewatching? : </b>" + submit["enable_rewatching"] +
-  "<br><b>Comments : </b>" + submit["comments"] +
   "<br><b>Tags : </b>" + submit["tags"]);
   $("#anime_stage4_moreInfo").hide();
   anime_stage4_confirmMore_visibility = 0;
@@ -567,9 +630,9 @@ toggleShowHide("anime_stage4_moreInfo", "anime_stage4_confirmMore_visibility", "
 
 $("#mainForm").on("submit", function() {
   if(formAnimeStatus == "add") {
-    addAnimeInList(submit["id"], submit["episodes"], submit["status"], submit["score"], submit["storage_type"], submit["storage_value"], submit["times_rewatched"], submit["rewatch_value"], submit["date_start"], submit["date_finish"], submit["priority"], submit["enable_discussion"], submit["enable_rewatching"], submit["comments"], submit["tags"]);
+    addAnimeInList(submit["id"], submit["episodes"], submit["status"], submit["score"], submit["storage_type"], submit["storage_value"], submit["times_rewatched"], submit["rewatch_value"], submit["date_start"], submit["date_finish"], submit["priority"], submit["enable_discussion"], submit["enable_rewatching"], submit["tags"]);
   } else if(formAnimeStatus == "update") {
-    updateAnimeInList(submit["id"], submit["episodes"], submit["status"], submit["score"], submit["storage_type"], submit["storage_value"], submit["times_rewatched"], submit["rewatch_value"], submit["date_start"], submit["date_finish"], submit["priority"], submit["enable_discussion"], submit["enable_rewatching"], submit["comments"], submit["tags"]);
+    updateAnimeInList(submit["id"], submit["episodes"], submit["status"], submit["score"], submit["storage_type"], submit["storage_value"], submit["times_rewatched"], submit["rewatch_value"], submit["date_start"], submit["date_finish"], submit["priority"], submit["enable_discussion"], submit["enable_rewatching"],  submit["tags"]);
   }
   $("#anime_stageFinal_done").show();
   $("#anime_stageFinal_done_overlay").show();
@@ -598,5 +661,17 @@ $("#anime_stageFinal_done").on("webkitAnimationEnd mozAnimationEnd MSAnimationEn
   } else {
     //Just got visible
     $("#anime_stageFinal_done").removeClass("animated bounceIn");
+  }
+})
+
+$("#anime_delete_done").on("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
+  if($("#anime_delete_done").css("opacity") == "0") {
+    //Just got hidden
+    $("#anime_delete_done").removeClass("animated bounceOut");
+    $("#anime_delete_done").hide();
+    $("#anime_delete_done_overlay").hide();
+  } else {
+    //Just got visible
+    $("#anime_delete_done").removeClass("animated bounceIn");
   }
 })
