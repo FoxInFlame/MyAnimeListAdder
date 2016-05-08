@@ -33,7 +33,7 @@ All the minimum functions are done and ready to be used for public!
 - Ability to login to your MAL account in the options, and verify if the credentials are real or not
 - Probably more.
 
-####Next up for 1.X, or 2.0
+####Next up for 1.X, 2.0, and later on.
 
 - Change layout design (1.X)
 - Change CSS library from Material Design to Bootstrap (2.0)
@@ -41,10 +41,13 @@ All the minimum functions are done and ready to be used for public!
 - Add options to show/hide inputs in the popup (1.X)
 - Better organized and stylized options page (1.X)
 - Ability to select a theme of CSS, Material Design, Bootstrap, Classic, etc. (2.0)
-- Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0)
-- Bugs / Problems / Suggestions / Support
+- Automatically increase number and change to "Watching" if video site is visited (e.g. gogoanime.io/blah-episode-1) (2.0 or later)
+- Display popup on video site (e.g. kissanime.to/Anime/blah/Episode-1) and let user choose if QMAL should automatically update the list or not (2.0 or later)
+- Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0, 3.0)
 
-####There are several ways you can tell me your opinion :
+####Bugs / Problems / Suggestions / Support
+
+There are several ways you can tell me your opinion :
 
 - Create a branch and a pull request on GitHub
 - Create an issue ticket on GitHub, so I can have a look at your opinion
