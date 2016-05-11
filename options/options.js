@@ -210,6 +210,7 @@ function SelectElement(valueToSelect, selectElement)
 }
 
 function save_options_badge() {
+  chrome.extension.getBackgroundPage().updateBadge();
   var badge_enable = document.getElementById("badge_enable").checked;
   var badge_color = document.getElementById("badge_color").value;
   var badge_interval = document.getElementById("badge_interval").value;
