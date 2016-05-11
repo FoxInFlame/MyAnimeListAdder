@@ -17,15 +17,12 @@
   
   "background": {
     "scripts": [
-      "jquery-2.2.2.js",
+      "libraries/jQuery/jquery-2.2.2.js",
       "background.js"
     ]
   },
   
-  "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
-  },
+  "options_page": "options/options.html",
   
   "icons": {
 		"128": "icon.png"

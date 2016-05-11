@@ -5,6 +5,7 @@ var verified;
 var badge_interval;
 var badge_color;
 var badge_count;
+var badge_text;
 
 var count_watching = 0;
 var count_completed = 0;
@@ -22,9 +23,9 @@ function getChromeStorage() {
     password: "password123",
     verified: false,
     badge_enable: false,
-    badge_interval: "3",
+    badge_interval: "5",
     badge_color: "#5be825",
-    badge_count: "Watching"
+    badge_count: "1"
   }, function(items) {
     loginUsername = items.username;
     loginPassword = items.password;
@@ -51,9 +52,16 @@ function updateBadge() {
     });
     window.setTimeout(updateBadge, badge_interval * 1000);
     return;
+  } else {
+    chrome.browserAction.setIcon({
+      path: "icon.png"
+    });
   }
   
   if(badge_enable === false) {
+    chrome.browserAction.setBadgeText({
+      text: ""
+    });
     window.setTimeout(updateBadge, badge_interval * 1000);
     return;
   }
@@ -77,7 +85,7 @@ function updateBadge() {
           count_onhold++;
         } else if($("my_status", this).text() == "4") {
           count_dropped++;
-        } else if($("my_status", this).text() == "5") {
+        } else if($("my_status", this).text() == "6") {
           count_planned++;
         }
       });
@@ -85,20 +93,28 @@ function updateBadge() {
   });
   if(badge_count == 1) {
     badge_count = count_watching;
+    badge_text = "Watching";
   } else if(badge_count == 2) {
     badge_count = count_completed;
+    badge_text = "Completed";
   } else if(badge_count == 3) {
     badge_count = count_onhold;
+    badge_text = "On Hold";
   } else if(badge_count == 4) {
     badge_count = count_dropped;
+    badge_text = "Dropped";
   } else if(badge_count == 6) {
     badge_count = count_planned;
+    badge_text = "Planned";
   }
   chrome.browserAction.setBadgeBackgroundColor({
     color: badge_color
   });
   chrome.browserAction.setBadgeText({
     text: badge_count.toString()
+  });
+  chrome.browserAction.setTitle({
+    title: badge_count.toString() + " " + badge_text
   });
   window.setTimeout(updateBadge, badge_interval * 1000);
 }
