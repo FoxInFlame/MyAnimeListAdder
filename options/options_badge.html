@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Badge - QuickMyAnimeList Options</title>
+    <link rel="stylesheet" href="../materialize.min.css" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../Libraries/ColorPicker/css/colorpicker.css" type="text/css">
+    <script src="../jquery-2.2.2.js"></script>
+    <style>
+      body {
+        font-size: 15px;
+      }
+      .colorpicker {
+        z-index: 5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar-fixed">
+      <nav class="indigo darken-1">
+        <div class="nav-wrapper">
+          <a href="http://www.foxinflame.tk/QuickMyAnimeList" class="brand-logo center">QuickMyAnimeList</a>
+          <ul class="left">
+            <li><a href="options.html" class="waves-effect waves-light">QMAL Home</a></li>
+            <li><a href="options_credentials.html" class="waves-effect waves-light">MAL Credentials</a></li>
+            <li class="active"><a href="#" class="waves-effect waves-light">Badge</a></li>
+            <li><a href="options_popup.html" class="waves-effect waves-light">Popup</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="container">
+      <h4>Badge Options</h4>
+      <i>Badge will take time to update after saving!</i><br>
+      <span>Enable Badge:</span>
+      <div class="switch" style="display:inline">
+        <label>
+          <input id="badge_enable" type="checkbox">
+          <span class="lever"></span>
+        </label>
+      </div>
+      <br>
+      <br>
+      <div class="row">
+        <div class="col s6">
+          <span>Color:</span>
+          <input style="width:500px;height:30px;margin-left:20px" type="text" id="badge_color">
+        </div>
+      </div>
+      <span>Update Interval in seconds:</span>
+      <input type="number" style="width:50px;height:20px" id="badge_interval">
+      <br>
+      <span>On the badge, show the number of:</span>
+      <div class="input-field" style="width:500px;display:inline-block">
+        <select id="badge_count">
+          <option value="1">Watching Animes</option>
+          <option value="2">Completed Animes</option>
+          <option value="3">Animes on Hold</option>
+          <option value="4">Dropped Animes</option>
+          <option value="6">Animes planned to watch</option>
+        </select>
+      </div>
+      <br>
+      <div id="status"></div>
+      <button class="btn waves-effect waves-light" id="save">Save<i class="material-icons right">send</i></button>
+    </div>
+      
+    <script src="options.js"></script>
+    <script src="../Libraries/ColorPicker/js/colorpicker.js"></script>
+    <script src="../materialize.min.js"></script>
+  </body>
+</html>
