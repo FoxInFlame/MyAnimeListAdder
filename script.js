@@ -20,10 +20,12 @@ var anime_stage4_confirmMore_visibility;
 chrome.storage.sync.get({
 // ---- Default credentials when none are specified
   username: "Username",
-  password: "password123"
+  password: "password123",
+  verified: false
 }, function(items) {
   loginUsername = items.username;
   loginPassword = items.password;
+  verified = items.verified;
 });
 
 // -- Document Ready Function
@@ -52,6 +54,7 @@ $(document).ready(function() {
       $("body").html("You have not verified your credentials. Do so in the options.");
     }
   });
+
   var marginHeightAnimeDelete = $("#anime_delete_confirm").height() + ($("#anime_delete_confirm").height())/2;
   $("#anime_delete_confirm").css("margin", "-" + marginHeightAnimeDelete + "px 0 0 -225px");
   var marginHeightAnimeFinal = $("#anime_stageFinal_done").height() + ($("#anime_stageFinal_done").height())/2;
@@ -335,6 +338,7 @@ var animeNamesInList = {},
 
 var select2InputBox;
 function select2_init() {
+  console.log(loginPassword);
   select2InputBox = $("#animeName").select2({
     ajax: {
       url: "http://myanimelist.net/api/anime/search.xml",
