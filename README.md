@@ -52,8 +52,8 @@ Lots of new stuff! Redesigned Options page, badges, everything!
 - Change layout design (1.X)
 - Change CSS library from Material Design to Bootstrap (2.0)
 - More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X)
-- Add options to show/hide inputs in the popup (1.X) **CHECKED**
-- Better organized and stylized options page (1.X) **CHECKED**
+- ~~Add options to show/hide inputs in the popup (1.X)~~ **DONE**
+- ~~Better organized and stylized options page (1.X)~~ **DONE**
 - Ability to select a theme of CSS, Material Design, Bootstrap, Classic, etc. (2.0)
 - Automatically increase number and change to "Watching" if video site is visited (e.g. gogoanime.io/blah-episode-1) (2.0 or later)
 - Display popup on video site (e.g. kissanime.to/Anime/blah/Episode-1) and let user choose if QMAL should automatically update the list or not (2.0 or later)
