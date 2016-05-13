@@ -1,5 +1,5 @@
 # QuickMyAnimeList
-QuickMyAnimeList (QMAL) is a handy Chrome extension that allows you to edit, add, or delete an anime in your MyAnimeList list. Of course, there are many more features...? 
+QuickMyAnimeList (QuickMAL) is a handy Chrome extension that allows you to edit, add, or delete an anime in your MyAnimeList list. Of course, there are many more features...? 
 
 ## Official Website
 Official QuickMyAnimeList website is at http://www.foxinflame.tk/QuickMyAnimeList
@@ -56,7 +56,7 @@ Lots of new stuff! Redesigned Options page, badges, everything!
 - ~~Better organized and stylized options page (1.X)~~ **DONE**
 - Ability to select a theme of CSS, Material Design, Bootstrap, Classic, etc. (2.0)
 - Automatically increase number and change to "Watching" if video site is visited (e.g. gogoanime.io/blah-episode-1) (2.0 or later)
-- Display popup on video site (e.g. kissanime.to/Anime/blah/Episode-1) and let user choose if QMAL should automatically update the list or not (2.0 or later)
+- Display popup on video site (e.g. kissanime.to/Anime/blah/Episode-1) and let user choose if QuickMAL should automatically update the list or not (2.0 or later)
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0, 3.0)
 
 #### Bugs / Problems / Suggestions / Support
