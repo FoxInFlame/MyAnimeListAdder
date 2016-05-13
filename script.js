@@ -45,7 +45,7 @@ $(document).ready(function() {
   information_synopsis_visibility = 0;
   $("#anime_stage3_advancedInputs").hide();
   anime_stage3_advancedInputs_visibility = 0;
-  //document.getElementById("animeInput").focus();
+  document.getElementById("animeName").focus();
   select2_init();
   chrome.storage.sync.get({
     verified: false
@@ -338,7 +338,6 @@ var animeNamesInList = {},
 
 var select2InputBox;
 function select2_init() {
-  console.log(loginPassword);
   select2InputBox = $("#animeName").select2({
     ajax: {
       url: "http://myanimelist.net/api/anime/search.xml",
