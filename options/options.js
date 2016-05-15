@@ -24,6 +24,32 @@ document.getElementById('save').addEventListener('click', function() {
   }
 });
 
+
+$(document).ajaxError(function(event, jqxhr, settings, exception) {
+  if (jqxhr.status== 401) {
+    var filename = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
+    if(filename == "options_credentials.html") {
+      var status = document.getElementById("save");
+      status.innerHTML = "Inputted credentials are not valid.";
+      status.disabled = true;
+      status.classList.add("red");
+        chrome.storage.sync.set({
+        verified: false
+      });
+      var verifiedBoxes = document.getElementsByClassName("verified");
+      var verifiedBoxesLength = verifiedBoxes.length;
+      for(var i=0; i < verifiedBoxesLength; i++){
+        verifiedBoxes[i].checked = false;
+      }
+      setTimeout(function() {
+        status.innerHTML = 'Save<i class="material-icons right">send</i>';
+        status.disabled = false;
+        status.classList.remove("red");
+      }, 3000);
+    }
+  }
+});
+
 function restore_options_credentials() {
   chrome.storage.sync.get({
     username: "Username",
@@ -40,7 +66,6 @@ function restore_options_credentials() {
   });
 }
 function save_options_credentials() {
-  chrome.extension.getBackgroundPage().updateBadge();
   var username = document.getElementById("username").value;
   var password = document.getElementById("password").value;
   chrome.storage.sync.set({
@@ -57,6 +82,8 @@ function save_options_credentials() {
         var status = document.getElementById("save");
         status.innerHTML = 'Credentials Saved!';
         status.disabled = true;
+        status.classList.add("orange");
+        chrome.extension.getBackgroundPage().updateBadge();
         chrome.storage.sync.set({
           verified: true
         });
@@ -68,10 +95,11 @@ function save_options_credentials() {
         setTimeout(function() {
           status.innerHTML = 'Save<i class="material-icons right">send</i>';
           status.disabled = false;
+          status.classList.remove("orange");
+          chrome.extension.getBackgroundPage().updateBadge();
         }, 3000);
       },
     });
-    // Update status to let user know options were saved.
   });
 }
 
@@ -86,7 +114,8 @@ function restore_options_badge() {
     },
     onChange: function (hsb, hex, rgb) {
       document.getElementById("badge_color").value = "#" + hex;
-      $("#badge_color").css("background-color", "#" + hex)
+      $("#badge_color").css("background-color", "#" + hex);
+      $("#badge_enable").change();
     }
   }).on("keyup", function(){
     $(this).ColorPickerSetColor(this.value);
@@ -107,7 +136,6 @@ function restore_options_badge() {
   });
 }
 function save_options_badge() {
-  chrome.extension.getBackgroundPage().updateBadge();
   var badge_enable = document.getElementById("badge_enable").checked;
   var badge_color = document.getElementById("badge_color").value;
   var badge_interval = document.getElementById("badge_interval").value;
@@ -119,13 +147,17 @@ function save_options_badge() {
     badge_count: badge_count
   }, function() {
     var status = document.getElementById("save");
-    status.innerHTML = 'Badge options saved!';
+    status.innerHTML = 'Badge Options Saved.';
+    status.classList.add("orange");
     status.disabled = true;
+    chrome.extension.getBackgroundPage().updateBadge();
     setTimeout(function() {
       status.innerHTML = 'Save<i class="material-icons right">send</i>';
       status.disabled = false;
+      status.classList.remove("orange");
+      chrome.extension.getBackgroundPage().updateBadge();
     }, 3000);
-  })
+  });
 }
 
 $("#options_help_badge_interval_toggle").on("click", function() {

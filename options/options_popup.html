@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Badge - QuickMyAnimeList Options</title>
+    <title>Popup - QuickMyAnimeList Options</title>
     <link rel="stylesheet" href="../libraries/MaterializeCSS/materialize.min.css" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../libraries/ColorPicker/css/colorpicker.css" type="text/css">
@@ -9,9 +9,6 @@
     <style>
       body {
         font-size: 15px;
-      }
-      .colorpicker {
-        z-index: 5;
       }
     </style>
   </head>
@@ -23,25 +20,72 @@
           <ul class="left">
             <li><a href="options.html" class="waves-effect waves-light">QMAL Home</a></li>
             <li><a href="options_credentials.html" class="waves-effect waves-light">MAL Credentials</a></li>
-            <li class="active"><a href="#" class="waves-effect waves-light">Badge</a></li>
-            <li><a href="options_popup.html" class="waves-effect waves-light">Popup</a></li>
+            <li><a href="options_badge.html" class="waves-effect waves-light">Badge</a></li>
+            <li class="active"><a href="options_popup.html" class="waves-effect waves-light">Popup</a></li>
           </ul>
         </div>
       </nav>
     </div>
     <div class="container">
-      <h4>Badge Options</h4>
-      <span>Badges can take up to 30 seconds to update.</span>
+      <h4>Popup Window Options</h4>
+      <span>Changes will take place immediately.</span>
       <hr><br>
-      <span>Enable Badge:</span>
-      <div class="switch" style="display:inline">
-        <label>
-          <input id="badge_enable" type="checkbox">
-          <span class="lever"></span>
-        </label>
+      <span>When icon clicked:</span>
+      <div class="input-field" style="width:500px;display:inline-block">
+        <select id="popup_open_action">
+          <option value="1">Open QuickMAL Popup</option>
+          <option value="3">Open your MAL List in Popup</option>
+          <option value="4">Open your MAL List in New Tab</option>
+          <option value="5">Open MAL Homepage in New Tab</option>
+        </select>
       </div>
       <br>
+      <span>Input Fields to display: </span>
+      <ul class="collection" style="width:600px">
+        <li class="collection-item">Search Input<span class="badge">REQUIRED</span></li>
+        <li class="collection-item">Status Select Box<span class="badge">REQUIRED</span></li>
+        <li class="collection-item">Episode Input<span class="badge">REQUIRED</span></li>
+        <li class="collection-item">Rating Stars
+          <div class="switch right" style="display:inline">
+            <label>
+              <input id="badge_enable" type="checkbox">
+              <span class="lever"></span>
+            </label>
+          </div>
+        </li>
+        <li class="collection-item">Rewatching Checkbox
+          <div class="switch right" style="display:inline">
+            <label>
+              <input id="badge_enable" type="checkbox">
+              <span class="lever"></span>
+            </label>
+          </div>
+        </li>
+        <li class="collection-item">Tags Input
+          <div class="switch right" style="display:inline">
+            <label>
+              <input id="badge_enable" type="checkbox">
+              <span class="lever"></span>
+            </label>
+          </div>
+        </li>
+        <li class="collection-item">Storage Type Input
+          <div class="switch right" style="display:inline">
+            <label>
+              <input id="badge_enable" type="checkbox">
+              <span class="lever"></span>
+            </label>
+          </div>
+        </li>
+      </ul>
       <br>
+      <span>Show confirmation page:</span>
+          <div class="switch" style="display:inline">
+            <label>
+              <input id="badge_enable" type="checkbox">
+              <span class="lever"></span>
+            </label>
+          </div>
       <div class="row">
         <div class="col s12">
           <span>Color:</span>
