@@ -16,20 +16,19 @@ var information_synopsis_visibility;
 var anime_stage3_advancedInputs_visibility;
 var anime_stage4_confirmMore_visibility;
 
-// -- Get the usernames stored on Chrome Settings
-chrome.storage.sync.get({
-// ---- Default credentials when none are specified
-  username: "Username",
-  password: "password123",
-  verified: false
-}, function(items) {
-  loginUsername = items.username;
-  loginPassword = items.password;
-  verified = items.verified;
-});
-
 // -- Document Ready Function
 $(document).ready(function() {
+  // -- Get the usernames stored on Chrome Settings
+  chrome.storage.sync.get({
+  // ---- Default credentials when none are specified
+    username: "Username",
+    password: "password123",
+    verified: false
+  }, function(items) {
+    loginUsername = items.username;
+    loginPassword = items.password;
+    verified = items.verified;
+  });
   // Hide many stuff and change variables and check credentials.
   $("#preview").hide();
   $("#anime_stageFinal_done_overlay").hide();
