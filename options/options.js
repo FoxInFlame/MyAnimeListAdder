@@ -41,10 +41,12 @@ $(document).ajaxError(function(event, jqxhr, settings, exception) {
       for(var i=0; i < verifiedBoxesLength; i++){
         verifiedBoxes[i].checked = false;
       }
+      chrome.extension.getBackgroundPage().updateBadge();
       setTimeout(function() {
         status.innerHTML = 'Save<i class="material-icons right">send</i>';
         status.disabled = false;
         status.classList.remove("red");
+        chrome.extension.getBackgroundPage().updateBadge();
       }, 3000);
     }
   }
@@ -83,7 +85,6 @@ function save_options_credentials() {
         status.innerHTML = 'Credentials Saved!';
         status.disabled = true;
         status.classList.add("orange");
-        chrome.extension.getBackgroundPage().updateBadge();
         chrome.storage.sync.set({
           verified: true
         });
@@ -92,17 +93,32 @@ function save_options_credentials() {
         for(var i=0; i < verifiedBoxesLength; i++){
           verifiedBoxes[i].checked = true;
         }
+        chrome.extension.getBackgroundPage().updateBadge();
         setTimeout(function() {
           status.innerHTML = 'Save<i class="material-icons right">send</i>';
           status.disabled = false;
           status.classList.remove("orange");
           chrome.extension.getBackgroundPage().updateBadge();
         }, 3000);
-      },
+      }
     });
   });
 }
 
+function hexToRGB(hex) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
 function restore_options_badge() {
   $("#badge_color").ColorPicker({
     onSubmit: function(hsb, hex, rgb, el) {
@@ -116,10 +132,22 @@ function restore_options_badge() {
       document.getElementById("badge_color").value = "#" + hex;
       $("#badge_color").css("background-color", "#" + hex);
       $("#badge_enable").change();
+      var badge_color_rgb = hexToRGB("#" + hex);
+      if((badge_color_rgb.r * 0.299 + badge_color_rgb.g * 0.587 + badge_color_rgb.b * 0.114) > 186) {
+        $("#badge_color").css("color", "#000000");
+      } else {
+        $("#badge_color").css("color", "#ffffff");
+      }
     }
   }).on("keyup", function(){
     $(this).ColorPickerSetColor(this.value);
-    $("#badge_color").css("background-color", this.value)
+    $("#badge_color").css("background-color", this.value);
+    var badge_color_rgb = hexToRGB("#" + hex);
+    if((badge_color_rgb.r * 0.299 + badge_color_rgb.g * 0.587 + badge_color_rgb.b * 0.114) > 186) {
+      $("#badge_color").css("color", "#000000");
+    } else {
+      $("#badge_color").css("color", "#ffffff");
+    }
   });
   chrome.storage.sync.get({
     badge_enable: false,
