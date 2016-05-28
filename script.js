@@ -2,9 +2,16 @@
 var loginUsername;
 var loginPassword;
 
+var popup_action_open,
+    popup_input_rating,
+    popup_input_rewatching,
+    popup_input_tags,
+    popup_input_storageType,
+    popup_action_confirm;
+
 var formAnimeStatus;
-var formAnimeUpdateData = new Object;
-var submit = new Object;
+var formAnimeUpdateData = new Object({});
+var submit = new Object({});
 
 var fieldsetNumber;
 var fieldsetTotal;
@@ -23,36 +30,41 @@ $(document).ready(function() {
   // ---- Default credentials when none are specified
     username: "Username",
     password: "password123",
-    verified: false
+    verified: false,
+    popup_action_open: "1",
+    popup_input_rating: true,
+    popup_input_rewatching: true,
+    popup_input_tags: true,
+    popup_input_storageType: false,
+    popup_action_confirm: true
   }, function(items) {
     loginUsername = items.username;
     loginPassword = items.password;
     verified = items.verified;
+    popup_action_open = items.popup_action_open;
+    popup_input_rating = items.popup_input_rating;
+    popup_input_rewatching = items.popup_input_rewatching;
+    popup_input_tags = items.popup_input_tags;
+    popup_input_storageType = items.popup_input_storageType;
+    popup_action_confirm = items.popup_action_confirm;
+    if(verified === false) {
+      $("body").html("You have not verified your credentials. Do so in the options.");
+      return false;
+    }
   });
   // Hide many stuff and change variables and check credentials.
   $("#preview").hide();
-  $("#anime_stageFinal_done_overlay").hide();
-  $("#anime_stageFinal_done").hide();
-  $("#anime_delete_confirm_overlay").hide();
-  $("#anime_delete_confirm").hide();
-  $("#anime_delete_done_overlay").hide();
-  $("#anime_delete_done").hide();
+  $("#anime_stageFinal_done_overlay, #anime_stageFinal_done").hide();
+  $("#anime_delete_confirm_overlay, #anime_delete_confirm").hide();
+  $("#anime_delete_done_overlay, #anime_delete_done").hide();
   $("#status").hide();
   $("#stage1_delete").hide();
-  $("#information").hide();
-  $("#information_synopsis").hide();
+  $("#information, #information_synopsis").hide();
   information_synopsis_visibility = 0;
   $("#anime_stage3_advancedInputs").hide();
   anime_stage3_advancedInputs_visibility = 0;
   document.getElementById("animeName").focus();
   select2_init();
-  chrome.storage.sync.get({
-    verified: false
-  }, function(items) {
-    if(items.verified === false) {
-      $("body").html("You have not verified your credentials. Do so in the options.");
-    }
-  });
 
   var marginHeightAnimeDelete = $("#anime_delete_confirm").height() + ($("#anime_delete_confirm").height())/2;
   $("#anime_delete_confirm").css("margin", "-" + marginHeightAnimeDelete + "px 0 0 -225px");
@@ -78,6 +90,12 @@ $(".next").on("click", function() {
       }, 5000);
       return false;
     }
+    if(popup_input_rating === false) {
+      $("#anime_stage2_rating_wrapper").hide();
+    }
+    if(popup_input_rewatching === false) {
+      $("#anime_stage2_rewatching_wrapper").hide();
+    }
   } else if(fieldsetNumber == 2){
     var anime_stage2_episodeInput = parseInt($("#anime_stage2_episodeInput").val());
     var animeTotalEpisodes = parseInt(animeEpisodes[animeid]);
@@ -96,6 +114,12 @@ $(".next").on("click", function() {
         $("#stage2_warning").fadeOut(500);
       }, 5000);
       return;
+    }
+    if(popup_input_tags === false) {
+      $("#anime_stage3_tags_wrapper").hide();
+    }
+    if(popup_input_storageType === false) {
+      $("#anime_stage3_storageType_wrapper").hide();
     }
   }
   
@@ -578,9 +602,14 @@ function secondSlide_animeStatus_selector() {
 
 // Third Fieldset
 
-$("#stage2_next").on("click", function() {
+$("#stage2_next").on("click", function(e) {
   if(formAnimeStatus == "update") {
     $("#anime_stage3_tags").html(formAnimeUpdateData["tags"]);
+  }
+  if(popup_input_tags === false) {
+    $("#stage3_next").click();
+    e.stopImmediatePropagation();
+    return false;
   }
 })
 
@@ -636,6 +665,7 @@ $("#mainForm").on("submit", function() {
   } else if(formAnimeStatus == "update") {
     updateAnimeInList(submit["id"], submit["episodes"], submit["status"], submit["score"], submit["storage_type"], submit["storage_value"], submit["times_rewatched"], submit["rewatch_value"], submit["date_start"], submit["date_finish"], submit["priority"], submit["enable_discussion"], submit["enable_rewatching"],  submit["tags"]);
   }
+  chrome.extension.getBackgroundPage().updateBadge();
   $("#anime_stageFinal_done").show();
   $("#anime_stageFinal_done_overlay").show();
   $("#anime_stageFinal_done").addClass("animated bounceIn");

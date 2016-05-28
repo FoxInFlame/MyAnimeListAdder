@@ -52,7 +52,7 @@ function updateBadge() {
       text: ". . ."
     });
     window.setTimeout(updateBadge, badge_interval * 1000);
-    return "Badge Set : Not Verified";
+    return;
   } else {
     chrome.browserAction.setIcon({
       path: "icon.png"
@@ -64,7 +64,7 @@ function updateBadge() {
       text: ""
     });
     window.setTimeout(updateBadge, badge_interval * 1000);
-    return "Badge Set : Not Enabled";
+    return;
   }
   
   $.ajax({
@@ -123,5 +123,151 @@ function updateBadge() {
     title: badge_count.toString() + " " + badge_text
   });
   badge_timer = window.setTimeout(updateBadge, badge_interval * 1000);
-  return "Badge Set : " + badge_count.toString() + " " + badge_text + " in color #" + badge_color;
+  return;
+}
+
+// ---- Update anime function
+function updateAnimeInList(id, episode, status, score, storage_type, storage_value, times_rewatched, rewatch_value, date_start, date_finish, priority, enable_discussion, enable_rewatching, tags) {
+  
+  var variables = ["id", "episodes", "status", "score", "storage_type", "storage_value", "times_rewatched", "rewatch_value", "date_start", "date_finish", "priority", "enable_discussion", "enable_rewatching", "tags"];
+  
+  var submitVars = {}; //Creates an object
+  for(var i = 0; i < variables.length; i++) {
+    submitVars[variables[i]] = submit[variables[i]];
+    if(submitVars[variables[i]] == "0" || submitVars[variables[i]] == null) {
+      submitVars[variables[i]] = "";
+    }
+  }
+  
+  var editXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+  "<entry>" +
+  "<episode>" + submitVars.episodes + "</episode>" +
+  "<status>" + submitVars.status + "</status>" +
+  "<score>" + submitVars.score + "</score>" +
+  "<storage_type>" + submitVars.storage_type + "</storage_type>" +
+  "<storage_value>" + submitVars.storage_value + "</storage_value>" +
+  "<times_rewatched>" + submitVars.times_rewatched + "</times_rewatched>" +
+  "<rewatch_value>" + submitVars.rewatch_value + "</rewatch_value>" +
+  "<date_start>" + submitVars.date_start + "</date_start>" +
+  "<date_finish>" + submitVars.date_finish + "</date_finish>" +
+  "<priority>" + submitVars.priority + "</priority>" +
+  "<enable_discussion>" + submitVars.enable_discussion + "</enable_discussion>" +
+  "<enable_rewatching>" + submitVars.enable_rewatching + "</enable_rewatching>" +
+  "<tags>" + submitVars.tags + "</tags>" +
+  "</entry>";
+  
+  console.log("[UPDATE] Updating Anime " + id + " as status: " + status + " to list....");
+  console.log("[UPDATE] Watched Episodes: " + episode);
+  
+  $.ajax({
+    url: "http://myanimelist.net/api/animelist/update/" + id + ".xml",
+    type: "GET",
+    data: {"data": editXML},
+    username: loginUsername,
+    password: loginPassword,
+    contentType: "application/xml",
+    async: false,
+    success: function(ajaxData) {
+      console.log("[DONE] Anime ID " + id + " has been updated on " + loginUsername + "'s list!");
+      console.log("[DONE] Details: Episodes - " + submitVars.episodes);
+      console.log("[DONE] Details: Score - " + submitVars.score);
+    },
+    error: function(xhr, status, thrownError) {
+      console.log(xhr.status);
+      if(xhr.status == "0") {
+        console.log("The Anime is already in the list or doesn't exist!! I think.");
+      }
+      console.log(xhr.responseText);
+    }
+  });
+}
+
+// ---- Add anime function
+function addAnimeInList(id, episode, status, score, storage_type, storage_value, times_rewatched, rewatch_value, date_start, date_finish, priority, enable_discussion, enable_rewatching, tags) {
+  
+  var variables = ["id", "episode", "status", "score", "storage_type", "storage_value", "times_rewatched", "rewatch_value", "date_start", "date_finish", "priority", "enable_discussion", "enable_rewatching", "tags"];
+  
+  var submitVars = new Object;
+  for(var i = 0; i < variables.length; i++) {
+    submitVars[variables[i]] = submit[variables[i]];
+    if(variables[i] == "score" && submitVars[variables[i]] == "0") {
+      submitVars[variables[i]] = "";
+    } else if(variables[i] == "storage_type" && submitVars[variables[i]] == "0"){
+      submitVars[variables[i]] = "";
+    } else if(variables[i] == "rewatch_value" && submitVars[variables[i]] == "0") {
+      submitVars[variables[i]] = "";
+    } else if(variables[i] == "date_start" && submitVars[variables[i]] == null) {
+      submitVars[variables[i]] = "";
+    } else if(variables[i] == "date_finish" && submitVars[variables[i]] == null) {
+      submitVars[variables[i]] = "";
+    } else if(variables[i] == "priority" && submitVars[variables[i]] == "0") {
+      submitVars[variables[i]] = "";
+    } else if(variables[i] == "enable_discussion"){
+      if(submitVars[variables[i]] == "0") {
+        submitVars[variables[i]] = "";
+      } else if(submitVars[variables[i]] == "1") {
+        submitVars[variables[i]] = "0";
+      } else if(submitVars[variables[i]] == "2") {
+        submitVars[variables[i]] = "1";
+      }
+    }
+  }
+  
+  var myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+  "<entry>" +
+  "<episode>" + submitVars["episode"] + "</episode>" +
+  "<status>" + submitVars["status"] + "</status>" +
+  "<score>" + submitVars["score"] + "</score>" +
+  "<storage_type>" + submitVars["storage_type"] + "</storage_type>" +
+  "<storage_value>" + submitVars["storage_value"] + "</storage_value>" +
+  "<times_rewatched>" + submitVars["times_rewatched"] + "</times_rewatched>" +
+  "<rewatch_value>" + submitVars["rewatch_value"] + "</rewatch_value>" +
+  "<date_start>" + submitVars["date_start"] + "</date_start>" +
+  "<date_finish>" + submitVars["date_finish"] + "</date_finish>" +
+  "<priority>" + submitVars["priority"] + "</priority>" +
+  "<enable_discussion>" + submitVars["enable_discussion"] + "</enable_discussion>" +
+  "<enable_rewatching>" + submitVars["enable_rewatching"] + "</enable_rewatching>" +
+  "<tags>" + submitVars["tags"] + "</tags>" +
+  "</entry>";
+  
+  console.log("[ADD] Adding Anime " + id + " as status: " + status + " to list.");
+  console.log("[ADD] Watched Episodes: " + episode);
+  
+  $.ajax({
+    url: "http://myanimelist.net/api/animelist/add/" + id + ".xml",
+    type: "GET",
+    data: {"data": myXML},
+    username: loginUsername,
+    password: loginPassword,
+    contentType: "application/xml",
+    async: false,
+    success: function(ajaxData) {
+      console.log("Anime ID " + id + " has been added to " + loginUsername + "'s list!");
+    },
+    error: function(xhr, status, thrownError) {
+      console.log(xhr.status);
+      if(xhr.status == "501") {
+        console.log("The Anime is already in the list.");
+      }
+      console.log(xhr.responseText);
+    }
+  })
+};
+
+// ---- Delete anime function
+function deleteAnimeInList(id) {
+  // This function will delete without any confirmation. Be aware.
+  $.ajax({
+    url: "http://myanimelist.net/api/animelist/delete/" + id + ".xml",
+    type: "GET",
+    username: loginUsername,
+    password: loginPassword,
+    success: function(ajaxData) {
+      console.log("Anime ID " + id + " has been deleted!");
+    },
+    error: function(xhr, status, thrownError) {
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+    }
+  })
 }
