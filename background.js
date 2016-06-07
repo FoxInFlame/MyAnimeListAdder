@@ -15,7 +15,8 @@ var count_planned = 0;
 var count_total = 0;
 
 getChromeStorage();
-var badge_timer = window.setTimeout(updateBadge, 1000);
+window.setTimeout(updateBadge, 1000);
+window.setTimeout(updateBadge, 3000);
 
 function getChromeStorage() {
   chrome.storage.sync.get({
@@ -122,6 +123,8 @@ function updateBadge() {
   chrome.browserAction.setTitle({
     title: badge_count.toString() + " " + badge_text
   });
-  badge_timer = window.setTimeout(updateBadge, badge_interval * 1000);
+  window.setTimeout(function() {
+  	updateBadge();
+  }, badge_interval * 1000);
   return "Badge Set : " + badge_count.toString() + " " + badge_text + " in color #" + badge_color;
 }
