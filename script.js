@@ -16,18 +16,19 @@ var information_synopsis_visibility;
 var anime_stage3_advancedInputs_visibility;
 var anime_stage4_confirmMore_visibility;
 
-// -- Get the usernames stored on Chrome Settings
-chrome.storage.sync.get({
-// ---- Default credentials when none are specified
-  username: "Username",
-  password: "password123"
-}, function(items) {
-  loginUsername = items.username;
-  loginPassword = items.password;
-});
-
 // -- Document Ready Function
 $(document).ready(function() {
+  // -- Get the usernames stored on Chrome Settings
+  chrome.storage.sync.get({
+  // ---- Default credentials when none are specified
+    username: "Username",
+    password: "password123",
+    verified: false
+  }, function(items) {
+    loginUsername = items.username;
+    loginPassword = items.password;
+    verified = items.verified;
+  });
   // Hide many stuff and change variables and check credentials.
   $("#preview").hide();
   $("#anime_stageFinal_done_overlay").hide();
@@ -43,7 +44,7 @@ $(document).ready(function() {
   information_synopsis_visibility = 0;
   $("#anime_stage3_advancedInputs").hide();
   anime_stage3_advancedInputs_visibility = 0;
-  //document.getElementById("animeInput").focus();
+  document.getElementById("animeName").focus();
   select2_init();
   chrome.storage.sync.get({
     verified: false
@@ -52,6 +53,7 @@ $(document).ready(function() {
       $("body").html("You have not verified your credentials. Do so in the options.");
     }
   });
+
   var marginHeightAnimeDelete = $("#anime_delete_confirm").height() + ($("#anime_delete_confirm").height())/2;
   $("#anime_delete_confirm").css("margin", "-" + marginHeightAnimeDelete + "px 0 0 -225px");
   var marginHeightAnimeFinal = $("#anime_stageFinal_done").height() + ($("#anime_stageFinal_done").height())/2;

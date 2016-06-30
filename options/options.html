@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>QuickMyAnimeList Options</title>
+    <link rel="stylesheet" href="../libraries/MaterializeCSS/materialize.min.css" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="../libraries/jQuery/jquery-2.2.2.js"></script>
+    <style>
+      body {
+        font-size:15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar-fixed">
+      <nav class="indigo darken-1">
+        <div class="nav-wrapper">
+          <a href="http://www.foxinflame.tk/QuickMyAnimeList" class="brand-logo center">QuickMyAnimeList</a>
+          <ul class="left">
+            <li class="active"><a href="#" class="waves-effect waves-light">QMAL Home</a></li>
+            <li><a href="options_credentials.html" class="waves-effect waves-light">MAL Credentials</a></li>
+            <li><a href="options_badge.html" class="waves-effect waves-light">Badge</a></li>
+            <li><a href="options_popup.html" class="waves-effect waves-light">Popup</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="container">
+      <fieldset>
+        <legend>MAL Login</legend>
+        <label>
+          Username:
+          <input type="text" id="username">
+          <input type="checkbox" class="verified" disabled>
+        </label><br>
+        <label>
+          Password:
+          <input type="password" id="password">
+          <input type="checkbox" class="verified" disabled>
+        </label>
+        <br>
+        <div id="credentialStatus"></div>
+      </fieldset>
+      <br>
+      <br>
+      <fieldset>
+        <legend>Badge Options</legend>
+        <i>Badge will take time to update after saving!</i><br>
+        <label>
+          Enable Badge:
+          <input type="checkbox" id="badge_enable">
+        </label><br>
+        <label>
+          Color:
+          <input type="color" id="badge_color">
+        </label><br>
+        <label>
+          Update Interval in seconds:
+          <input type="text" id="badge_interval">
+        </label><br>
+        <label>
+          On the badge, show the number of:
+          <select id="badge_count">
+            <option value="1">Watching Animes</option>
+            <option value="2">Completed Animes</option>
+            <option value="3">Animes on Hold</option>
+            <option value="4">Dropped Animes</option>
+            <option value="6">Animes planned to watch</option>
+          </select>
+        </label>
+      </fieldset>
+      <div id="status"></div>
+      <button style="background: #2e51a2" id="save">Save</button>
+      <p>Red</p>
+      <input type="checkbox" id="a" hidden="hidden" name="a">
+      <label class="switch" for="a"></label>
+    </div>
+    <script src="options.js"></script>
+    <script src="../libraries/MaterializeCSS/materialize.min.js"></script>
+  </body>
+</html>

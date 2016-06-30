@@ -1,9 +1,10 @@
 {
   "manifest_version": 2,
-
   "name": "QuickMyAnimeList - By FoxInFlame",
+  "author": "FoxInFlame",
   "description": "Quick edit/add/delete animes on your MyAnimeList account!",
-  "version": "1.0",
+  "version": "1.2",
+  "offline_enabled": false,
 
   "browser_action": {
     "default_icon": "icon.png",
@@ -15,12 +16,16 @@
     "storage"
   ],
   
-  "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
+  "background": {
+    "scripts": [
+      "libraries/jQuery/jquery-2.2.2.js",
+      "background.js"
+    ]
   },
   
+  "options_page": "options/options.html",
+  
   "icons": {
-		"128": "icon.png"
-	}
+    "128": "icon.png"
+  }
 }
