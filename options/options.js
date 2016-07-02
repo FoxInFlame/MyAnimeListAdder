@@ -1,30 +1,29 @@
-$(document).ready(function() {
-  $("select").material_select();
-  $("#options_help_badge_interval").hide();
-});
-
 document.addEventListener('DOMContentLoaded', function() {
+  $("select").material_select();
+  $(".helper").helper();
   var filename = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
-    if(filename == "options_credentials.html") {
-      restore_options_credentials();
-    } else if(filename == "options_badge.html") {
-      restore_options_badge();
-    } else {
-      restore_options();
-    }
-  });
+  if(filename == "options_credentials.html") {
+    restore_options_credentials();
+  } else if(filename == "options_badge.html") {
+    restore_options_badge();
+  } else if(filename == "options_popup.html") {
+    restore_options_popup();
+  } else {
+    restore_options();
+  }
+});
 document.getElementById('save').addEventListener('click', function() {
   var filename = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
   if(filename == "options_credentials.html") {
     save_options_credentials();
   } else if(filename == "options_badge.html") {
     save_options_badge();
+  } else if(filename == "options_popup.html") {
+    save_options_popup();
   } else {
     save_options();
   }
 });
-
-
 $(document).ajaxError(function(event, jqxhr, settings, exception) {
   if (jqxhr.status== 401) {
     var filename = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
@@ -51,6 +50,28 @@ $(document).ajaxError(function(event, jqxhr, settings, exception) {
     }
   }
 });
+
+(function($) {
+  $.fn.helper = function() {
+    return this.each(function() {
+    var help_title = $(this).data("help-title");
+    var help_content = $(this).data("help-content");
+    $(this).css("display", "inline");
+    $(this).append("<i class='material-icons helper_toggle' style='color:#2e51a2;cursor:pointer'>help</i>" +
+    "<div class='row helper_help'>" +
+      "<div class='col s6'>" +
+        "<div class='card blue-grey darken-1'>" +
+          "<div class='card-content white-text'>" +
+            "<span class='card-title'>" + help_title + "</span>" +
+            "<p>" + help_content + "</p>" +
+          "</div>" +
+        "</div>" +
+      "</div>" +
+    "</div>");
+    $(".helper_help").hide();
+    });
+  };
+})(jQuery);
 
 function restore_options_credentials() {
   chrome.storage.sync.get({
@@ -141,12 +162,12 @@ function restore_options_badge() {
     }
   }).on("keyup", function(){
     $(this).ColorPickerSetColor(this.value);
-    $("#badge_color").css("background-color", this.value);
+    $(this).css("background-color", this.value);
     var badge_color_rgb = hexToRGB("#" + hex);
     if((badge_color_rgb.r * 0.299 + badge_color_rgb.g * 0.587 + badge_color_rgb.b * 0.114) > 186) {
-      $("#badge_color").css("color", "#000000");
+      $(this).css("color", "#000000");
     } else {
-      $("#badge_color").css("color", "#ffffff");
+      $(this).css("color", "#ffffff");
     }
   });
   chrome.storage.sync.get({
@@ -188,6 +209,51 @@ function save_options_badge() {
   });
 }
 
-$("#options_help_badge_interval_toggle").on("click", function() {
-  $("#options_help_badge_interval").toggle();
+function restore_options_popup() {
+  chrome.storage.sync.get({
+    popup_action_open: "1",
+    popup_input_rating: true,
+    popup_input_rewatching: true,
+    popup_input_tags: true,
+    popup_input_storageType: false,
+    popup_action_confirm: true
+  }, function(items) {
+    document.getElementById("popup_action_open").value = parseInt(items.popup_action_open);
+    document.getElementById("popup_input_rating").checked = items.popup_input_rating;
+    document.getElementById("popup_input_rewatching").checked = items.popup_input_rewatching;
+    document.getElementById("popup_input_tags").checked = items.popup_input_tags;
+    document.getElementById("popup_input_storageType").checked = items.popup_input_storageType;
+    document.getElementById("popup_action_confirm").checked = items.popup_action_confirm;
+    $("#popup_action_open").material_select();
+  })
+}
+function save_options_popup() {
+  var popup_action_open = document.getElementById("popup_action_open").value.toString();
+  var popup_input_rating = document.getElementById("popup_input_rating").checked;
+  var popup_input_rewatching = document.getElementById("popup_input_rewatching").checked;
+  var popup_input_tags = document.getElementById("popup_input_tags").checked;
+  var popup_input_storageType = document.getElementById("popup_input_storageType").checked;
+  var popup_action_confirm = document.getElementById("popup_action_confirm").checked;
+  chrome.storage.sync.set({
+    popup_action_open: popup_action_open,
+    popup_input_rating: popup_input_rating,
+    popup_input_rewatching: popup_input_rewatching,
+    popup_input_tags: popup_input_tags,
+    popup_input_storageType: popup_input_storageType,
+    popup_action_confirm: popup_action_confirm
+  }, function() {
+    var status = document.getElementById("save");
+    status.innerHTML = 'Popup Options Saved.';
+    status.classList.add("orange");
+    status.disabled = true;
+    setTimeout(function() {
+      status.innerHTML = 'Save<i class="material-icons right">send</i>';
+      status.disabled = false;
+      status.classList.remove("orange");
+    }, 3000)
+  })
+}
+
+$(".helper").on("click", ".helper_toggle", function() {
+  $(this).next().toggle();
 });

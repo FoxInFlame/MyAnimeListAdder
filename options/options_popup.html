@@ -22,6 +22,7 @@
             <li><a href="options_credentials.html" class="waves-effect waves-light">MAL Credentials</a></li>
             <li><a href="options_badge.html" class="waves-effect waves-light">Badge</a></li>
             <li class="active"><a href="options_popup.html" class="waves-effect waves-light">Popup</a></li>
+            <li><a href="options_inpage.html" class="waves-effect waves-light">In-page QMAL</a></li>
           </ul>
         </div>
       </nav>
@@ -32,7 +33,7 @@
       <hr><br>
       <span>When icon clicked:</span>
       <div class="input-field" style="width:500px;display:inline-block">
-        <select id="popup_open_action">
+        <select id="popup_action_open">
           <option value="1">Open QuickMAL Popup</option>
           <option value="3">Open your MAL List in Popup</option>
           <option value="4">Open your MAL List in New Tab</option>
@@ -48,7 +49,7 @@
         <li class="collection-item">Rating Stars
           <div class="switch right" style="display:inline">
             <label>
-              <input id="badge_enable" type="checkbox">
+              <input id="popup_input_rating" type="checkbox">
               <span class="lever"></span>
             </label>
           </div>
@@ -56,7 +57,7 @@
         <li class="collection-item">Rewatching Checkbox
           <div class="switch right" style="display:inline">
             <label>
-              <input id="badge_enable" type="checkbox">
+              <input id="popup_input_rewatching" type="checkbox">
               <span class="lever"></span>
             </label>
           </div>
@@ -64,7 +65,7 @@
         <li class="collection-item">Tags Input
           <div class="switch right" style="display:inline">
             <label>
-              <input id="badge_enable" type="checkbox">
+              <input id="popup_input_tags" type="checkbox">
               <span class="lever"></span>
             </label>
           </div>
@@ -72,7 +73,7 @@
         <li class="collection-item">Storage Type Input
           <div class="switch right" style="display:inline">
             <label>
-              <input id="badge_enable" type="checkbox">
+              <input id="popup_input_storageType" type="checkbox">
               <span class="lever"></span>
             </label>
           </div>
@@ -80,40 +81,20 @@
       </ul>
       <br>
       <span>Show confirmation page:</span>
-          <div class="switch" style="display:inline">
-            <label>
-              <input id="badge_enable" type="checkbox">
-              <span class="lever"></span>
-            </label>
-          </div>
-      <div class="row">
-        <div class="col s12">
-          <span>Color:</span>
-          <input style="width:500px;height:30px;margin-left:20px" type="text" id="badge_color">
-        </div>
-      </div>
-      <span>Update Interval in seconds:</span>
-      <input type="number" style="width:50px;height:20px" id="badge_interval"><i id="options_help_badge_interval_toggle" class="material-icons" style="color:#2e51a2;cursor:pointer">help</i>
-      <div id="options_help_badge_interval" class="row">
-        <div class="col s6">
-          <div class="card blue-grey darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">Badge Update Interval</span>
-              <p>This is the interval in seconds between each update on the Chrome icon Badge in the corner of your window. To not overload your browser, and since you won't be updating your list that often, a recommnded value is between 300 to 600. (5 to 10 minutes)</p>
-            </div>
-          </div>
-        </div>
+      <div class="switch" style="display:inline">
+        <label>
+          <input id="popup_action_confirm" type="checkbox">
+          <span class="lever"></span>
+        </label>
+        <div class="helper" data-help-title="Show Confirmation Page" data-help-content="Turning this on will show a page at the end in the popup, showing the data you inputted before submission."></div>
       </div>
       <br>
-      <span>On the badge, show the number of:</span>
+      <span style="color:graytext">CSS Theme to be used in popup:</span>
       <div class="input-field" style="width:500px;display:inline-block">
-        <select id="badge_count">
-          <option value="1">Watching Animes</option>
-          <option value="2">Completed Animes</option>
-          <option value="3">Animes on Hold</option>
-          <option value="4">Dropped Animes</option>
-          <option value="6">Animes Planned to Watch</option>
-          <option value="7">Total Animes in List</option>
+        <select id="popup_css_theme" disabled>
+          <option value="1" selected>Material Design Bootstrap</option>
+          <option value="2">Plain Bootstrap</option>
+          <option value="3">Browser Default</option>
         </select>
       </div>
       <br>
