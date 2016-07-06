@@ -1,0 +1,2 @@
+$("html").css("width", "1000px").css("height", "500").css("overflow", "hidden");
+$("#qmal_popup_mainContent").append("<iframe width='100%' height='500px' src='http://myanimelist.net/animelist/FoxInFlame' style='-webkit-transform: scale(0.8); -webkit-transform-origin: 0 0'></iframe><span class='copyright'>&copy; QuickMyAnimeList is licenced under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</span>");

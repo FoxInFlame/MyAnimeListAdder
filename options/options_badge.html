@@ -52,16 +52,18 @@
       <span>Update Interval in seconds:</span>
       <input type="number" style="width:50px;height:20px" id="badge_interval"><div class="helper" data-help-title="Badge Update Interval" data-help-content="This is the interval in seconds between each update on the Chrome icon Badge in the corner of your window. To not overload your browser, and since you won't be updating your list that often, a recommnded value is between 300 to 600. (5 to 10 minutes)"></div>
       <br>
-      <span>On the badge, show the number of:</span>
-      <div class="input-field" style="width:500px;display:inline-block">
-        <select id="badge_count">
-          <option value="1">Watching Animes</option>
-          <option value="2">Completed Animes</option>
-          <option value="3">Animes on Hold</option>
-          <option value="4">Dropped Animes</option>
-          <option value="6">Animes Planned to Watch</option>
-          <option value="7">Total Animes in List</option>
-        </select>
+      <div id="badge_count_container">
+        <span>On the badge, show the number of:</span>
+        <div class="input-field" style="width:500px;display:inline-block">
+          <select id="badge_count">
+            <option value="1">Watching Animes</option>
+            <option value="2">Completed Animes</option>
+            <option value="3">Animes on Hold</option>
+            <option value="4">Dropped Animes</option>
+            <option value="6">Animes Planned to Watch</option>
+            <option value="7">Total Animes in List</option>
+          </select>
+        </div>
       </div>
       <br>
       <div id="status"></div>

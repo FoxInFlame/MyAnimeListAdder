@@ -1,4 +1,14 @@
-document.addEventListener('DOMContentLoaded', function() {
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+$(document).ready(function() {
   $("select").material_select();
   $(".helper").helper();
   var filename = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
@@ -8,22 +18,37 @@ document.addEventListener('DOMContentLoaded', function() {
     restore_options_badge();
   } else if(filename == "options_popup.html") {
     restore_options_popup();
+  } else if(filename == "options_inpage.html") {
+    restore_options_inpage();
   } else {
-    restore_options();
+    options_main();
+  }
+  if(getParameterByName("highlight") != null) {
+    highlight = getParameterByName("highlight");
+    if(highlight.startsWith("ID:")) {
+      $("#" + highlight.substring(3)).css("background-color", "#fff6a3").css("border-radius", "5px")
+    } else if(highlight.startsWith("CLASS:")) {
+      $("." + highlight.substring(6)).each(function() {
+        $(this).css("background-color", "#fff6a3").css("border-radius", "5px")
+      })
+    }
   }
 });
-document.getElementById('save').addEventListener('click', function() {
-  var filename = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
-  if(filename == "options_credentials.html") {
-    save_options_credentials();
-  } else if(filename == "options_badge.html") {
-    save_options_badge();
-  } else if(filename == "options_popup.html") {
-    save_options_popup();
-  } else {
-    save_options();
-  }
-});
+
+if($("#save").length > 0) {
+  document.getElementById('save').addEventListener('click', function() {
+    var filename = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
+    if(filename == "options_credentials.html") {
+      save_options_credentials();
+    } else if(filename == "options_badge.html") {
+      save_options_badge();
+    } else if(filename == "options_popup.html") {
+      save_options_popup();
+    } else if(filename == "options_inpage.html") {
+      save_options_inpage();
+    }
+  });
+}
 $(document).ajaxError(function(event, jqxhr, settings, exception) {
   if (jqxhr.status== 401) {
     var filename = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
@@ -72,6 +97,45 @@ $(document).ajaxError(function(event, jqxhr, settings, exception) {
     });
   };
 })(jQuery);
+
+
+function options_main() {
+  chrome.storage.sync.get({
+    first_time_launch: true,
+    verified: false
+  }, function(items) {
+    first_time_launch = items.first_time_launch;
+    console.log(first_time_launch);
+    if(first_time_launch == true) {
+      $("body").css("pointer-events", "none");
+      $("#main_welcome").show();
+      $("#main").hide();
+      welcome_message();
+    } else {
+      $("#main_welcome").hide();
+      $("#main").show();
+      if(verified === false) {
+        $("#main_loggedIn").show();
+      }
+    }
+  });
+}
+function welcome_message() {
+  count = $("#main_welcome_fade").children().length;
+  $("#main_welcome_fade").children().each(function(index) {
+    $(this).delay(2000*index).fadeIn(300).delay(1400).fadeOut(300, function() {
+      $(this).remove();
+      if(!--count) welcome_message_features();
+    });
+  })
+}
+function welcome_message_features() {
+  $("#main_welcome_features").fadeIn(300);
+  $("body").css("pointer-events", "auto");
+  chrome.storage.sync.set({
+    first_time_launch: false
+  })
+}
 
 function restore_options_credentials() {
   chrome.storage.sync.get({
@@ -252,6 +316,14 @@ function save_options_popup() {
       status.classList.remove("orange");
     }, 3000)
   })
+}
+
+function restore_options_inpage() {
+
+}
+
+function save_options_inpage() {
+
 }
 
 $(".helper").on("click", ".helper_toggle", function() {

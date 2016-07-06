@@ -14,6 +14,8 @@ var count_dropped = 0;
 var count_planned = 0;
 var count_total = 0;
 
+var initial = 1;
+
 getChromeStorage();
 
 var badge_timer = window.setTimeout(updateBadge, 1000);
@@ -37,6 +39,7 @@ function getChromeStorage() {
     badge_interval = items.badge_interval;
     badge_color = items.badge_color;
     badge_count = items.badge_count;
+    initial = 0;
   });
 }
 
@@ -80,19 +83,12 @@ function updateBadge() {
       count_dropped = 0;
       count_planned = 0;
       count_total = 0;
-      $("anime", data).each(function() {
-        if($("my_status", this).text() == "1") {
-          count_watching++;
-        } else if($("my_status", this).text() == "2") {
-          count_completed++;
-        } else if($("my_status", this).text() == "3") {
-          count_onhold++;
-        } else if($("my_status", this).text() == "4") {
-          count_dropped++;
-        } else if($("my_status", this).text() == "6") {
-          count_planned++;
-        }
-        count_total++;
+      $("myinfo", data).each(function() {
+        count_watching = $("user_watching", this).text();
+        count_completed = $("user_completed", this).text();
+        count_onhold = $("user_onhold", this).text();
+        count_dropped = $("user_dropped", this).text();
+        count_planned = $("user_plantowatch", this).text();
       });
     }
   });
