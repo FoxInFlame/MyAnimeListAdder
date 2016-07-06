@@ -139,8 +139,8 @@ function welcome_message_features() {
   })
 }
 function development_github() {
-  $.ajax({
-    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.2",
+  /*$.ajax({
+    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3",
     success: function(data) {
        $("#github_latest_commit_sha").html(data[0]["sha"].substring(0,10));
       $("#github_latest_commit_link").attr("href", data[0]["commit"]["url"]);
@@ -150,7 +150,7 @@ function development_github() {
       current_date = current_date.split(".")[0]+"Z"; //"2011-12-19T15:28:46Z"
       $("#github_latest_commit_date").html(timeDifferenceHTML(current_date, github_latest_commit_date));
     }
-  })
+  })*/
   $.ajax({
     url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits",
     success: function(data) {
