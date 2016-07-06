@@ -21,18 +21,28 @@
             <li><a href="options_credentials.html" class="waves-effect waves-light">MAL Credentials</a></li>
             <li><a href="options_badge.html" class="waves-effect waves-light">Badge</a></li>
             <li><a href="options_popup.html" class="waves-effect waves-light">Popup</a></li>
+            <li><a href="options_inpage.html" class="waves-effect waves-light">In-page QMAL</a></li>
           </ul>
         </div>
       </nav>
     </div>
     <div class="container" id="main">
-      <div class="center-align">
-        <h4>Official Website</h4>
-        <p>Visit <a href="http://www.foxinflame.tk/QuickMyAnimeList">http://www.foxinflame.tk/QuickMyAnimeList</a> for the official website. There you can see the full features, GitHub link, and other stuff related to this Chrome App.</p>
-        <br>
-        <div id="main_loggedIn"></div>
-        <h4>Logged In Yet?</h4>
-
+      <div class="row">
+        <div class="col s7">
+          <h4>Official Website</h4>
+          <p>Visit <a href="http://www.foxinflame.tk/QuickMyAnimeList">http://www.foxinflame.tk/QuickMyAnimeList</a> for the official website. There you can see the full features, GitHub link, contact information for me, licence information, and the installation method (Except you already installed it so that doesn't matter). Of course, you really don't have to visit the site to know which button does what. I tried to make everything easy and smooth for you guys. You don't need a manual and everything, do you? ...you do? Oh well. </p>
+          <div id="main_loggedIn" style="display:none">
+            <h4>Logged In Yet?</h4>
+            <p>It seems like you haven't logged into your MyAnimeList account yet. QMAL is like, 100% dependent on MAL, (even the name says it), so you basically HAVE to login to your MAL account to see through all the features and have a fun and easy life. <br>Click on "MAL Credentials" at the navigation bar at the top, and login.</p>
+          </div>
+          <h4>Development</h4>
+          <p>QuickMyAnimeList is steadily (or not) developing. Check out the latest commits on GitHub to see some work-in-progress cool new features for future versions!<br>
+          <a href="#" id="github_latest_commit_link" target="_blank">Latest Commit on Version 1.2: <b id="github_latest_commit_date">Fetching...</b> [<span id="github_latest_commit_sha"></span>]</a><br>
+          <a href="#" id="github_master_commit_link" target="_blank">Latest Commit on Main Branch: <b id="github_master_commit_date">Fetching...</b> [<span id="github_master_commit_sha"></span>]</a></p>
+        </div>
+        <div class="col s5">
+          <a class="twitter-timeline" data-width="400" data-height="500" href="https://twitter.com/FoxInFlame">Loading Tweets by FoxInFlame...</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
       </div>
     </div>
     <div class="container" id="main_welcome" style="display:none">

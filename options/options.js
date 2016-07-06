@@ -105,7 +105,8 @@ function options_main() {
     verified: false
   }, function(items) {
     first_time_launch = items.first_time_launch;
-    console.log(first_time_launch);
+    verified = items.verified;
+    console.log("First Time Launch?:" + first_time_launch);
     if(first_time_launch == true) {
       $("body").css("pointer-events", "none");
       $("#main_welcome").show();
@@ -117,6 +118,7 @@ function options_main() {
       if(verified === false) {
         $("#main_loggedIn").show();
       }
+      development_github();
     }
   });
 }
@@ -135,6 +137,83 @@ function welcome_message_features() {
   chrome.storage.sync.set({
     first_time_launch: false
   })
+}
+function development_github() {
+  $.ajax({
+    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.2",
+    success: function(data) {
+       $("#github_latest_commit_sha").html(data[0]["sha"].substring(0,10));
+      $("#github_latest_commit_link").attr("href", data[0]["commit"]["url"]);
+      var github_latest_commit_date = data[0]["commit"]["author"]["date"];
+      var current_date = new Date();
+      current_date = current_date.toISOString(); //"2011-12-19T15:28:46.493Z"
+      current_date = current_date.split(".")[0]+"Z"; //"2011-12-19T15:28:46Z"
+      $("#github_latest_commit_date").html(timeDifferenceHTML(current_date, github_latest_commit_date));
+    }
+  })
+  $.ajax({
+    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits",
+    success: function(data) {
+      $("#github_master_commit_sha").html(data[0]["sha"].substring(0,10));
+      $("#github_master_commit_link").attr("href", data[0]["commit"]["url"]);
+      var github_master_commit_date = data[0]["commit"]["author"]["date"];
+      var current_date = new Date();
+      current_date = current_date.toISOString(); //"2011-12-19T15:28:46.493Z"
+      current_date = current_date.split(".")[0]+"Z"; //"2011-12-19T15:28:46Z"
+      $("#github_master_commit_date").html(timeDifferenceHTML(current_date, github_master_commit_date));
+    }
+  })
+}
+function timeDifferenceHTML(current, previous) {
+  var differenceSeconds = timeDifferenceString(current, previous);
+  if(differenceSeconds <= 60) {
+    // Latest commit was less than a minute ago
+    return Math.round(differenceSeconds) + " seconds ago";
+  } else if(differenceSeconds <= 3600 && differenceSeconds > 60) {
+    // Latest commit was less than an hour ago, but more than a minute
+    return Math.round(differenceSeconds / 60) + " minutes ago";
+  } else if(differenceSeconds <= 86400 && differenceSeconds > 3600) {
+    // Latest commit was less than a day ago, but more than an hour
+    return Math.round(differenceSeconds / 3600) + " hours ago";
+  } else if(differenceSeconds <= 2592000 && differenceSeconds > 86400) {
+    // Latest commit was less than a month ago, but more than a day
+    return Math.round(differenceSeconds / 86400) + " days ago";
+  } else if(differenceSeconds <=  31104000 && differenceSeconds > 2592000) {
+    // Latest commit was less than a year ago, but more than a month
+    return Math.round(differenceSeconds / 2592000) + " months ago";
+  } else {
+    // Latest commit was a few years ago
+    return Math.round(differenceSeconds / 31104000) + " years ago";
+  }
+}
+    
+function timeDifferenceString(current, previous) {
+  function toSeconds(time) {
+    var parts,
+        date,
+        time;
+    parts = time.split("T");
+    date = parts[0];
+    time = parts[1].slice(0, -1);
+    //Date
+    date = date.split("-");
+    var date_year = parseInt(date[0]);
+    var date_month = parseInt(date[1]);
+    var date_day = parseInt(date[2]);
+    var date_year_seconds = date_year * 31104000;
+    var date_month_seconds = date_month * 2592000;
+    var date_day_seconds = date_day * 86400;
+    //Time
+    time = time.split(":");
+    var time_hour = parseInt(time[0]);
+    var time_minutes = parseInt(time[1]);
+    var time_seconds = parseInt(time[2]);
+    var time_hour_seconds = time_hour * 3600;
+    var time_minutes_seconds = time_minutes * 60;
+    var total = date_year_seconds + date_month_seconds + date_day_seconds + time_hour_seconds + time_minutes_seconds + time_seconds;
+    return total;
+  }
+  return toSeconds(current) - toSeconds(previous);
 }
 
 function restore_options_credentials() {
@@ -169,7 +248,7 @@ function save_options_credentials() {
         var status = document.getElementById("save");
         status.innerHTML = 'Credentials Saved!';
         status.disabled = true;
-        status.classList.add("orange");
+        status.classList.add("green");
         chrome.storage.sync.set({
           verified: true
         });
@@ -180,9 +259,12 @@ function save_options_credentials() {
         }
         chrome.extension.getBackgroundPage().updateBadge();
         setTimeout(function() {
+          chrome.extension.getBackgroundPage().updateBadge();
+        }, 1000);
+        setTimeout(function() {
           status.innerHTML = 'Save<i class="material-icons right">send</i>';
           status.disabled = false;
-          status.classList.remove("orange");
+          status.classList.remove("green");
           chrome.extension.getBackgroundPage().updateBadge();
         }, 3000);
       }
@@ -264,6 +346,9 @@ function save_options_badge() {
     status.classList.add("orange");
     status.disabled = true;
     chrome.extension.getBackgroundPage().updateBadge();
+        setTimeout(function() {
+          chrome.extension.getBackgroundPage().updateBadge();
+        }, 1000);
     setTimeout(function() {
       status.innerHTML = 'Save<i class="material-icons right">send</i>';
       status.disabled = false;
@@ -289,6 +374,18 @@ function restore_options_popup() {
     document.getElementById("popup_input_storageType").checked = items.popup_input_storageType;
     document.getElementById("popup_action_confirm").checked = items.popup_action_confirm;
     $("#popup_action_open").material_select();
+    if(parseInt(items.popup_action_open) == 1) {
+      $("#popup_quickmalpopup_options").show();
+    } else {
+      $("#popup_quickmalpopup_options").hide()
+    }
+  })
+  $("#popup_action_open").on("change", function() {
+    if(this.value == 1) {
+      $("#popup_quickmalpopup_options").fadeIn(300);
+    } else {
+      $("#popup_quickmalpopup_options").fadeOut(300)
+    }
   })
 }
 function save_options_popup() {

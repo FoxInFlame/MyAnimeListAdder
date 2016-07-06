@@ -38,7 +38,7 @@ String.prototype.capitalizeFirstLetter = function() {
 };
 
 function contentScriptMain() {
-  if(!window.location.href.contains("episode")) {
+  if(!window.location.href.contains("episode") || !window.location.href.contains("gogoanime.io")) {
     console.info("[QMAL] QMAL has detected that this page is not an episode, maybe a category or something else?");
     return;
   }

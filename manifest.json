@@ -1,11 +1,11 @@
 {
   "manifest_version": 2,
-  "name": "QuickMyAnimeList - By FoxInFlame",
+  "name": "QuickMyAnimeList",
   "author": "FoxInFlame",
   "description": "Quick edit/add/delete animes on your MyAnimeList account!",
   "version": "1.2",
   "offline_enabled": false,
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://platform.twitter.com https://syndication.twitter.com 'unsafe-eval'; object-src 'self'",
 
   "browser_action": {
     "default_icon": "icon.png",
