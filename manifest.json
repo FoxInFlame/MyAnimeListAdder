@@ -1,9 +1,11 @@
 {
   "manifest_version": 2,
-
-  "name": "QuickMyAnimeList - By FoxInFlame",
+  "name": "QuickMyAnimeList",
+  "author": "FoxInFlame",
   "description": "Quick edit/add/delete animes on your MyAnimeList account!",
-  "version": "1.0",
+  "version": "1.2",
+  "offline_enabled": false,
+  "content_security_policy": "script-src 'self' https://platform.twitter.com https://syndication.twitter.com 'unsafe-eval'; object-src 'self'",
 
   "browser_action": {
     "default_icon": "icon.png",
@@ -12,15 +14,44 @@
   
   "permissions": [
     "http://myanimelist.net/api",
-    "storage"
+    "storage",
+    "tabs",
+    "http://gogoanime.io/*",
+    "http://www.crunchyroll.com/*"
   ],
   
-  "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
+  "background": {
+    "scripts": [
+      "libraries/jQuery/jquery-2.2.2.js",
+      "background.js"
+    ]
   },
   
+  "content_scripts": [{
+    "run_at": "document_end",
+    "js": [
+      "libraries/jQuery/jquery-2.2.2.js",
+      "xml2json.min.js",
+      "content.js"
+    ],
+    "matches": [
+      "http://gogoanime.io/*",
+      "http://www.crunchyroll.com/*"
+    ],
+    "exclude_matches": [
+      "http://gogoanime.io/*.html",
+      "http://gogoanime.io/category/*",
+      "http://gogoanime.io/"
+    ]
+  }],
+  
+  "options_page": "options/options.html",
+  
   "icons": {
-		"128": "icon.png"
-	}
+    "128": "icon.png"
+  },
+  
+  "web_accessible_resources": [
+    "options/*"
+  ]
 }

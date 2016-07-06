@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>In-Page QMAL - QuickMyAnimeList Options</title>
+    <link rel="stylesheet" href="../libraries/MaterializeCSS/materialize.min.css" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="../libraries/jQuery/jquery-2.2.2.js"></script>
+    <style>
+      body {
+        font-size: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar-fixed">
+      <nav class="indigo darken-1">
+        <div class="nav-wrapper">
+          <a href="http://www.foxinflame.tk/QuickMyAnimeList" class="brand-logo center">QuickMyAnimeList</a>
+          <ul class="left">
+            <li><a href="options.html" class="waves-effect waves-light">QMAL Home</a></li>
+            <li><a href="options_credentials" class="waves-effect waves-light">MAL Credentials</a></li>
+            <li><a href="options_badge.html" class="waves-effect waves-light">Badge</a></li>
+            <li><a href="options_popup.html" class="waves-effect waves-light">Popup</a></li>
+            <li class="active"><a href="#" class="waves-effect waves-light">In-page QMAL</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="container">
+      <h4>In-Page QuickMyAnimeList</h4>
+      <span>Edit the details of an anime without even using the popup.</span>
+      <hr><br>
+      <span>Sites to enable In-Page QMAL (Click to edit each anime): </span>
+      <div class="helper" data-help-title="In-Page QMAL" data-help-content="Enabling In-Page QMAL will display a popup that looks like the one below, where QMAL thinks is a site with an episode.<br><img src='http://www.foxinflame.tk/media/uploads/Screenshot%202016-05-26%20at%2007.52.40.png' width='100%'>"></div>
+      <ul class="collapsible" style="width:600px" data-collapsible="expandable">
+        <li>
+          <div class="collapsible-header">GoGoAnime <a href="http://gogoanime.io">http://gogoanime.io</a>
+            <div class="switch right" style="display:inline">
+              <label>
+                <input id="popup_input_rating" type="checkbox">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </div>
+          <div class="collapsible-body"><div class="container">Hello</div></div>
+        </li>
+        <li>
+          <div class="collapsible-header">KissAnime <a href="https://kissanime.to">https://kissanime.to</a><span class="right">COMING SOON</span></div>
+          <div class="collapsible-body"><div class="container">KissAnime is coming soon.</div></div>
+        </li>
+        <li>
+          <div class="collapsible-header">CrunchyRoll <a href="http://www.crunchyroll.com">http://www.crunchyroll.com</a><span class="right">COMING SOON</span></div>
+          <div class="collapsible-body"><div class="container">CrunchyRoll is coming soon.</div></div>
+        </li>
+      </ul>
+      <br>
+      <div id="credentialStatus"></div>
+      <button style="background: #2e51a2" class="btn waves-effect waves-light" id="save">Save<i class="material-icons right">send</i></button>
+    </div>
+    <script src="options.js"></script>
+    <script src="../libraries/MaterializeCSS/materialize.min.js"></script>
+  </body>
+</html>
