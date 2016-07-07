@@ -33,7 +33,7 @@ I use a lot of inline styling. I know it's a bad practice, but I really don't li
 
 Lots of new stuff! Redesigned Options page, badges, everything!
 
-#### All of the features of Version 1.2 (Including previous features)
+#### Features kept from previous veresion (1.0)
 
 - Ability to add edit, or delete an anime to your MAL account
 - Ability to rate, add or edit tags and other options for the chosen anime
@@ -51,7 +51,7 @@ Lots of new stuff! Redesigned Options page, badges, everything!
 - Automatically displays a popup when you visit a streaming site (Works only on gogoanime so far, but still awesome)
 - Probably more.
 
-#### Removed features
+#### Removed features from previous version (1.0)
 
 - Options page (to be replaced with the new)
 - Icon (to be replaced with an even cooler one)
@@ -70,12 +70,18 @@ Lots of new stuff! Redesigned Options page, badges, everything!
 
 #### Bugs / Problems / Suggestions / Support
 
+- **BUG** [1] In-Page only works on gogoanime.io (Will be fixed for later 1.X)
+- **Suggestions** None... :(
+- **Support** None, not even replies to threads I make... :(
+
 There are several ways you can tell me your opinion :
 
 - Create a branch and a pull request on GitHub
 - Create an issue ticket on GitHub, so I can have a look at your opinion
 - Email me at burningfoxinflame@gmail.com
 - Tweet to me at @FoxInFlame with the hashtag "#QuickMyAnimeList"
+- PM me on Reddit @FoxInFlame
+- etc.
 
 ## Licence
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms" property="dct:title">QuickMyAnimeList</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">FoxInFlame</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
