@@ -3,6 +3,7 @@ $("head").append(
   "<link rel='stylesheet' href='http://www.foxinflame.tk/QuickMyAnimeList/source/content.css' type='text/css'>"
 );
 
+
 //Content on website
 var username;
 var password;
@@ -12,20 +13,32 @@ var URL_anime;
 var anime_name;
 var search_result;
 var first_result;
+var result_multiple;
 var search_result_anime_names = [];
 var search_result_anime_ids = [];
 var search_result_anime_episodes = [];
+var search_result_anime_url = [];
 var search_result_chosen_anime_episode;
 
-chrome.storage.sync.get({
-  username: "Username",
-  password: "password123",
-  verified: false
-}, function(items) {
-  username = items.username;
-  password = items.password;
-  verified = items.verified;
-  contentScriptMain();
+
+// -- Document Ready Function
+$(document).ready(function() {
+  // -- Get the usernames stored on Chrome Settings
+  chrome.storage.sync.get({
+  // ---- Default credentials when none are specified
+    username: "Username",
+    password: "password123",
+    verified: false,
+    inpage_sites: ["gogoanime.io", "kissanime.to"],
+    inpage_enable: true
+  }, function(items) {
+    username = items.username;
+    password = items.password;
+    verified = items.verified;
+    inpage_enable = items.inpage_enable;
+    inpage_sites = items.inpage_sites;
+    contentScriptMain();
+  });
 });
 
 //Main content
@@ -68,7 +81,7 @@ function contentScriptMain() {
     });
     return;
   }
-  if(!$(".anime_video_body")[0]) {
+  if(window.location.href.contains("gogoanime") && !$(".anime_video_body")[0]) {
     console.info("[QMAL] QMAL has detected that even though there is 'episode' in the URL, this is not an actual episode website.");
     return;
   }
@@ -98,7 +111,7 @@ function contentScriptMain() {
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
-              "<div class='dialogContentTitle'>Update/Add Information</div>" +
+              "<div class='dialogContentTitle'>Update Information</div>" +
               "<div class='dialogContentBody'><form>" +
                 "<div class='input-field' id='qmal-update-list-name-div'>" +
                   "<input type='text' value='Username\'s list' disabled width='100%' id='qmal-update-list-name' name='qmal-update-list-name' style='cursor:pointer'>" +
@@ -119,7 +132,7 @@ function contentScriptMain() {
                   "<label for='qmal-update-anime-episodes-isCompleted-checkbox'>Set as completed?</label>" +
                   "<input type='checkbox' checked id='qmal-update-anime-isCompleted-checkbox'>" +
                 "</div>" +
-                "<span style='font-size:0.9rem;color:rgba(0, 0, 0, 0.60)'>* If you want to add more options, please use the popup window instead by clicking on the icon at the top of your browser.</span><br>" +
+                "<span style='font-size:0.9rem;color:rgba(0, 0, 0, 0.60)'>* If you want to add more options, please use the popup window instead by clicking on the icon at the top of your browser.<br>**By clicking on Update, QMAL will automatically set the status of this anime to Watching, even if it's somewhere else in your list.</span><br>" +
               "</form></div>" +
             "</div>" +
             "<div class='dialogActionBar'>" +
@@ -168,6 +181,10 @@ function contentScriptMain() {
         URL_anime_parts.splice(-1, 1);
         anime_name = URL_anime_parts;
         anime_name = anime_name.join("+").capitalizeFirstLetter();
+        if(anime_name.endsWith("+")) {
+          //Special characters become double spaces
+          anime_name = anime_name.substring(0, anime_name.length-1);
+        }
         URL_anime_parts = URL_anime.split("-");
         anime_episode = URL_anime_parts[URL_anime_parts.length - 1];
         console.info("[QMAL] QMAL has detected that you are watching " + anime_name);
@@ -191,29 +208,35 @@ function contentScriptMain() {
             first_result = "ERROR";
           },
           success: function(data) {
+            console.log("http://myanimelist.net/api/anime/search.xml?q=" + anime_name);
             var x2js = new X2JS();
-            console.log("var data = ");
+            console.log("The following is the raw data returned from the server:");
             console.log(data);
             dataJSON = x2js.xml2json(data);
-            console.log("var dataJSON = ");
+            console.log("And the following is the data converted to JSON:");
             console.log(dataJSON);
             search_result = dataJSON.anime;
-            console.log("var search_reult = ");
-            console.log(search_result);
             if($.isArray(search_result.entry)) {
-              first_result = dataJSON.anime.entry;
-              console.log("No.");
+              first_result = search_result.entry;
+              // Multiple Results.
+              result_multiple = true;
             } else {
-              dataJSON.anime.entry["0"] = dataJSON.anime.entry;
-              console.log("Yes.");
+              first_result = search_result.entry;
+              // Only one result!
+              result_multiple = false;
             }
-            console.log("var first_result = ");
-            console.log(first_result);
-            console.log(first_result.length);
-            for(var i = 0; i < first_result.length; i++) {
-              search_result_anime_names.push(first_result[i].title);
-              search_result_anime_ids.push(first_result[i].id);
-              search_result_anime_episodes.push(first_result[i].episodes);
+            if(result_multiple === false) {
+              search_result_anime_names.push(first_result.title);
+              search_result_anime_ids.push(first_result.id);
+              search_result_anime_episodes.push(first_result.episodes);
+              search_result_anime_url.push(first_result.url);
+            } else {
+              for(var i = 0; i < first_result.length; i++) {
+                search_result_anime_names.push(first_result[i].title);
+                search_result_anime_ids.push(first_result[i].id);
+                search_result_anime_episodes.push(first_result[i].episodes);
+                search_result_anime_url.push(first_result[i].url);
+              }
             }
           }
         });
@@ -223,6 +246,7 @@ function contentScriptMain() {
         } else {
           $("#qmal-update-anime-name").val(search_result_anime_ids[0] + " : " + search_result_anime_names[0]);
           search_result_chosen_anime_episode = search_result_anime_episodes[0];
+          $("#qmal-update-anime-name").data("url", search_result_anime_url[0]);
           error = 0;
         }
       }
@@ -238,6 +262,10 @@ function contentScriptMain() {
       $("#qmal-update-list-name-div").on("click", function() {
         window.open(chrome.extension.getURL("options/options_credentials.html"));
       });
+      $("#qmal-update-anime-name").on("click", function() {
+        window.open(this.data("url"));
+      })
+
       var i = 0;
       var clickcount = 0;
       
@@ -254,6 +282,7 @@ function contentScriptMain() {
         i = i + 1;
         i = i % search_result_anime_ids.length;
         $("#qmal-update-anime-name").val(search_result_anime_ids[i] + " : " + search_result_anime_names[i]);
+        $("#qmal-update-anime-name").data("url", search_result_anime_url[i]);
         search_result_chosen_anime_episode = search_result_anime_episodes[i];
       });
       
@@ -308,6 +337,11 @@ function contentScriptMain() {
         url: "http://myanimelist.net/malappinfo.php?u="+username+"&status=all&type=anime",
         type: "GET",
         dataTpe: "xml",
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log(jqXHR);
+          console.log(textStatus)
+          console.log(errorThrown)
+        },
         success: function(data) {
           $("anime", data).each(function(){
             if($("series_animedb_id", this).text() == animeUpdateChosenID) {

@@ -52,6 +52,7 @@
   },
   
   "web_accessible_resources": [
-    "options/*"
+    "options/*",
+    "inpage/*"
   ]
 }
