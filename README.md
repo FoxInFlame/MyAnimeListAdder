@@ -51,6 +51,10 @@ Lots of new stuff! Redesigned Options page, badges, everything!
 - Automatically displays a popup when you visit a streaming site (Works only on gogoanime so far, but still awesome)
 - Probably more.
 
+##### Small Update : 1.2.1
+
+- Fixed Bug [2]
+
 #### Removed features from previous version (1.0)
 
 - Options page (to be replaced with the new)
@@ -71,6 +75,7 @@ Lots of new stuff! Redesigned Options page, badges, everything!
 #### Bugs / Problems / Suggestions / Support
 
 - **BUG** [1] In-Page only works on gogoanime.io (Will be fixed for later 1.X)
+- ~**BUG** [2] In-Page doesn't work when there is only one result in the API search~ (Fixed with 1.2.1)
 - **Suggestions** None... :(
 - **Support** None, not even replies to threads I make... :(
 
