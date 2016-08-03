@@ -74,8 +74,9 @@ Lots of new stuff! Redesigned Options page, badges, everything!
 
 #### Bugs / Problems / Suggestions / Support
 
-- **BUG** [1] In-Page only works on gogoanime.io (Will be fixed for later 1.X)
-- ~~**BUG** [2] In-Page doesn't work when there is only one result in the API search~~ (Fixed with 1.2.1)
+- **BUG** [#7] In-Page only works on gogoanime.io (Will be fixed for later 1.X)
+- ~~**BUG** [#8] In-Page doesn't work when there is only one result in the API search~~ (Fixed with 1.2.1)
+- **BUG**  [#9] In-Page QMAL doesn't work when anime name contains special characters (Will be fixed for later 1.X)
 - **Suggestions** None... :(
 - **Support** None, not even replies to threads I make... :(
 
@@ -84,7 +85,7 @@ There are several ways you can tell me your opinion :
 - Create a branch and a pull request on GitHub
 - Create an issue ticket on GitHub, so I can have a look at your opinion
 - Email me at burningfoxinflame@gmail.com
-- Tweet to me at @FoxInFlame with the hashtag "#QuickMyAnimeList"
+- Tweet to me at @FoxInFlame with the hashtag "#QuickMyAnimeList" or "#QMAL"
 - PM me on Reddit @FoxInFlame
 - etc.
 
