@@ -77,11 +77,14 @@ Lots of new stuff! Redesigned Options page, badges, everything!
 
 #### Bugs / Problems / Suggestions / Support
 
-- **BUG** [#7] In-Page only works on gogoanime.io (Will be fixed for later 1.X)
-- ~~**BUG** [#8] In-Page doesn't work when there is only one result in the API search~~ (Fixed with 1.2.1)
-- **BUG**  [#9] In-Page QMAL doesn't work when anime name contains special characters (Will be fixed for later 1.X)
-- **Suggestions** None... :(
-- **Support** None, not even replies to threads I make... :(
+- **BUG** [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)] In-Page only works on gogoanime.io (Will be fixed for later 1.X)
+- ~~**BUG** [[#8](https://github.com/FoxInFlame/QuickMyAnimeList/issues/8)] In-Page doesn't work when there is only one result in the API search~~ (Fixed with 1.2.1)
+- **BUG**  [[#9](https://github.com/FoxInFlame/QuickMyAnimeList/issues/9)] In-Page QMAL doesn't work when anime name contains special characters (Will be fixed for later 1.X)
+- **BUG** [[#10](https://github.com/FoxInFlame/QuickMyAnimeList/issues/10)] Thumbs.db file error when loading extension (Will be fixed in 1.3)
+- **BUG** [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] Space within Anime Search makes results disappear (Will be fixed in 1.3)
+- **Suggestion** [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] A link/button for MAL page of anime in popup (Will be added in 1.3)
+- **BUG** [[#13](https://github.com/FoxInFlame/QuickMyAnimeList/issues/13)] Change anime status number to text (Will be fixed in 1.3)
+- **BUG** [[#14](https://github.com/FoxInFlame/QuickMyAnimeList/issues/14)] Options Page Not Responsive (Will be fixed in 1.3)
 
 There are several ways you can tell me your opinion :
 
