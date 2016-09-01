@@ -3,8 +3,9 @@
   "name": "QuickMyAnimeList",
   "author": "FoxInFlame",
   "description": "Quick edit/add/delete animes on your MyAnimeList account!",
-  "version": "1.2",
+  "version": "1.2.1",
   "offline_enabled": false,
+  "update_url": "http://www.foxinflame.tk/QuickMyAnimeList/source/updates.xml",
   "content_security_policy": "script-src 'self' https://platform.twitter.com https://syndication.twitter.com 'unsafe-eval'; object-src 'self'",
 
   "browser_action": {
