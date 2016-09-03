@@ -32,56 +32,51 @@ Not just the MAL API, but a whole freaking JS/CSS library helped me style it to 
 I use a lot of inline styling. I know it's a bad practice, but I really don't like to go back and forth between files just to edit one simple margin. So please bear with me.
 
 ## What's new!?
-### Release 1.2!
+### Release 1.3!
 
-Lots of new stuff! Redesigned Options page, badges, everything!
+Redesigned Popup!!
 
-#### Features kept from previous veresion (1.0)
+#### Features kept from previous veresion (1.2)
 
 - Ability to add edit, or delete an anime to your MAL account
 - Ability to rate, add or edit tags and other options for the chosen anime
 - Ability to view synopsis and other titles for the chosen anime
 - Ability to search for an anime easily using the Select2 jQuery library and the MAL API
 - Ability to login to your MAL account in the options, and verify if the credentials are real or not
+- Material Design Options pages
+- In-Page QMAL for gogoanime.io
 
-#### New features of Version 1.2
+#### New features of Version 1.3
 
-- Nice little homepage on Options page
-- Nice Clean Source Files (sorted into libraries folder)
-- Badges on the icon to show the anime count (configurable in options)
-- Redesigned Material Design options page to configure badge, popup elements, and credentials.
-- Choose which action to execute when icon clicked (open MAL list, open QMAL popup, open QMAL list, etc) *Took ages to make :D*
-- Automatically displays a popup when you visit a streaming site (Works only on gogoanime so far, but still awesome)
+- Ability to choose CSS theme on popup (WIP)
+- MaterializeCSS popup theme (WIP) [Features a new Search style!]
+- More QMAL sites (WIP)
 - Probably more.
 
-##### Small Update : 1.2.1
+#### Removed features from previous version (1.2)
 
-- Fixed Bug [2]
-
-#### Removed features from previous version (1.0)
-
-- Options page (to be replaced with the new)
-- Icon (to be replaced with an even cooler one)
+- Options.js and Options.html in the root directory (they were there for nothing)
 
 #### Next up for 1.X, 2.0, and later on.
 
 - Change layout design (1.X)
-- Change CSS library from Material Design to Bootstrap (2.0) **PARTIALLY DONE**
+- ~~Change CSS library from Material Design to Bootstrap (2.0)~~ **ABORTED**
 - More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X)
-- ~~Add options to show/hide inputs in the popup (1.X)~~ **DONE**
-- ~~Better organized and stylized options page (1.X)~~ **DONE**
-- Ability to select a theme of CSS, Material Design, Bootstrap, Classic, etc. (2.0)
+- ~~Ability to select a theme of CSS, Material Design, Bootstrap, Classic, etc. (2.0)~~ **PARTIALLY DONE**
 - Automatically increase number and change to "Watching" if video site is visited (e.g. gogoanime.io/blah-episode-1) (2.0 or later) **PARTIALLY DONE**
 - Display popup on video site (e.g. kissanime.to/Anime/blah/Episode-1) and let user choose if QMAL should automatically update the list or not (2.0 or later) **PARTIALLY DONE**
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0, 3.0)
 
 #### Bugs / Problems / Suggestions / Support
 
-- **BUG** [#7] In-Page only works on gogoanime.io (Will be fixed for later 1.X)
-- ~~**BUG** [#8] In-Page doesn't work when there is only one result in the API search~~ (Fixed with 1.2.1)
-- **BUG**  [#9] In-Page QMAL doesn't work when anime name contains special characters (Will be fixed for later 1.X)
-- **Suggestions** None... :(
-- **Support** None, not even replies to threads I make... :(
+- **BUG** [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)] In-Page only works on gogoanime.io (Will be fixed for later 1.X)
+- ~~**BUG** [[#8](https://github.com/FoxInFlame/QuickMyAnimeList/issues/8)] In-Page doesn't work when there is only one result in the API search~~ (Fixed with 1.2.1)
+- **BUG**  [[#9](https://github.com/FoxInFlame/QuickMyAnimeList/issues/9)] In-Page QMAL doesn't work when anime name contains special characters (Will be fixed for later 1.X)
+- **BUG** [[#10](https://github.com/FoxInFlame/QuickMyAnimeList/issues/10)] Thumbs.db file error when loading extension (Fixed in 1.3)
+- **BUG** [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] Space within Anime Search makes results disappear (Fixed in 1.3)
+- **Suggestion** [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] A link/button for MAL page of anime in popup (Will be added in 1.3)
+- **BUG** [[#13](https://github.com/FoxInFlame/QuickMyAnimeList/issues/13)] Change anime status number to text (Will be fixed in 1.3)
+- **BUG** [[#14](https://github.com/FoxInFlame/QuickMyAnimeList/issues/14)] Options Page Not Responsive (Will be fixed in 1.3)
 
 There are several ways you can tell me your opinion :
 
