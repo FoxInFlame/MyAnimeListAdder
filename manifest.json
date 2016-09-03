@@ -6,7 +6,7 @@
   "version": "1.2.1",
   "offline_enabled": false,
   "update_url": "http://www.foxinflame.tk/QuickMyAnimeList/source/updates.xml",
-  "content_security_policy": "script-src 'self' https://platform.twitter.com https://syndication.twitter.com 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://platform.twitter.com https://syndication.twitter.com https://cdn.syndication.twimg.com 'unsafe-eval'; object-src 'self'",
 
   "browser_action": {
     "default_icon": "icon.png",
@@ -23,7 +23,7 @@
   
   "background": {
     "scripts": [
-      "libraries/jQuery/jquery-2.2.2.js",
+      "libraries/jQuery/jquery-2.2.3.min.js",
       "background.js"
     ]
   },
@@ -31,7 +31,7 @@
   "content_scripts": [{
     "run_at": "document_end",
     "js": [
-      "libraries/jQuery/jquery-2.2.2.js",
+      "libraries/jQuery/jquery-2.2.3.min.js",
       "xml2json.min.js",
       "content.js"
     ],

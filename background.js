@@ -28,7 +28,7 @@ function getChromeStorage() {
     password: "password123",
     verified: false,
     badge_enable: false,
-    badge_interval: "5",
+    badge_interval: "300",
     badge_color: "#5be825",
     badge_count: "1"
   }, function(items) {
@@ -90,6 +90,7 @@ function updateBadge() {
         count_dropped = $("user_dropped", this).text();
         count_planned = $("user_plantowatch", this).text();
       });
+      count_total = parseInt(count_watching) + parseInt(count_completed) + parseInt(count_onhold) + parseInt(count_dropped) + parseInt(count_planned);
     }
   });
   if(badge_count == 1) {
@@ -108,7 +109,7 @@ function updateBadge() {
     badge_count = count_planned;
     badge_text = "Animes Planned to Watch";
   } else if(badge_count == 7) {
-    badge_count = count_total;
+    badge_count = count_total.toString();
     badge_text = "Total Animes In List";
   }
   chrome.browserAction.setBadgeBackgroundColor({
