@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Popup - QuickMyAnimeList Options</title>
+    <link rel="stylesheet" href="../libraries/MaterializeCSS/materialize.min.css" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../libraries/ColorPicker/css/colorpicker.css" type="text/css">
+    <script src="../libraries/jQuery/jquery-2.2.2.js"></script>
+    <style>
+      body {
+        font-size: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar-fixed">
+      <nav class="indigo darken-1">
+        <div class="nav-wrapper">
+          <a href="http://www.foxinflame.tk/QuickMyAnimeList" class="brand-logo center">QuickMyAnimeList</a>
+          <ul class="left">
+            <li><a href="options.html" class="waves-effect waves-light">QMAL Home</a></li>
+            <li><a href="options_credentials.html" class="waves-effect waves-light">MAL Credentials</a></li>
+            <li><a href="options_badge.html" class="waves-effect waves-light">Badge</a></li>
+            <li class="active"><a href="options_popup.html" class="waves-effect waves-light">Popup</a></li>
+            <li><a href="options_inpage.html" class="waves-effect waves-light">In-page QMAL</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="container">
+      <h4>Popup Window Options</h4>
+      <span>Changes will take place immediately.</span>
+      <hr><br>
+      <span>When icon clicked:</span>
+      <div class="input-field" style="width:500px;display:inline-block">
+        <select id="popup_action_open">
+          <option value="1">Open QuickMAL Popup</option>
+          <option value="2">Open your MAL List in Popup</option>
+          <option value="3">Open the QuickMAL List in Popup</option>
+          <option value="4">Open your MAL List in New Tab</option>
+          <option value="5">Open MAL Homepage in New Tab</option>
+        </select>
+      </div>
+      <div id="popup_quickmalpopup_options">
+        <br>
+        <span>Input Fields to display: </span>
+        <ul class="collection" style="width:600px">
+          <li class="collection-item">Search Input<span class="badge">REQUIRED</span></li>
+          <li class="collection-item">Status Select Box<span class="badge">REQUIRED</span></li>
+          <li class="collection-item">Episode Input<span class="badge">REQUIRED</span></li>
+          <li class="collection-item">Rating Stars
+            <div class="switch right" style="display:inline">
+              <label>
+                <input id="popup_input_rating" type="checkbox">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </li>
+          <li class="collection-item">Rewatching Checkbox
+            <div class="switch right" style="display:inline">
+              <label>
+                <input id="popup_input_rewatching" type="checkbox">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </li>
+          <li class="collection-item">Tags Input
+            <div class="switch right" style="display:inline">
+              <label>
+                <input id="popup_input_tags" type="checkbox">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </li>
+          <li class="collection-item">Storage Type Input
+            <div class="switch right" style="display:inline">
+              <label>
+                <input id="popup_input_storageType" type="checkbox">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </li>
+        </ul>
+        <br>
+        <span>Show confirmation page:</span>
+        <div class="switch" style="display:inline">
+          <label>
+            <input id="popup_action_confirm" type="checkbox">
+            <span class="lever"></span>
+          </label>
+          <div class="helper" data-help-title="Show Confirmation Page" data-help-content="Turning this on will show a page at the end in the popup, showing the data you inputted before submission."></div>
+        </div>
+      </div>
+      <br>
+      <span style="color:graytext">CSS Theme to be used in popup:</span>
+      <div class="input-field" style="width:500px;display:inline-block">
+        <select id="popup_css_theme" disabled>
+          <option value="1" selected>Material Design Bootstrap</option>
+          <option value="2">Plain Bootstrap</option>
+          <option value="3">Browser Default</option>
+        </select>
+      </div>
+      <br>
+      <div id="status"></div>
+      <button style="background: #2e51a2" class="btn waves-effect waves-light" id="save">Save<i class="material-icons right">send</i></button>
+    </div>
+      
+    <script src="options.js"></script>
+    <script src="../libraries/ColorPicker/js/colorpicker.js"></script>
+    <script src="../libraries/MaterializeCSS/materialize.min.js"></script>
+  </body>
+</html>

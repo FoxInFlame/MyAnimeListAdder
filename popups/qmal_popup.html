@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html style="width:500px">
+  <head>
+    <title>QuickMyAnimeList Popup MaterializeCSS!</title>
+    <script src="../libraries/jQuery/jquery-2.2.3.min.js"></script>
+    <link rel="stylesheet" href="../popups/qmal_popup_MaterializeCSS.css" type="text/css">
+  </head>
+  <body>
+    <div id="qmal_popup_mainContentLoad">
+      <div class="header z-depth-2">
+        <img src="MyAnimeList_logoWhite.png">
+        <button id="openWindow" data-position="left" data-tooltip="Open list in a window" class="tooltipped right-align btn-floating waves-effect waves-light"><i class="material-icons" style="color:#2E51A2">list</i></button>
+        <div class="progress">
+          <div class="determinate" style="width:30%"></div>
+        </div>
+      </div>
+      <form id="mainForm_tmp">
+        <fieldset>
+          <div class="row">
+            <div class="input-field s12">
+              <input id="animeNameSearch" type="text">
+              <label for="animeNameSearch">Anime Search: </label>
+              <span id="animeNameSearch_status"></span>
+            </div>
+          </div>
+          <div class="grid-list" id="animeNameSearch_results"></div>
+          <div class="animeInformation">
+            <div id="action-top">
+              <span id="action-topleft"><i class="material-icons">arrow_back</i></span>
+              <h1 id="animeInformation_title"></h1>
+            </div>
+            <div id="animeInformation_image-wrapper" class="z-depth-1">
+              <img src="#" id="animeInformation_image">
+            </div>
+            <a id="animeInformation_link" href="#" data-position="bottom" data-delay="50" data-tooltip="Visit MAL site" class="z-depth-1 tooltipped btn-floating waves-effect waves-light" style="backgroudn:#2e51a2"><i class="material-icons">web</i></a>
+            <a id="animeInformation_score" data-position="bottom" data-delay="50" class="z-depth-2 tooltipped btn-floating waves-effect waves-light yellow darken-1"><i class="material-icons">star</i></a>
+            <a id="animeInformation_addToList" data-position="bottom" data-delay="50" data-tooltip="Add to List" class="z-depth-2 tooltipped btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+            <div id="yourInfo" class="container">
+              <b>Status : </b><span id="yourInformation_status"></span><br>
+              <b>Episodes : </b><span id="yourInformation_episodes"></span>
+            </div>
+            <div id="generalInfo" class="container">
+              Type: <span id="animeInformation_type"></span><br>
+              Episodes: <span id="animeInformation_episodes"></span><br>
+              <p id="animeInformation_synopsis"></p>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+      
+      
+      
+      
+      
+      
+      
+      
+      <div id="hidenowwow" style="display:none">
+      <img src="MyAnimeList_logo.png" height="35px" style="margin-left:10px;margin-top:5px">
+      <button id="openPopup" class="btn btn-primary waves-effect waves-light" style="float:right">Open Current List in Popup</button>
+      <form id="mainForm" class="container">
+        <div class="progress" style="height:7px;margin-left:10px;margin-right:10px;margin-top:5px">
+          <div id="anime_form_progress" data-percentage="0%" style="width:0%;" class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <fieldset>
+          <select id="animeName" style="width:100%" name="animeName">
+            <option disabled selected>Search for an Anime</option>
+          </select>
+          <span id="stage1_warning" style="color:red;font-weight:bold"></span><br>
+          <div id="preview">
+            <hr>
+            <div style="float:left;margin-right:5px;background-size:100% auto;width:225px" class="previewCover"><img style="visibility:hidden;" id="previewCoverSize" src="#"></div>
+          </div>
+          <div id="status">
+            <b>Your Status:</b> <span id="status_status"></span><br>
+            <b>Episode Count:</b> <span id="status_episodecount"></span>
+            <hr>
+          </div>
+          <div id="information">
+            <b>Original Title:</b> <span id="information_originalTitle"></span><br>
+            <b>English Title:</b> <span id="information_englishTitle"></span><br>
+            <b>Other Titles:</b> <span id="information_synonyms"></span><br>
+            <b>Synopsis: </b> <a href="#" id="information_synopsis_toggle">[Show Synopsis]</a>
+            <p style="font-size:12px" id="information_synopsis"></p>
+          </div>
+          <br>
+          <button class="btn next btn-default waves-effect waves-light btn-lg" type="button" id="stage1_next">Next</button>
+          <button class="btn btn-danger waves-effect waves-light btn-lg" type="button" id="stage1_delete">Delete</button>
+          <br>
+          <button class="btn btn-block btn-secondary-outline waves-effect" type="button" id="stage1_MAL_link">View on MAL</button>
+        </fieldset>
+        <fieldset>
+          <div id="anime_stage2_status_wrapper">
+            Anime Status : <select required id="anime_stage2_status" style="width:225px" name="animeStatus">
+              <option value="1">Watching</option>
+              <option value="2">Completed</option>
+              <option value="3">On Hold</option>
+              <option value="4">Dropped</option>
+              <option value="6" selected>Plan to watch</option>
+            </select>
+          </div>
+          <br>
+          <div id="anime_stage2_episodeInput_wrapper">
+            Watched Episodes : <input required type="number" name="animeEpisodes" id="anime_stage2_episodeInput" style="width:50px">/<span id="anime_stage2_totalEpisodes"></span>
+          </div><br>
+          <div id="anime_stage2_rating_wrapper">
+            Your Rating (Leave empty for none) : <br>
+            <div id="anime_stage2_rating"></div>
+          </div><br>
+          <div id="anime_stage2_rewatching_wrapper">
+            Rewatching : <input type="checkbox" id="anime_stage2_enableRewatching">
+          </div>
+          <span id="stage2_warning" style="color:red;font-weight:bold"></span><br>
+          <button class="btn previous btn-primary waves-effect waves-light" type="button" id="stage2_previous">Previous</button>
+          <button class="btn next btn-default waves-effect waves-light" type="button" id="stage2_next">Next</button>
+        </fieldset>
+        <fieldset>
+          <!--Comments on this anime :
+          <textarea rows="5" cols="10" style="padding: 10px;width:100%;height:auto;box-sizing:border-box" id="anime_stage3_comments"></textarea>-->
+          <div id="anime_stage3_tags_wrapper">
+            Tags (Seperate with comama) :
+            <textarea rows="2" cols="10" style="padding:10px;width:100%;height:auto;box-sizing:border-box" id="anime_stage3_tags"></textarea>
+          </div>
+          <center><button class="btn btn-sm btn-default waves-effect waves-light" id="anime_stage3_advancedInputs_toggle">More Options</button></center>
+          <div id="anime_stage3_advancedInputs">
+            These options aren't neccessary, and don't have to be filled in.<br>
+            <div id="anime_stage3_storageType_wrapper">
+              Storage Type : <select id="anime_stage3_storageType" style="width:225px">
+                <option value="0" selected>Select Storage Type</option>
+                <option value="1">Hard Drive</option>
+                <option value="2">External HD</option>
+                <option value="3">NAS</option>
+                <option value="4">Blu-Ray</option>
+                <option value="5">DVD / CD</option>
+                <option value="6">Retail DVD</option>
+                <option value="7">VHS</option>
+                <option value="8">None</option>
+              </select>
+            </div><br>
+          </div><br>
+          <button class="btn previous btn-primary waves-effect waves-light" type="button" id="stage3_previous">Previous</button>
+          <button class="btn next btn-default waves-effect waves-light" type="button" id="stage3_next">Next</button>
+        </fieldset>
+        <fieldset>
+          Confirm information:
+          <div id="anime_stage4_confirmInfo">
+            <span id="anime_stage4_normalInfo"></span><br>
+            <button class="btn btn-sm btn-default waves-effect waves-light" id="anime_stage4_moreInfo_toggle">More Info</button><br>
+            <span id="anime_stage4_moreInfo"></span>
+          </div>
+          <button class="btn previous btn-primary waves-effect waves-light" type="button" id="stage4_previous">Previous</button>
+          <button class="btn submit btn-default waves-effect waves-light" id="submit_add">Add Anime</button>
+        </fieldset>
+      </form>
+      <br>
+      <br>
+      <br>
+      <br>
+      <span class="copyright">&copy; QuickMyAnimeList is licenced under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</span>
+      <!--Anime added/updated done popup-->
+      <div style="position:relative">
+        <div id="anime_stageFinal_done" style="width:450px;position:absolute;top:50%;left:50%;z-index:50" class="card success-color">
+          <div class="card-content white-text">
+            <span class="card-title">Done!</span>
+            <p>Successfully added/updated in list!</p>
+            <button class="btn btn-info btn-md waves-effect waves-light anime_stageFinal_done_close">Done</button>
+            <button class="btn btn-primary btn-md waves-effect waves-light" id="anime_stageFinal_done_another">Add/Update Another</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-overlay" id="anime_stageFinal_done_overlay" style="height:100%;position:fixed;top:0;left:0;width:100%;background-color:black;opacity:0.2;z-index:40"></div>
+      <!--Anime delete ask for confirmation popup-->
+      <div style="position:relative">
+        <div id="anime_delete_confirm" style="width:450px;position:absolute;top:50%;left:50%;z-index:50" class="card warning-color">
+          <div class="card-content white-text container">
+            <span class="card-title">Are you sure?</span>
+            <p>Are you sure you want to delete this anime from your list? This action will remove all your tags, scores, comments, etc.</p>
+            <button class="btn btn-lg btn-danger btn-md waves-effect waves-light" id="anime_delete_delete">Delete</button>
+            <button class="btn btn-lg btn-info btn-md waves-effect waves-light" id="anime_delete_cancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-overlay" id="anime_delete_confirm_overlay" style="height:100%;position:fixed;top:0;left:0;width:100%;background-color:black;opacity:0.2;z-index:40"></div>
+      <!--Anime deleted success popup-->
+      <div style="position:relative">
+        <div id="anime_delete_done" style="width:450px;position:absolute;top:50%;left:50%;z-index:50" class="card success-color">
+          <div class="card-content white-text">
+            <span class="card-title">Anime deleted!</span>
+            <p>Anime <b id="anime_delete_done_b"></b> has been deleted from your list!</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-overlay" id="anime_delete_done_overlay" style="height:100%;position:fixed;top:0;left:0;width:100%;background-color:black;opacity:0.2;z-index:40"></div>
+      </div>
+    </div><!--Ajax load end-->
+  </body>
+</html>

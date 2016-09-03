@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html style="width:500px">
+  <head>
+    <title>QuickMyAnimeList Popup</title>
+    <script src="libraries/jQuery/jquery-2.2.2.js"></script>
+    <link rel="stylesheet" href="styles.css" type="text/css">
+  </head>
+  <body>
+    <div id="qmal_popup_mainContentLoad">
+      <h4 class="text-center">Showing: <a href="options/options_badge.html?highlight=ID:badge_count_container" target="_blank" id="table_display_status"></a></h4>
+      <table id="table_table" class="table table-hover table-condensed" style="table-layout:fixed;word-wrap:break-word">
+        <thead>
+          <tr>
+            <th style="width:60%">Anime Name</th>
+            <th style="width:20%">Episodes</th>
+            <th style="width:20%">Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Loading...</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <script src="../libraries/Bootstrap/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="libraries/Bootstrap/bootstrap.min.css" type="text/css">
+    </div><!--Ajax load end-->
+    <script src="../script.js"></script>
+  </body>
+</html>
