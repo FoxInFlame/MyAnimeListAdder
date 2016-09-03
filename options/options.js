@@ -23,14 +23,14 @@ $(document).ready(function() {
   } else {
     options_main();
   }
-  if(getParameterByName("highlight") != null) {
+  if(getParameterByName("highlight") !== null) {
     highlight = getParameterByName("highlight");
     if(highlight.startsWith("ID:")) {
-      $("#" + highlight.substring(3)).css("background-color", "#fff6a3").css("border-radius", "5px")
+      $("#" + highlight.substring(3)).css("background-color", "#fff6a3").css("border-radius", "5px");
     } else if(highlight.startsWith("CLASS:")) {
       $("." + highlight.substring(6)).each(function() {
-        $(this).css("background-color", "#fff6a3").css("border-radius", "5px")
-      })
+        $(this).css("background-color", "#fff6a3").css("border-radius", "5px");
+      });
     }
   }
 });
@@ -107,7 +107,7 @@ function options_main() {
     first_time_launch = items.first_time_launch;
     verified = items.verified;
     console.log("First Time Launch?:" + first_time_launch);
-    if(first_time_launch == true) {
+    if(first_time_launch === true) {
       $("body").css("pointer-events", "none");
       $("#main_welcome").show();
       $("#main").hide();
@@ -129,20 +129,20 @@ function welcome_message() {
       $(this).remove();
       if(!--count) welcome_message_features();
     });
-  })
+  });
 }
 function welcome_message_features() {
   $("#main_welcome_features").fadeIn(300);
   $("body").css("pointer-events", "auto");
   chrome.storage.sync.set({
     first_time_launch: false
-  })
+  });
 }
 function development_github() {
-  /*$.ajax({
-    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3",
+  $.ajax({
+    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits",
     success: function(data) {
-       $("#github_latest_commit_sha").html(data[0]["sha"].substring(0,10));
+      $("#github_latest_commit_sha").html(data[0]["sha"].substring(0,10));
       $("#github_latest_commit_link").attr("href", data[0]["commit"]["url"]);
       var github_latest_commit_date = data[0]["commit"]["author"]["date"];
       var current_date = new Date();
@@ -150,9 +150,9 @@ function development_github() {
       current_date = current_date.split(".")[0]+"Z"; //"2011-12-19T15:28:46Z"
       $("#github_latest_commit_date").html(timeDifferenceHTML(current_date, github_latest_commit_date));
     }
-  })*/
+  })
   $.ajax({
-    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits",
+    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3",
     success: function(data) {
       $("#github_master_commit_sha").html(data[0]["sha"].substring(0,10));
       $("#github_master_commit_link").attr("href", data[0]["commit"]["url"]);
@@ -186,7 +186,6 @@ function timeDifferenceHTML(current, previous) {
     return Math.round(differenceSeconds / 31104000) + " years ago";
   }
 }
-    
 function timeDifferenceString(current, previous) {
   function toSeconds(time) {
     var parts,
@@ -318,8 +317,8 @@ function restore_options_badge() {
   });
   chrome.storage.sync.get({
     badge_enable: false,
-    badge_color: "#ff8a65",
-    badge_interval: "10",
+    badge_color: "#5be825",
+    badge_interval: "300",
     badge_count: "1"
   }, function(items) {
     document.getElementById("badge_enable").checked = items.badge_enable;
