@@ -23,7 +23,6 @@ $("#information, #information_synopsis").hide();
 information_synopsis_visibility = 0;
 $("#anime_stage3_advancedInputs").hide();
 anime_stage3_advancedInputs_visibility = 0;
-document.getElementById("animeName_tmp").focus();
 select2_init();
 
 var marginHeightAnimeDelete = $("#anime_delete_confirm").height() + ($("#anime_delete_confirm").height())/2;

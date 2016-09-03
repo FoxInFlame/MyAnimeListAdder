@@ -1,6 +1,13 @@
 $(document).ready(function() {
   $("#animeNameSearch").focus();
   $(".tooltipped").tooltip({delay: 50});
+  $("select").material_select();
+  $(window).keydown(function(event) {
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
 });
 
 // Grid Lists
@@ -16,19 +23,25 @@ function grid_list_init() {
   });
   $(".grid-list-row .col img").on("click", function() {
     $(".animeInformation #animeInformation_image").attr("src", $(this).attr("src"));
-    $(".animeInformation #animeInformation_title").text($(this).parent().data("title"));
+    $(".animeInformation .animeInformation_title").text($(this).parent().data("title"));
     $(".animeInformation #animeInformation_type").text($(this).parent().data("type"));
     $(".animeInformation #animeInformation_episodes").text($(this).parent().data("episodes"));
     $(".animeInformation #animeInformation_synopsis").text($(this).parent().data("synopsis"));
-    $(".animeInformation #animeInformation_link").attr("href", $(this).parent().data("link"));
+    $(".animeInformation #animeInformation_link").attr("href", $(this).parent().data("url"));
     $(".animeInformation #animeInformation_score").attr("data-tooltip", "MAL Rating: " + $(this).parent().data("score")).tooltip({delay: 50});
+    $(".animeInformation #generalInfo .animeInformation_title").quickfit({
+      min: 1,
+      max: 30,
+      truncate: true,
+      width: 420
+    });
     console.log($(this).parent().data("score"));
     $(".animeInformation").css("position", "fixed").css("display", "block").animate({
       opacity: "1",
       height: "100%"
     }, 300);
   });
-  $(".animeInformation #action-topleft").on("click", function() {
+  $(".animeInformation nav .nav-wrapper #back-nav").on("click", function() {
     $(".animeInformation").animate({
       opacity: "0"
     }, 300, function() {
@@ -85,8 +98,15 @@ function grid_list_init() {
 //                         MAIN CODE
 // [+] ================================================== [+]
 
+// [+] Popup button at the top
+$("#openWindow").on("click", function() {
+   chrome.windows.create({'url': 'http://myanimelist.net/animelist/' + loginUsername, 'type': 'popup', 'height': 650, 'width':1000}, function(window) {
+   });
+});
+
 $("#animeNameSearch").donetyping(function() {
   $("#animeNameSearch_status").text("Searching...");
+  $(".grid-list-row .col img").css("pointer-events", "none").addClass("grayscale");
   var query = $(this).val();
   $.ajax({
     url: "http://myanimelist.net/api/anime/search.xml?q=" + query,
@@ -100,6 +120,11 @@ $("#animeNameSearch").donetyping(function() {
       $("#animeNameSearch_status").text(xhr.responseText + ".");
     },
     success: function(data, textStatus, jqXHR) {
+      if(data === null || data === undefined) {
+        // Empty return
+        $("#animeNameSearch_status").text("No Results.");
+        return;
+      }
       var x2js = new X2JS();
       dataJSON = x2js.xml2json(data);
       animeSearch_formatResults(dataJSON);
@@ -127,6 +152,7 @@ function animeSearch_formatResults(dataJSON) {
     $("#animeNameSearch_results").append(html);
     $("#animeNameSearch_status").text("1 Result.");
     grid_list_init();
+    $("#animeNameSearch_results img").css("pointer-events", "auto").removeClass("grayscale");
     return;
   }
   var allcount = 0;
@@ -159,12 +185,48 @@ function animeSearch_formatResults(dataJSON) {
   //Initiailizes the Grid List to make sure all events are on.
   $("#animeNameSearch_status").text(allcount + " Results.");
   grid_list_init();
+  $("#animeNameSearch_results img").css("pointer-events", "auto").removeClass("grayscale");
 }
 
 $("#animeInformation_addToList").click(function() {
+  $(this).tooltip("remove");
+  if($(this).attr("data-display-add") != "0") {
+    $("#addAnimeContainer").fadeOut(400);
+    $("#animeInformation_addBackground").fadeIn(400);
+    $("#qmal_popup_mainContent").css("overflow", "auto");
+    $("#animeInformation_addBackground").animate({
+      top: "95px",
+      height: "20px",
+      opacity: "0"
+    }, {duration: 300, queue: false}, $.bez([0.4, 0, 0.2, 1]));
+    window.setTimeout(function() {
+      $("#animeInformation_addToList").animate({
+        top: "90px",
+        right: "20px"
+      }, {duration: 150}, $.bez([0.4, 0, 0.2, 1])).attr("data-position", "bottom").attr("data-tooltip", "Add to List").tooltip();
+      $("#animeInformation_addBackground").animate({
+        width: "20px",
+        borderRadius: "4px",
+        right: "35px"
+      }, {duration: 300, queue: false}, $.bez([0.4, 0, 0.2, 1]));
+      $("#animeInformation_addToList i").animate({
+        borderSpacing: 0
+      }, {
+        duration: 150,
+        queue: false,
+        step: function(now, fx) {
+          $(this).css("-webkit-transform", "rotate(" + now + "deg)");
+        }
+      });
+    }, 50);
+    $(this).attr("data-display-add", "0");
+    return;
+  }
+  $("#qmal_popup_mainContent").css("width", "500px").css("height", "600px").css("overflow","hidden");
   $("#animeInformation_addBackground").animate({
     width: "100%",
-    left: "0",
+    opacity: "1",
+    right: "0",
     borderRadius: "0px"
   }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
   window.setTimeout(function() {
@@ -172,9 +234,23 @@ $("#animeInformation_addToList").click(function() {
       top: "0",
       height: "100%"
     }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
-    $("#animeInformation_addToList").css("position", "absolute").css("bottom", "auto").css("top", "auto").animate({
-      bottom: "25px",
+    $("#animeInformation_addToList").animate({
+      top: "430px",
       right: "20px"
-    }, {duration: 200, queue: false}, $.bez([0.4, 0, 0.2, 1]));
+    }, {duration: 150}, $.bez([0.4, 0, 0.2, 1])).attr("data-position", "top").attr("data-tooltip", "Cancel").tooltip().attr("data-display-add", "1");
+    $("#animeInformation_addToList i").animate({
+      borderSpacing: -135
+    }, {
+      duration: 150,
+      queue: false,
+      step: function(now, fx) {
+        $(this).css("-webkit-transform", "rotate(" + now + "deg)");
+      }
+    }, $.bez([0.4, 0, 0.2, 1]));
   }, 50);
+  window.setTimeout(function() {
+    $("#addAnimeContainer").fadeIn(400, function() {
+      $("#animeInformation_addBackground").fadeOut(400);
+    });
+  }, 250);
 });

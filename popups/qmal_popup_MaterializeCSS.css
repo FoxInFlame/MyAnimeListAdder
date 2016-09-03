@@ -3,7 +3,6 @@
 body {
   font-family: "Roboto", sans-serif;
   font-size: 13px;
-  overflow: auto;
 }
 
 .header {
@@ -320,51 +319,61 @@ fieldset {
   opacity: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 1);
+  background: #eaedf5;
   position: fixed;
-  z-index: 101;
+  z-index: 50;
   top: 80px;
   left: 0;
 }
 
-.animeInformation #action-top {
-  position: relative;
-  top: 0;
-  width: 100%;
-  background: #2E51A2;
-  height: 30px;
-  line-height: 30px;
-  white-space: nowrap;
-  text-align: middle;
-  color: #ffffff;
-  border-right: 30px solid transparent;
-  overflow: hidden;
+.animeInformation nav {
+  color: rgba(255, 255, 255,1);
+  position: absolute;
+  height: 120px;
+  line-height: 120px;
+  background: transparent;
+  /*Padding on #back-nav is doing the left side*/
+  border-right: 10px solid transparent;
+  z-index: 14; /*One lower than Add Background*/
+}
+.animeInformation nav .nav-wrapper {
   text-overflow: ellipsis;
+  overflow: hidden;
+  border-right: 16px solid transparent;
+  white-space: nowrap;
 }
-.animeInformation #action-topleft {
-  padding-left: 10px;
-  vertical-align: super;
-}
-.animeInformation #action-topleft i.material-icons {
-  padding-left: 5px;
-  padding-right: 10px;
-  color: #ffffff;
-  font-size: 30px;
-  vertical-align: baseline;
+.animeInformation nav i.material-icons {
+  height: 40px !important;
+  line-height: 120px !important;
   cursor: pointer;
 }
-
-.animeInformation #animeInformation_title {
-  font-size: 20px;
-  position: relative;
-  display: inline;
-  vertical-align: 12px;
+.animeInformation nav #back-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: rgba(16, 28, 56, 0.7);
+  width: 60px;
+  padding: 0 10px;
+  z-index: 5;
+}
+/*CURRENTLY NOT USED*/
+.animeInformation ~ nav .animeInformation_title {
+  font-size: 30px;
+  position: absolute;
+  max-width: 420px; /* 500px - left:50px = 450px (max)*/
+  top: 0;
+  left: 50px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap
 }
 
 .animeInformation #animeInformation_image-wrapper {
   overflow: hidden;
   width: 100%;
   height: 120px;
+  z-index: 50;
   margin-bottom: 12px;
 }
 .animeInformation #animeInformation_image {
@@ -372,32 +381,90 @@ fieldset {
   width: 100%;
   vertical-align: middle;
 }
+.animeInformation #generalInfo .col .card .card-content .card-title {
+  font-size: 24px;
+  line-height: 24px;
+}
+.animeInformation #generalInfo .col .card .card-content .row {
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
 .animeInformation #animeInformation_synopsis {
   font-size: 11px;
 }
 .animeInformation #animeInformation_link {
   position: absolute;
   right: 140px;
-  top: 130px;
+  top: 100px;
 }
 .animeInformation #animeInformation_score {
   position: absolute;
   right: 90px;
-  top: 130px;
+  top: 100px;
 }
 .animeInformation #animeInformation_addToList {
   position: absolute;
   right: 20px;
-  top: 120px;
-  z-index: 20;
+  top: 90px;
+  z-index: 70;
+}
+.animeInformation #animeInformation_addToList i{
+  border-spacing: 0;
 }
 .animeInformation #animeInformation_addBackground {
   position: absolute;
   background: white;
-  border-radius: 20px;
-  right: 30px;
+  border-radius: 4px;
+  opacity: 1;
+  right: 35px;
   width: 20px;
-  top: 130px;
+  top: 95px;
   height: 20px;
   z-index: 15;
+}
+
+.grayscale {
+  -webkit-filter: grayscale(100%);
+}
+
+#addAnimeContainer {
+  display:none;
+  position: absolute;
+  background: #eaedf5;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 60; /*Higher than Anime content (50), lower than Title bar (100)*/
+}
+
+#animeEditForm nav{
+  position: relative;
+  height: 50px;
+  line-height: 50px;
+  background: rgba(16, 28, 56, 0.8);
+}
+#animeEditForm nav .nav-wrapper {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+  white-space: nowrap;
+}
+#animeEditForm nav .nav-wrapper span b {
+  font-weight: normal;
+}
+#animeEditForm nav i.material-icons {
+  height: 40px !important;
+  line-height: 50px !important;
+}
+#animeEditForm nav .animeInformation_title {
+  font-size: 20px;
+  position: absolute;
+  max-width: 430px; /* 500px - left:30px = 450px (max)*/
+  top: 0;
+  left: 35px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap
 }

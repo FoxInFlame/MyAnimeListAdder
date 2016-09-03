@@ -14,7 +14,7 @@
           <div class="determinate" style="width:30%"></div>
         </div>
       </div>
-      <form id="mainForm_tmp">
+      <div id="mainForm_tmp">
         <fieldset>
           <div class="row">
             <div class="input-field s12">
@@ -25,34 +25,70 @@
           </div>
           <div class="grid-list" id="animeNameSearch_results"></div>
           <div class="animeInformation">
-            <nav>
+            <nav class="z-depth-0">
               <div class="nav-wrapper">
-                <span id="back-nav"><i class="material-icons">arrow_back</i></span>
+                <span id="back-nav" class="z-depth-1"><i class="material-icons">arrow_back</i></span>
               </div>
             </nav>
-            <div id="action-top">
-              <span id="action-topleft"><i class="material-icons">arrow_back</i></span>
-              <h1 id="animeInformation_title"></h1>
-            </div>
             <div id="animeInformation_image-wrapper" class="z-depth-1">
               <img src="#" id="animeInformation_image">
             </div>
-            <a id="animeInformation_link" href="#" data-position="bottom" data-delay="50" data-tooltip="Visit MAL site" class="z-depth-1 tooltipped btn-floating waves-effect waves-light" style="backgroudn:#2e51a2"><i class="material-icons">web</i></a>
-            <a id="animeInformation_score" data-position="bottom" data-delay="50" class="z-depth-2 tooltipped btn-floating waves-effect waves-light yellow darken-1"><i class="material-icons">star</i></a>
-            <a id="animeInformation_addToList" data-position="bottom" data-delay="50" data-tooltip="Add to List" class="z-depth-2 tooltipped btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
-            <div id="yourInfo" class="container">
-              <b>Status : </b><span id="yourInformation_status"></span><br>
-              <b>Episodes : </b><span id="yourInformation_episodes"></span>
+            <a id="animeInformation_link" href="#" data-position="bottom" data-delay="50" data-tooltip="Visit MAL site" target="_blank" class="z-depth-1 tooltipped btn-floating waves-effect waves-light" style="backgroudn:#2e51a2"><i class="material-icons">web</i></a>
+            <a id="animeInformation_score" data-position="bottom" data-delay="50" class="z-depth-1 tooltipped btn-floating waves-effect waves-light yellow darken-1"><i class="material-icons">star</i></a>
+            <a id="animeInformation_addToList" data-display-add="0" data-position="bottom" data-delay="50" data-tooltip="Add to List" class="z-depth-2 tooltipped btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+            <!-- Put List Info (If in the list) as buttons (watching episodes, status, and rating)-->
+            <div class="row" id="generalInfo">
+              <div class="col s12">
+                <div class="card">
+                  <div class="card-content" style="color:#172851">
+                    <span class="card-title animeInformation_title"></span>
+                    <div class="row">
+                      <div class="col s6">
+                        <b>Type:</b> <span id="animeInformation_type"></span>
+                      </div>
+                      <div class="col s6">
+                        <b>Episodes:</b> <span id="animeInformation_episodes"></span>
+                      </div>
+                    </div>
+                    <p id="animeInformation_synopsis"></p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div id="generalInfo" class="container">
-              Type: <span id="animeInformation_type"></span><br>
-              Episodes: <span id="animeInformation_episodes"></span><br>
-              <p id="animeInformation_synopsis"></p>
+            <div id="animeInformation_addBackground" class="z-depth-2"></div>
+            <div id="addAnimeContainer">
+              <form id="animeEditForm">
+                <nav>
+                  <div class="nav-wrapper">
+                    <span><i class="material-icons">edit</i></span>
+                    <span><b class="animeInformation_title"></b></span>
+                  </div>
+                </nav>
+                <fieldset id="animeEditForm-fieldset1">
+                  <div class="row" style="margin:0">
+                    <div class="input-field col s12">
+                      <select>
+                        <option value="" disabled selected>Choose status</option>
+                        <option value="1">Watching</option>
+                        <option value="2">Completed</option>
+                        <option value="3">On-Hold</option>
+                        <option value="4">Dropped</option>
+                        <option value="6">Plan to Watch</option>
+                      </select>
+                      <label>Anime Status</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field col s6">
+                      Watched Episodes: <input type="number" class="validate" style="width: 50px"> / <span class="animeInformation_episodes"></span>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
             </div>
-            <div id="animeInformation_addBackground" class="z-depth-3"></div>
           </div>
         </fieldset>
-      </form>
+      </div>
       
       
       
