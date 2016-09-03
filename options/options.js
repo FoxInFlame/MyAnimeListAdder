@@ -140,7 +140,7 @@ function welcome_message_features() {
 }
 function development_github() {
   $.ajax({
-    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits",
+    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3",
     success: function(data) {
       $("#github_latest_commit_sha").html(data[0]["sha"].substring(0,10));
       $("#github_latest_commit_link").attr("href", data[0]["commit"]["url"]);
@@ -152,7 +152,7 @@ function development_github() {
     }
   })
   $.ajax({
-    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3",
+    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits",
     success: function(data) {
       $("#github_master_commit_sha").html(data[0]["sha"].substring(0,10));
       $("#github_master_commit_link").attr("href", data[0]["commit"]["url"]);
