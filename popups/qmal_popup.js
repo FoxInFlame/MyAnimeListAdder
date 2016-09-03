@@ -92,8 +92,8 @@ $("#animeNameSearch").donetyping(function() {
     url: "http://myanimelist.net/api/anime/search.xml?q=" + query,
     dataType: "xml",
     type: "GET",
-    username: "FoxInFlame",
-    password: "Fox_Anime_2002",
+    username: "Username",
+    password: "Password123",
     error: function(xhr, status, thrownError) {
       console.log(xhr.status);
       console.log(xhr.responseText);
