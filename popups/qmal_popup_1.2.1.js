@@ -112,7 +112,7 @@ $(".previous").on("click", function() {
 
 // -- Popup button at the top
 $("#openWindow").on("click", function() {
-   chrome.windows.create({'url': 'http://myanimelist.net/animelist/' + loginUsername, 'type': 'popup', 'height': 650, 'width':1000}, function(window) {
+   chrome.windows.create({'url': 'https://myanimelist.net/animelist/' + loginUsername, 'type': 'popup', 'height': 650, 'width':1000}, function(window) {
    });
 });
 
@@ -170,7 +170,7 @@ function updateAnimeInList(id, episode, status, score, storage_type, storage_val
   console.log("[UPDATE] Watched Episodes: " + episode);
   
   $.ajax({
-    url: "http://myanimelist.net/api/animelist/update/" + id + ".xml",
+    url: "https://myanimelist.net/api/animelist/update/" + id + ".xml",
     type: "GET",
     data: {"data": editXML},
     username: loginUsername,
@@ -244,7 +244,7 @@ function addAnimeInList(id, episode, status, score, storage_type, storage_value,
   console.log("[ADD] Watched Episodes: " + episode);
   
   $.ajax({
-    url: "http://myanimelist.net/api/animelist/add/" + id + ".xml",
+    url: "https://myanimelist.net/api/animelist/add/" + id + ".xml",
     type: "GET",
     data: {"data": myXML},
     username: loginUsername,
@@ -268,7 +268,7 @@ function addAnimeInList(id, episode, status, score, storage_type, storage_value,
 function deleteAnimeInList(id) {
   // This function will delete without any confirmation. Be aware.
   $.ajax({
-    url: "http://myanimelist.net/api/animelist/delete/" + id + ".xml",
+    url: "https://myanimelist.net/api/animelist/delete/" + id + ".xml",
     type: "GET",
     username: loginUsername,
     password: loginPassword,
@@ -321,7 +321,7 @@ var select2InputBox;
 function select2_init() {
   select2InputBox = $("#animeName").select2({
     ajax: {
-      url: "http://myanimelist.net/api/anime/search.xml",
+      url: "https://myanimelist.net/api/anime/search.xml",
       dataType: "xml",
       type: "GET",
       username: loginUsername,
@@ -411,7 +411,7 @@ $("#animeName").on("select2:select", function() {
   //Check the User's MAL List
   $("#status").show();
   $.ajax({
-    url: "http://myanimelist.net/malappinfo.php?u="+loginUsername+"&status=all&type=anime",
+    url: "https://myanimelist.net/malappinfo.php?u="+loginUsername+"&status=all&type=anime",
     type: "GET",
     dataTpe: "xml",
     success: function(data) {

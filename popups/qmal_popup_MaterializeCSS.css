@@ -468,3 +468,19 @@ fieldset {
   overflow: hidden;
   white-space: nowrap
 }
+
+#animeEditForm #animeEditForm-fieldset1 .row {
+  margin-bottom: 0;
+}
+
+#animeEditForm #animeEditForm-fieldset1 {
+  margin-top: 50px;
+}
+#animeEditForm #animeEditForm-fieldset2 {
+  margin-top: 550px;
+}
+
+#animeEditForm #animeEditForm-fieldset2 #animeEditForm-tags {
+  width: 100%;
+  min-width: 100%;
+}
