@@ -238,7 +238,7 @@ function save_options_credentials() {
     password: password
   }, function() {
     $.ajax({
-      url: "http://myanimelist.net/api/account/verify_credentials.xml",
+      url: "https://myanimelist.net/api/account/verify_credentials.xml",
       type: "GET",
       dataType: "xml",
       username: username,
