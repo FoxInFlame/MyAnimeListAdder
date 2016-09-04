@@ -18,14 +18,16 @@ Check out the official website to see specific instructions to installing Chrome
 ## Screenshots
 Check out the official website for screenshots in HD.
 
-## Sources
+## Included Libraries
 - Bootstrap : Used in popup for layout, and because required for MDB
-- MaterialDesignBootstrap : Used in popup for layout, buttons, and animations
+- QuickFit : To create dynamically-resizing text for anime titles in the MaterializeCSS theme
+- MaterialDesignBootstrap : Used in popup for layout, buttons, and animations for the MDB theme
 - ColorPicker : Used in options for selecting Badge Color
+- Bez : To use cubiz-beizers within .animate()
 - jQuery : Used for easy DOM selection, AJAX calls, and everything
-- MaterializeCSS : Used in options because MDB didn't have form elements stylized
-- RateYo : Used in popup to rate the selected anime easily
-- Select2 : Used in popup to search and select the anime easily
+- MaterializeCSS : Used in options and popup for layout, buttons, and animations for the MaterializeCSS theme
+- RateYo : Used in popup to rate the selected anime easily for both themes
+- Select2 : Used in popup to search and select the anime easily for the MDB theme
 
 ## Development
 The Chrome Extension uses jQuery for mostly everything, including the AJAX Requests, the Show/Hide toggles, the Next/Previous buttons, and a lot more. Without jQuery, this Chrome Extension would be nothing.
@@ -53,10 +55,12 @@ Redesigned Popup!! Yeah. Uh-huh.
 #### New features of Version 1.3
 
 - Ability to choose CSS theme on popup (WIP)
-- MaterializeCSS popup theme (WIP) [Features a new Search function!]
-- More QMAL sites (WIP)
+- MaterializeCSS popup theme [Features a new Search function!]
+- Added fonts folder in libraries with required fonts
+- Added Google MaterialIcons font in libraries folder
 - Auto App Updates! 
-- Fixed Bugs:  [[#8](https://github.com/FoxInFlame/QuickMyAnimeList/issues/8)], [[#9](https://github.com/FoxInFlame/QuickMyAnimeList/issues/9)], [[#10](https://github.com/FoxInFlame/QuickMyAnimeList/issues/10)]
+- Impletemented Suggesstion [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] for MaterializeCSS theme, but not MDB theme 
+- Fixed Bugs:  [[#8](https://github.com/FoxInFlame/QuickMyAnimeList/issues/8)], [[#9](https://github.com/FoxInFlame/QuickMyAnimeList/issues/9)], [[#10](https://github.com/FoxInFlame/QuickMyAnimeList/issues/10)],  [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] (Bug #11 is fixed in MaterializeCSS theme, but not MDB theme), [[#14](https://github.com/FoxInFlame/QuickMyAnimeList/issues/14)], 
 - Probably more.
 
 #### Removed features from previous version (1.2)
@@ -76,10 +80,9 @@ Redesigned Popup!! Yeah. Uh-huh.
 #### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![](https://img.shields.io/github/issues-closed-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
 
 - **BUG** [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)] In-Page only works on gogoanime.io (Will be fixed for later 1.X)
-- **BUG** [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] Space within Anime Search for Material Design Bootstrap theme makes results disappear
-- **Suggestion** [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] A link/button for MAL page of anime in popup (Will be added in 1.3)
-- **BUG** [[#13](https://github.com/FoxInFlame/QuickMyAnimeList/issues/13)] Change anime status number to text (Will be fixed in 1.3)
-- **BUG** [[#14](https://github.com/FoxInFlame/QuickMyAnimeList/issues/14)] Options Page Not Responsive (Will be fixed in 1.3)
+- **BUG** [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] Space within Anime Search for MDB theme makes results disappear (WIll be fixed for later 1.X)
+- **Suggestion** [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] A link/button for MAL page of anime in popup *Implemented in MaterializeCSS theme, but not MDB theme*
+- **BUG** [[#13](https://github.com/FoxInFlame/QuickMyAnimeList/issues/13)] Change anime status number to text in MDB theme (Will be fixed for later 1.X)
 
 There are several ways you can tell me your opinion :
 
@@ -90,5 +93,5 @@ There are several ways you can tell me your opinion :
 - PM me on Reddit @FoxInFlame
 - etc.
 
-## Licence
+## License
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms" property="dct:title">QuickMyAnimeList</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">FoxInFlame</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
