@@ -392,12 +392,13 @@ fieldset {
 .animeInformation #animeInformation_synopsis {
   font-size: 11px;
 }
-.animeInformation #animeInformation_link {
+.animeInformation #animeInformation_myScore {
   position: absolute;
   right: 140px;
   top: 100px;
+  display: none;
 }
-.animeInformation #animeInformation_score {
+.animeInformation #animeInformation_link {
   position: absolute;
   right: 90px;
   top: 100px;
