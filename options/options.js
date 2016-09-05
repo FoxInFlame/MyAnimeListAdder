@@ -140,7 +140,7 @@ function welcome_message_features() {
 }
 function development_github() {
   $.ajax({
-    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3",
+    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.4",
     success: function(data) {
       $("#github_latest_commit_sha").html(data[0]["sha"].substring(0,10));
       $("#github_latest_commit_link").attr("href", data[0]["commit"]["url"]);
@@ -149,6 +149,11 @@ function development_github() {
       current_date = current_date.toISOString(); //"2011-12-19T15:28:46.493Z"
       current_date = current_date.split(".")[0]+"Z"; //"2011-12-19T15:28:46Z"
       $("#github_latest_commit_date").html(timeDifferenceHTML(current_date, github_latest_commit_date));
+    },
+    error: function() {
+      $("#github_latest_commit_date").html("Nothing yet!");
+      $("#github_latest_commit_sha").html("Empty");
+      $("#github_latest_commit_link").css("pointer-events", "none");
     }
   })
   $.ajax({
@@ -359,20 +364,23 @@ function save_options_badge() {
 
 function restore_options_popup() {
   chrome.storage.sync.get({
-    popup_action_open: "1",
+    popup_action_open: 1,
     popup_input_rating: true,
     popup_input_rewatching: true,
     popup_input_tags: true,
     popup_input_storageType: false,
-    popup_action_confirm: true
+    popup_action_confirm: true,
+    popup_theme: 2
   }, function(items) {
-    document.getElementById("popup_action_open").value = parseInt(items.popup_action_open);
+    document.getElementById("popup_action_open").value = items.popup_action_open;
     document.getElementById("popup_input_rating").checked = items.popup_input_rating;
     document.getElementById("popup_input_rewatching").checked = items.popup_input_rewatching;
     document.getElementById("popup_input_tags").checked = items.popup_input_tags;
     document.getElementById("popup_input_storageType").checked = items.popup_input_storageType;
     document.getElementById("popup_action_confirm").checked = items.popup_action_confirm;
+    document.getElementById("popup_css_theme").value = items.popup_theme;
     $("#popup_action_open").material_select();
+    $("#popup_css_theme").material_select();
     if(parseInt(items.popup_action_open) == 1) {
       $("#popup_quickmalpopup_options").show();
     } else {
@@ -388,19 +396,21 @@ function restore_options_popup() {
   })
 }
 function save_options_popup() {
-  var popup_action_open = document.getElementById("popup_action_open").value.toString();
+  var popup_action_open = document.getElementById("popup_action_open").value;
   var popup_input_rating = document.getElementById("popup_input_rating").checked;
   var popup_input_rewatching = document.getElementById("popup_input_rewatching").checked;
   var popup_input_tags = document.getElementById("popup_input_tags").checked;
   var popup_input_storageType = document.getElementById("popup_input_storageType").checked;
   var popup_action_confirm = document.getElementById("popup_action_confirm").checked;
+  var popup_css_theme = document.getElementById("popup_css_theme").value;
   chrome.storage.sync.set({
     popup_action_open: popup_action_open,
     popup_input_rating: popup_input_rating,
     popup_input_rewatching: popup_input_rewatching,
     popup_input_tags: popup_input_tags,
     popup_input_storageType: popup_input_storageType,
-    popup_action_confirm: popup_action_confirm
+    popup_action_confirm: popup_action_confirm,
+    popup_theme: popup_css_theme
   }, function() {
     var status = document.getElementById("save");
     status.innerHTML = 'Popup Options Saved.';
