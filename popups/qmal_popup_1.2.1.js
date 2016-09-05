@@ -581,6 +581,18 @@ $("#stage3_next").on("click", function() {
   submit["title"] = animeNamesInList[animeid];
   submit["episodes"] = $("#anime_stage2_episodeInput").val();
   submit["status"] = $("#anime_stage2_status").val();
+  var chosenStatusStringFormat;
+  if(submit["status"] == 1) {
+    chosenStatusStringFormat = "Watching";
+  } else if(submit["status"] == 2) {
+    chosenStatusStringFormat = "Completed";
+  } else if(submit["status"] == 3) {
+    chosenStatusStringFormat = "On-Hold";
+  } else if(submit["status"] == 4) {
+    chosenStatusStringFormat = "Dropped";
+  } else if(submit["status"] == 6) {
+    chosenStatusStringFormat = "Plan to Watch"
+  }
   submit["score"] = $("#anime_stage2_rating").rateYo("rating");
   submit["storage_type"] = $("#anime_stage3_storageType").val();
   submit["storage_value"] = "";
@@ -598,24 +610,15 @@ $("#stage3_next").on("click", function() {
   submit["tags"] = $("#anime_stage3_tags").val();
   $("#anime_stage4_normalInfo").html("<b>Action : </b>" + formAnimeStatus +
   "<br><b>Anime Title : </b>" + submit["title"] +
-  "<br><b>Anime Status : </b>" + submit["status"] +
+  "<br><b>Anime Status : </b>" + chosenStatusStringFormat +
   "<br><b>Watched Episodes : </b>" + submit["episodes"] + "/" + animeEpisodes[animeid] +
-  "<br><b>Your Rating : </b>" + submit["score"]);
-  $("#anime_stage4_moreInfo").html("<br><b>Storage Type : </b>" + submit["storage_type"] +
-  "<br><b>Storage Value : </b>" + submit["storage_value"] +
-  "<br><b>Times Rewatched : </b>" + submit["times_rewatched"] +
-  "<br><b>Rewatch Value : </b>" + submit["rewatch_value"] +
+  "<br><b>Your Rating : </b>" + submit["score"] +
   "<br><b>Date Start : </b>" + submit["date_start"] +
   "<br><b>Date Finish : </b>" + submit["date_finish"] +
-  "<br><b>Priority : </b>" + submit["priority"] +
-  "<br><b>Enable Discussion? : </b>" + submit["enable_discussion"] +
   "<br><b>Enable Rewatching? : </b>" + submit["enable_rewatching"] +
   "<br><b>Tags : </b>" + submit["tags"]);
   $("#anime_stage4_moreInfo").hide();
-  anime_stage4_confirmMore_visibility = 0;
 });
-
-toggleShowHide("anime_stage4_moreInfo", "anime_stage4_confirmMore_visibility", "More Info", "Less Info");
 
 $("#mainForm").on("submit", function() {
   if(formAnimeStatus == "add") {

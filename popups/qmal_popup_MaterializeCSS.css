@@ -20,9 +20,23 @@ body {
   height: 40px;
 }
 
+.header .progress {
+  background-color: #2e51a2;
+}
+.header .progress div {
+  background-color: #ffffff;
+}
 .header #openWindow {
   background: white;
   float: right;
+}
+
+.animeInformation-loading-bar-wrapper {
+  position: fixed !important;
+  top: 73px;
+  z-index: 102;
+  border-radius: 0px !important;
+  display: none !important;
 }
 
 #mainForm_tmp {
@@ -392,6 +406,12 @@ fieldset {
 .animeInformation #animeInformation_synopsis {
   font-size: 11px;
 }
+.animeInformation #animeInformation_deleteFromList {
+  position: absolute;
+  right: 190px;
+  top: 100px;
+  display: none;
+}
 .animeInformation #animeInformation_myScore {
   position: absolute;
   right: 140px;
@@ -408,9 +428,23 @@ fieldset {
   right: 20px;
   top: 90px;
   z-index: 70;
+  background-color: #e53935;
+  transition: background-color linear 0.2s, background linear 0.2s;
 }
+
 .animeInformation #animeInformation_addToList i{
   border-spacing: 0;
+}
+.animeInformation .animeInformation-edit-preloader-wrapper {
+  width:60.5px; /*Because the button is 55.5px*/
+  height:60.5px;
+  position: absolute;
+  top:87.5px; /*To put it right on top of the button*/
+  right:17.5px;
+  z-index:71; /*One above button*/
+}
+.animeInformation .animeInformation-edit-preloader-wrapper .spinner-layer {
+  border-color:#2e51a2;
 }
 .animeInformation #animeInformation_addBackground {
   position: absolute;
@@ -422,6 +456,13 @@ fieldset {
   top: 95px;
   height: 20px;
   z-index: 15;
+}
+.animeInformation #animeInformation_addBackground .preloader-wrapper {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left:50%;
+  transform: translate(-50%, -50%);
 }
 
 .grayscale {

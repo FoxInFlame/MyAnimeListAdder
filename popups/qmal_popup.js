@@ -23,6 +23,7 @@ function grid_list_init() {
     }, 195, $.bez([0.4, 0, 1, 1]));
   });
   $(".grid-list-row .col img").on("click", function() {
+    $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "block", "important");
     $("#overall-progress-bar").css("width", "33.33%");
     $(".animeInformation #animeInformation_image").attr("src", $(this).attr("src"));
     $(".animeInformation .animeInformation_id").text($(this).parent().data("id"));
@@ -166,7 +167,7 @@ function updateAnimeInList(id, episode, status, score, storage_type, storage_val
     async: false,
     success: function(ajaxData) {
       console.log("[DONE] Anime ID " + id + " has been updated on " + loginUsername + "'s list!");
-      console.log("[DONE] Details: Episodes - " + episodes);
+      console.log("[DONE] Details: Episodes - " + episode);
       console.log("[DONE] Details: Score - " + score);
     },
     error: function(xhr, status, thrownError) {
@@ -256,6 +257,7 @@ function addAnimeInList(id, episode, status, score, storage_type, storage_value,
 // [+] =================DELETE ANIME===================== [+]
 function deleteAnimeInList(id) {
   // This function will delete without any confirmation. Be aware.
+  var errorStatus = 0;
   $.ajax({
     url: "https://myanimelist.net/api/animelist/delete/" + id + ".xml",
     type: "GET",
@@ -265,11 +267,13 @@ function deleteAnimeInList(id) {
       console.log("Anime ID " + id + " has been deleted!");
     },
     error: function(xhr, status, thrownError) {
+      errorStatus = xhr.responseText;
       console.log(xhr.status);
-      console.log(xhr.responseText);
+      console.log(xhr.responseText + "@ deleteAnimeInList()");
     }
-  })
-}
+  });
+  return errorStatus;
+};
 
 // [+] =============MONTH STRING TO NUMBER=============== [+]
 String.prototype.getMonthFromString = function() {
@@ -380,20 +384,25 @@ function checkIfInAnimeList(animeID) {
           };
           $("#animeEditForm-tags").material_chip(data);
           
-          $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>");
+          $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").removeClass("red").addClass("yellow");
           $("#animeEditForm nav .nav-wrapper span i").text("edit");
           $(".animeInformation #animeInformation_myScore").show();
+          $(".animeInformation #animeInformation_deleteFromList").show();
+          $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "none", "important");
           return false;
         } else {
           //It could be in the list, but not in this particular "each"
           formAnimeStatus = "Add";
-          $("#animeInformation_addToList").html("<i class=\"material-icons\">add</i>");
+          $("#animeInformation_addToList").html("<i class=\"material-icons\">add</i>").removeClass("yellow").addClass("red");
           $("#animeEditForm-status").val("");
           $("#animeEditForm-episodes").val("");
+          $("#animeInformation_addToList").attr("data-tooltip", "Add to List").tooltip({delay:50});
           $("#animeEditForm-rating").rateYo("option", "rating", 0);
           $("#animeEditForm-tags").text("");
           $("#animeEditForm nav .nav-wrapper span i").text("add");
           $(".animeInformation #animeInformation_myScore").hide();
+          $(".animeInformation #animeInformation_deleteFromList").hide();
+          $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "none", "important");
         }
       });
     }
@@ -422,6 +431,8 @@ Date.prototype.isDateValid = function() {
 
 
 
+
+
 // [+] ================================================== [+]
 //
 //                         MAIN CODE
@@ -436,6 +447,7 @@ $("#openWindow").on("click", function() {
 
 // [+] Done Typing -> Render Results
 $("#animeNameSearch").donetyping(function() {
+  $(".animeInformation-loading-bar-wrapper")[0].style.setProperty("display", "block", "important");
   $("#animeNameSearch_status").text("Searching...");
   $(".grid-list-row .col img").css("pointer-events", "none").addClass("grayscale");
   var query = $(this).val();
@@ -448,11 +460,13 @@ $("#animeNameSearch").donetyping(function() {
     error: function(xhr, status, thrownError) {
       console.log(xhr.status);
       console.log(xhr.responseText);
+      $(".animeInformation-loading-bar-wrapper")[0].style.setProperty("display", "none", "important");
       $("#animeNameSearch_status").text(xhr.responseText + ".");
     },
     success: function(data, textStatus, jqXHR) {
       if(data === null || data === undefined) {
         // Empty return
+        $(".animeInformation-loading-bar-wrapper")[0].style.setProperty("display", "none", "important");
         $("#animeNameSearch_status").text("No Results.");
         return;
       }
@@ -487,6 +501,7 @@ function animeSearch_formatResults(dataJSON) {
     $("#animeNameSearch_status").text("1 Result.");
     grid_list_init();
     $("#animeNameSearch_results img").css("pointer-events", "auto").removeClass("grayscale");
+    $(".animeInformation-loading-bar-wrapper")[0].style.setProperty("display", "none", "important");
     return;
   }
   
@@ -517,6 +532,7 @@ function animeSearch_formatResults(dataJSON) {
       $("#animeNameSearch_results").append(html);
       rowcount = 0;
     }
+    $(".animeInformation-loading-bar-wrapper")[0].style.setProperty("display", "none", "important");
   }
   //Initiailizes the Grid List to make sure all events are on.
   $("#animeNameSearch_status").text(allcount + " Results.");
@@ -524,6 +540,43 @@ function animeSearch_formatResults(dataJSON) {
   $("#animeNameSearch_results img").css("pointer-events", "auto").removeClass("grayscale");
 }
 
+// [+] Delete Anime Button -> Ask for Confirmation -> Delete
+$(".animeInformation #animeInformation_deleteFromList").on("click", function() {
+  $("#modal_delete_confirmation").openModal({
+    dismissible: false,
+    opacity: 0.4
+  });
+});
+$("#modal_delete_confirmation_yes").on("click", function() {
+    if(deleteAnimeInList($(".animeInformation .animeInformation_id").text()) !== 0) {
+      // Returns 0 if no error
+      // Returns a string with information if error
+      Materialize.toast(response, 4000);
+      return;
+    } else {
+      Materialize.toast("Deleted anime " + $(".animeInformation .animeInformation_id").text() + " from list.", 4000);
+      $("#modal_delete_confirmation").closeModal();
+      formAnimeStatus = "Add";
+      $("#animeInformation_addToList").html("<i class=\"material-icons\">add</i>").removeClass("yellow").addClass("red");
+      $("#animeEditForm-status").val("").material_select();
+      $("#animeEditForm-episodes").val("");
+      $("#animeInformation_addToList").attr("data-tooltip", "Add to List").tooltip({delay:50});
+      $("#animeEditForm-rating").rateYo("option", "rating", 0);
+      $("#animeEditForm-tags .chips").remove();
+      $("#animeEditForm nav .nav-wrapper span i").text("add");
+      $(".animeInformation #animeInformation_myScore").hide();
+      $(".animeInformation #animeInformation_deleteFromList").hide();
+      $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "none", "important");
+      $("#animeEditForm-fieldset2").animate({
+        marginTop: "550px"
+      }, 300, function() {
+        $("#animeEditForm-fieldset1").animate({
+          marginTop: "50px"
+        });
+      });
+    }
+  });
+  
 // [+] Add to List Button Click
 $("#animeInformation_addToList").click(function() {
   $(this).tooltip("remove");
@@ -562,6 +615,7 @@ $("#animeInformation_addToList").click(function() {
   }
   $("#overall-progress-bar").css("width", "66.66%");
   $("#qmal_popup_mainContent").css("width", "500px").css("height", "600px").css("overflow","hidden");
+  $("#animeInformation_addBackground .preloader-wrapper").show();
   $("#animeInformation_addBackground").animate({
     width: "100%",
     opacity: "1",
@@ -590,6 +644,7 @@ $("#animeInformation_addToList").click(function() {
   window.setTimeout(function() {
     $("#addAnimeContainer").fadeIn(400, function() {
       $("#animeInformation_addBackground").fadeOut(400);
+      $("#animeInformation_addBackground .preloader-wrapper").hide();
     });
   }, 250);
 });
@@ -710,13 +765,13 @@ $("#animeEditForm-fieldset2-next").click(function() {
     }
   }
   
-  // Reset all fields
-  $("#animeEditForm-status").val("");
-  $("#animeEditForm-episodes").val("");
-  $("#animeEditForm-rating").rateYo("option", "rating", 0);
-  $("#animeEditForm-startDate").val("");
-  $("#animeEditForm-finishDate").val("");
-  $("#animeEditForm-tags").text("");
+  
+  $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").removeClass("red").addClass("yellow");
+  $("#animeEditForm nav .nav-wrapper span i").text("edit");
+  $(".animeInformation #animeInformation_myScore").show();
+  $(".animeInformation #animeInformation_deleteFromList").show();
+  $(".animeInformation #animeInformation_myScore").attr("data-tooltip", "My Score: " + rating).tooltip({delay:50});
+  formAnimeStatus = "Update";
   $("#animeEditForm-fieldset2").animate({
     marginTop: "550px"
   }, 300, function() {

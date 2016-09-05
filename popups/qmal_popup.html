@@ -14,6 +14,9 @@
           <div id="overall-progress-bar" class="determinate" style="width:0%"></div>
         </div>
       </div>
+      <div class="animeInformation-loading-bar-wrapper progress">
+        <div id="animeInformation-loading-bar" class="indeterminate"></div>
+      </div>
       <div id="mainForm_tmp">
         <fieldset>
           <div class="row">
@@ -33,15 +36,29 @@
             <div id="animeInformation_image-wrapper" class="z-depth-1">
               <img src="#" id="animeInformation_image">
             </div>
-            <a id="animeInformation_myScore" data-position="bottom" data-delay="50" class="z-depth-1 tooltipped btn-floating waves-effect waveslight orange darken-1"><i class="material-icons">star_border</i></a>
+            <a id="animeInformation_deleteFromList" data-position="bottom" data-tooltip="Delete" data-delay="50" class="z-depth-1 tooltipped btn-floating waves-effect waves-light red darken-3"><i class="material-icons">delete</i></a>
+            <a id="animeInformation_myScore" data-position="bottom" data-delay="50" class="z-depth-1 tooltipped btn-floating waves-effect waves-light orange darken-1"><i class="material-icons">star_border</i></a>
             <a id="animeInformation_link" href="#" data-position="bottom" data-delay="50" data-tooltip="Visit MAL site" target="_blank" class="z-depth-1 tooltipped btn-floating waves-effect waves-light" style="backgroudn:#2e51a2"><i class="material-icons">explore</i></a>
             <a id="animeInformation_addToList" data-display-add="0" data-position="bottom" data-delay="50" data-tooltip="Add to List" class="z-depth-2 tooltipped btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
             <!-- Put List Info (If in the list) as buttons (watching episodes, status, and rating)-->
+            <div class="animeInformation-edit-preloader-wrapper active">
+              <div class="spinner-layer">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                  <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
             <div class="row" id="generalInfo">
               <div class="col s12">
                 <div class="card">
                   <div class="card-content" style="color:#172851">
-                    <span class="card-title"><b class="animeInformation_title" style="font-weight:inherit"></b><b class="animeInformation_id right" style="font-weight:inherit;font-size: 15px;color:#2e51a2"></b></span>
+                    <span class="card-title"><b class="animeInformation_title" style="font-weight:inherit"></b><span class="right" style="font-size: 15px;color:#2e51a2;">#<b class="animeInformation_id" style="font-weight:inherit"></b></span></span>
                     <div class="row">
                       <div class="col s4">
                         <b>MAL Score:</b> <span class="animeInformation_score"></span>
@@ -58,7 +75,21 @@
                 </div>
               </div>
             </div>
-            <div id="animeInformation_addBackground" class="z-depth-2"></div>
+            <div id="animeInformation_addBackground" class="z-depth-2">
+              <div class="preloader-wrapper active" style="position: absolute;top: 50%;left:50%">
+                <div class="spinner-layer spinner-red-only">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div>
+                  <div class="gap-patch">
+                    <div class="circle"></div>
+                  </div>
+                  <div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div id="addAnimeContainer">
               <form id="animeEditForm">
                 <nav>
@@ -115,6 +146,18 @@
                   </div>
                 </fieldset>
               </form>
+            </div>
+          </div>
+          
+          <a style="display:none" class="modal-trigger" href="#modal_delete_confirmation">Delete?</a>
+          <div id="modal_delete_confirmation" class="modal bottom-sheet">
+            <div class="modal-content">
+              <h4>Are you sure?</h4>
+              <p>Deleting an anime from your list means all your tags, ratings, statuses and all those are gone. Forever. Unless you add them and type them in again. But that still takes time.</p>
+            </div>
+            <div class="modal-footer">
+              <a id="modal_delete_confirmation_yes" href="#!" class="modal-action waves-effect btn-flat waves-red">Yeah, delete 'em.</a>
+              <a href="#!" class="modal-action modal-close waves-effect btn-flat">Nah, keep it.</a>
             </div>
           </div>
         </fieldset>
