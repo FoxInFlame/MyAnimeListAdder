@@ -1,12 +1,12 @@
 # QuickMyAnimeList
-[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![GitHub commits](https://img.shields.io/github/commits-since/FoxInFlame/QuickMyAnimeList/1.2.svg?maxAge=2592000)]() [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QuickMyAnimeList/total.svg?maxAge=2592000)]() [![Website](https://img.shields.io/website-up-down-green-red/http/www.foxinflame.tk.svg?maxAge=2592000&label=official website)](http://www.foxinflame.tk/QuickMyAnimeList)
+[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![GitHub commits](https://img.shields.io/github/commits-since/FoxInFlame/QuickMyAnimeList/1.2.svg?maxAge=2592000)]() [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QuickMyAnimeList/total.svg?maxAge=2592000)]()
 
 [![GitHub forks](https://img.shields.io/github/forks/FoxInFlame/QuickMyAnimeList.svg?style=social&label=Fork&maxAge=2592000)]()
 [![GitHub watchers](https://img.shields.io/github/watchers/FoxInFlame/QuickMyAnimeList.svg?style=social&label=Watch&maxAge=2592000)]() [![Twitter Follow](https://img.shields.io/twitter/follow/FoxInFlame.svg?style=social&label=Follow&maxAge=2592000)]()
 
 QuickMyAnimeList (QMAL) is a handy Chrome extension that allows you to edit, add, or delete an anime in your MyAnimeList list. Of course, there are many more features...? 
 
-## Official Website
+## Official Website [![Website](https://img.shields.io/website-up-down-green-red/http/www.foxinflame.tk.svg?maxAge=2592000&label=official website)](http://www.foxinflame.tk/QuickMyAnimeList)
 Official QuickMyAnimeList website is at http://www.foxinflame.tk/QuickMyAnimeList
 
 ## Webstore
@@ -77,7 +77,7 @@ Redesigned Popup!! Yeah. Uh-huh.
 - Display popup on video site (e.g. kissanime.to/Anime/blah/Episode-1) and let user choose if QMAL should automatically update the list or not (2.X or later) **PARTIALLY DONE**
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.X, 3.X)
 
-#### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![](https://img.shields.io/github/issues-closed-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
+#### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
 
 - **BUG** [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)] In-Page only works on gogoanime.io (Will be fixed for later 1.X)
 - **BUG** [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] Space within Anime Search for MDB theme makes results disappear (WIll be fixed for later 1.X)
