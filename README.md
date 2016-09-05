@@ -59,6 +59,7 @@ Redesigned Popup!! Yeah. Uh-huh.
 - Added fonts folder in libraries with required fonts
 - Added Crunchyroll In-Page QMAL! (May or may not function properly, I don't know, I don't use Crunchyroll) (Which means I kinda fixed Bug [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)])
 - Added Google MaterialIcons font in libraries folder
+- Easier Installation Method
 - Auto App Updates! 
 - Impletemented Suggesstion [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] for MaterializeCSS theme
 - Fixed Bugs:  [[#8](https://github.com/FoxInFlame/QuickMyAnimeList/issues/8)], [[#9](https://github.com/FoxInFlame/QuickMyAnimeList/issues/9)], [[#10](https://github.com/FoxInFlame/QuickMyAnimeList/issues/10)],  [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] (Bug #11 is fixed in MaterializeCSS theme, but not MDB theme because that's not possible to fix), [[#14](https://github.com/FoxInFlame/QuickMyAnimeList/issues/13)], [[#14](https://github.com/FoxInFlame/QuickMyAnimeList/issues/14)] 
