@@ -54,35 +54,36 @@ Redesigned Popup!! Yeah. Uh-huh.
 
 #### New features of Version 1.3
 
-- Ability to choose CSS theme on popup (WIP)
+- Ability to choose CSS theme on popup
 - MaterializeCSS popup theme [Features a new Search function!]
 - Added fonts folder in libraries with required fonts
+- Added Crunchyroll In-Page QMAL! (May or may not function properly, I don't know, I don't use Crunchyroll) (Which means I kinda fixed Bug [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)])
 - Added Google MaterialIcons font in libraries folder
 - Auto App Updates! 
-- Impletemented Suggesstion [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] for MaterializeCSS theme, but not MDB theme 
-- Fixed Bugs:  [[#8](https://github.com/FoxInFlame/QuickMyAnimeList/issues/8)], [[#9](https://github.com/FoxInFlame/QuickMyAnimeList/issues/9)], [[#10](https://github.com/FoxInFlame/QuickMyAnimeList/issues/10)],  [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] (Bug #11 is fixed in MaterializeCSS theme, but not MDB theme), [[#14](https://github.com/FoxInFlame/QuickMyAnimeList/issues/14)], 
+- Impletemented Suggesstion [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] for MaterializeCSS theme
+- Fixed Bugs:  [[#8](https://github.com/FoxInFlame/QuickMyAnimeList/issues/8)], [[#9](https://github.com/FoxInFlame/QuickMyAnimeList/issues/9)], [[#10](https://github.com/FoxInFlame/QuickMyAnimeList/issues/10)],  [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] (Bug #11 is fixed in MaterializeCSS theme, but not MDB theme because that's not possible to fix), [[#14](https://github.com/FoxInFlame/QuickMyAnimeList/issues/13)], [[#14](https://github.com/FoxInFlame/QuickMyAnimeList/issues/14)] 
 - Probably more.
 
 #### Removed features from previous version (1.2)
 
 - Options.js and Options.html in the root directory (they were there for nothing)
+- Many other useless files used for nothing such as the whole in-page directory
 
 #### Next up for 1.X, 2.0, and later on.
 
 - Change layout design (1.X)
 - ~~Change CSS library from Material Design to Bootstrap (2.X)~~ **ABORTED**
 - ~~More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X, 2.X, 3.X)~~ **WAIT FOR MAL API UPDATE**
-- ~~Ability to select a theme of CSS, Material Design, Bootstrap, Classic, etc. (2.X)~~ **PARTIALLY DONE**
+- ~~Ability to select a theme of CSS, Material Design, Bootstrap, Classic, etc. (2.X)~~ **DONE IN 1.3**
 - Automatically increase number and change to "Watching" if video site is visited (e.g. gogoanime.io/blah-episode-1) (2.X or later) **PARTIALLY DONE**
 - Display popup on video site (e.g. kissanime.to/Anime/blah/Episode-1) and let user choose if QMAL should automatically update the list or not (2.X or later) **PARTIALLY DONE**
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.X, 3.X)
 
 #### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
 
-- **BUG** [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)] In-Page only works on gogoanime.io (Will be fixed for later 1.X)
+- **BUG** [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)] In-Page only works on gogoanime.io (Will be fixed for later 1.X) *Added Crunchyroll in 1.3!*
 - **BUG** [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] Space within Anime Search for MDB theme makes results disappear (WIll be fixed for later 1.X)
 - **Suggestion** [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] A link/button for MAL page of anime in popup *Implemented in MaterializeCSS theme, but not MDB theme*
-- **BUG** [[#13](https://github.com/FoxInFlame/QuickMyAnimeList/issues/13)] Change anime status number to text in MDB theme (Will be fixed for later 1.X)
 
 There are several ways you can tell me your opinion :
 
@@ -91,6 +92,7 @@ There are several ways you can tell me your opinion :
 - Email me at burningfoxinflame@gmail.com
 - Tweet to me at @FoxInFlame with the hashtag "#QuickMyAnimeList" or "#QMAL"
 - PM me on Reddit @FoxInFlame
+- Chat on the [Gitter.im chat](https://gitter.im/QuickMyAnimeList/Lobby)
 - etc.
 
 ## License
