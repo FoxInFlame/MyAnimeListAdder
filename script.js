@@ -7,7 +7,8 @@ var popup_action_open,
     popup_input_rewatching,
     popup_input_tags,
     popup_input_storageType,
-    popup_action_confirm;
+    popup_action_confirm,
+    popup_theme;
 
 function insertJS(rootjsLink) {
   $.getScript(rootjsLink).fail(function( jqxhr, settings, exception ) {
@@ -47,7 +48,8 @@ $(document).ready(function() {
     popup_input_rewatching: true,
     popup_input_tags: true,
     popup_input_storageType: false,
-    popup_action_confirm: true
+    popup_action_confirm: true,
+    popup_theme: 2
   }, function(items) {
     loginUsername = items.username;
     loginPassword = items.password;
@@ -58,33 +60,36 @@ $(document).ready(function() {
     popup_input_tags = items.popup_input_tags;
     popup_input_storageType = items.popup_input_storageType;
     popup_action_confirm = items.popup_action_confirm;
+    popup_theme = items.popup_theme;
     if(verified === false) {
       $("body").html("You have not verified your credentials. Do so in the options.");
       return false;
     }
     if(popup_action_open == 1) {
-      awesome = false;
-      if(awesome === true) {
+      if(popup_theme == 1) {
         enableCSS("libraries/Bootstrap/bootstrap.min.css");
         enableCSS("libraries/MaterialBootstrap/mdb.min.css");
         enableCSS("libraries/RateYo/jquery.rateyo.min.css");
         enableCSS("libraries/Select2/select2.min.css");
         $("#qmal_popup_mainContent").load("popups/qmal_popup_1.2.1.html #qmal_popup_mainContentLoad");
+        insertJS("libraries/Select2/select2.full.min.js");
         insertJS("popups/qmal_popup_1.2.1.js");
         return false;
+      } else if(popup_theme == 2) {
+        //QuickMAL Popup
+        disableCSS("libraries/Bootstrap/bootstrap.min.css");
+        disableCSS("styles.css");
+        enableCSS("https://f3a7a1b1655de4833e3bed3b1779c5a9d85839f8.googledrive.com/host/0BxjwQr0BBXs-aDYxM2JlaFM2bnM");
+        enableCSS("popups/qmal_popup_MaterializeCSS.css");
+        enableCSS("libraries/Google/MaterialIcons.css");
+        enableCSS("libraries/MaterializeCSS/materialize.min.css");
+        enableCSS("libraries/RateYo/jquery.rateyo.min.css");
+        enableCSS("libraries/Select2/select2.min.css");
+        $("#qmal_popup_mainContent").load("popups/qmal_popup.html #qmal_popup_mainContentLoad");
+        insertJS("libraries/Bez/jquery.bez.min.js");
+        insertJS("libraries/QuickFit/jquery.quickfit.js");
+        insertJS("popups/qmal_popup.js");
       }
-      //QuickMAL Popup
-      disableCSS("libraries/Bootstrap/bootstrap.min.css");
-      disableCSS("styles.css");
-      enableCSS("https://f3a7a1b1655de4833e3bed3b1779c5a9d85839f8.googledrive.com/host/0BxjwQr0BBXs-aDYxM2JlaFM2bnM");
-      enableCSS("popups/qmal_popup_MaterializeCSS.css");
-      enableCSS("libraries/Google/MaterialIcons.css");
-      enableCSS("libraries/MaterializeCSS/materialize.min.css");
-      enableCSS("libraries/RateYo/jquery.rateyo.min.css");
-      enableCSS("libraries/Select2/select2.min.css");
-      $("#qmal_popup_mainContent").load("popups/qmal_popup.html #qmal_popup_mainContentLoad");
-      insertJS("libraries/Bez/jquery.bez.min.js");
-      insertJS("popups/qmal_popup.js");
     } else if(popup_action_open == 2) {
       //List embed in Popup
       insertJS("popups/list_popup.js");

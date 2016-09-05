@@ -14,7 +14,7 @@
   },
   
   "permissions": [
-    "http://myanimelist.net/api",
+    "https://myanimelist.net/api",
     "storage",
     "tabs",
     "http://gogoanime.io/*",

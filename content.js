@@ -37,7 +37,6 @@ $(document).ready(function() {
     verified = items.verified;
     inpage_enable = items.inpage_enable;
     inpage_sites = items.inpage_sites;
-    contentScriptMain();
   });
 });
 

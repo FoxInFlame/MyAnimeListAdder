@@ -73,7 +73,7 @@ function updateBadge() {
   }
   
   $.ajax({
-    url: "http://myanimelist.net/malappinfo.php?u="+loginUsername+"&status=all&type=anime",
+    url: "https://myanimelist.net/malappinfo.php?u="+loginUsername+"&status=all&type=anime",
     type: "GET",
     dataTpe: "xml",
     success: function(data) {
@@ -151,7 +151,7 @@ function updateAnimeInList(id, episode, status) {
   console.log("[UPDATE] Watched Episodes: " + episode);
   
   $.ajax({
-    url: "http://myanimelist.net/api/animelist/update/" + id + ".xml",
+    url: "https://myanimelist.net/api/animelist/update/" + id + ".xml",
     type: "GET",
     data: {"data": editXML},
     username: loginUsername,
@@ -185,7 +185,7 @@ function addAnimeInList(id, episode, status) {
   console.log("[ADD] Watched Episodes: " + episode);
   
   $.ajax({
-    url: "http://myanimelist.net/api/animelist/add/" + id + ".xml",
+    url: "https://myanimelist.net/api/animelist/add/" + id + ".xml",
     type: "GET",
     data: {"data": myXML},
     username: loginUsername,
