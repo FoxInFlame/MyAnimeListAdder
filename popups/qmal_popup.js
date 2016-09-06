@@ -1,3 +1,4 @@
+
 var formAnimeStatus;
 var formAnimeUpdateData = new Object({});
 var submit = new Object({});
@@ -23,7 +24,7 @@ $("#information, #information_synopsis").hide();
 information_synopsis_visibility = 0;
 $("#anime_stage3_advancedInputs").hide();
 anime_stage3_advancedInputs_visibility = 0;
-document.getElementById("animeName_tmp").focus();
+document.getElementById("animeName").focus();
 select2_init();
 
 var marginHeightAnimeDelete = $("#anime_delete_confirm").height() + ($("#anime_delete_confirm").height())/2;
@@ -112,7 +113,7 @@ $(".previous").on("click", function() {
 });
 
 // -- Popup button at the top
-$("#openWindow").on("click", function() {
+$("#openPopup").on("click", function() {
    chrome.windows.create({'url': 'http://myanimelist.net/animelist/' + loginUsername, 'type': 'popup', 'height': 650, 'width':1000}, function(window) {
    });
 });
