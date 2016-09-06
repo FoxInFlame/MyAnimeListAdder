@@ -40,7 +40,7 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 ## What's new!?
 ### Release 1.3!
 
-Redesigned Popup!! Yeah. Uh-huh.
+Redesigned Popup!! Yeah. Uh-huh. And in-page on Crunchyroll.
 
 #### Features kept from previous veresion (1.2)
 
@@ -54,15 +54,13 @@ Redesigned Popup!! Yeah. Uh-huh.
 
 #### New features of Version 1.3
 
-- Ability to choose CSS theme on popup
+- Ability to choose CSS theme to be used in popup from Options
 - MaterializeCSS popup theme [Features a new Search function!]
-- Added fonts folder in libraries with required fonts
 - Added Crunchyroll In-Page QMAL! (May or may not function properly, I don't know, I don't use Crunchyroll) (Which means I kinda fixed Bug [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)])
-- Added Google MaterialIcons font in libraries folder
 - Easier Installation Method
 - Auto App Updates! 
 - Impletemented Suggesstion [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] for MaterializeCSS theme
-- Fixed Bugs:  [[#8](https://github.com/FoxInFlame/QuickMyAnimeList/issues/8)], [[#9](https://github.com/FoxInFlame/QuickMyAnimeList/issues/9)], [[#10](https://github.com/FoxInFlame/QuickMyAnimeList/issues/10)],  [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] (Bug #11 is fixed in MaterializeCSS theme, but not MDB theme because that's not possible to fix), [[#14](https://github.com/FoxInFlame/QuickMyAnimeList/issues/13)], [[#14](https://github.com/FoxInFlame/QuickMyAnimeList/issues/14)] 
+- Fixed Many Bugs.
 - Probably more.
 
 #### Removed features from previous version (1.2)
@@ -72,21 +70,6 @@ Redesigned Popup!! Yeah. Uh-huh.
 
 #### Next up for 1.X, 2.0, and later on.
 
-- Change layout design (1.X)
-<<<<<<< HEAD
-- ~~Change CSS library from Material Design to Bootstrap (2.X)~~ **ABORTED**
-- ~~More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X, 2.X, 3.X)~~ **WAIT FOR MAL API UPDATE**
-- ~~Ability to select a theme of CSS, Material Design, Bootstrap, Classic, etc. (2.X)~~ **DONE IN 1.3**
-- Automatically increase number and change to "Watching" if video site is visited (e.g. gogoanime.io/blah-episode-1) (2.X or later) **PARTIALLY DONE**
-- Display popup on video site (e.g. kissanime.to/Anime/blah/Episode-1) and let user choose if QMAL should automatically update the list or not (2.X or later) **PARTIALLY DONE**
-- Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.X, 3.X)
-
-#### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
-
-- **BUG** [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)] In-Page only works on gogoanime.io (Will be fixed for later 1.X) *Added Crunchyroll in 1.3!*
-- **BUG** [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] Space within Anime Search for MDB theme makes results disappear (WIll be fixed for later 1.X)
-- **Suggestion** [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] A link/button for MAL page of anime in popup *Implemented in MaterializeCSS theme, but not MDB theme*
-=======
 - Change CSS library from Material Design to Bootstrap (2.0) **PARTIALLY DONE**
 - More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X)
 - ~~Add options to show/hide inputs in the popup (1.X)~~ **DONE**
@@ -96,17 +79,11 @@ Redesigned Popup!! Yeah. Uh-huh.
 - Display popup on video site (e.g. kissanime.to/Anime/blah/Episode-1) and let user choose if QMAL should automatically update the list or not (2.0 or later) **PARTIALLY DONE**
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0, 3.0)
 
-#### Bugs / Problems / Suggestions / Support
+#### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
 
-- **BUG** [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)] In-Page only works on gogoanime.io (Will be fixed for later 1.X)
-- ~~**BUG** [[#8](https://github.com/FoxInFlame/QuickMyAnimeList/issues/8)] In-Page doesn't work when there is only one result in the API search~~ (Fixed with 1.2.1)
-- **BUG**  [[#9](https://github.com/FoxInFlame/QuickMyAnimeList/issues/9)] In-Page QMAL doesn't work when anime name contains special characters (Will be fixed for later 1.X)
-- **BUG** [[#10](https://github.com/FoxInFlame/QuickMyAnimeList/issues/10)] Thumbs.db file error when loading extension (Will be fixed in 1.3)
-- **BUG** [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] Space within Anime Search makes results disappear (Will be fixed in 1.3)
-- **Suggestion** [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] A link/button for MAL page of anime in popup (Will be added in 1.3)
-- **BUG** [[#13](https://github.com/FoxInFlame/QuickMyAnimeList/issues/13)] Change anime status number to text (Will be fixed in 1.3)
-- **BUG** [[#14](https://github.com/FoxInFlame/QuickMyAnimeList/issues/14)] Options Page Not Responsive (Will be fixed in 1.3)
->>>>>>> master
+- **BUG** [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)] In-Page only works on gogoanime.io (Will be fixed for later 1.X) *Added Crunchyroll in 1.3!*
+- **BUG** [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] Space within Anime Search for MDB theme makes results disappear (WIll be fixed for later 1.X)
+- **Suggestion** [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] A link/button for MAL page of anime in popup *Implemented in MaterializeCSS theme, but not MDB theme*
 
 There are several ways you can tell me your opinion :
 
