@@ -61,7 +61,7 @@ $(document).ready(function() {
     popup_input_storageType = items.popup_input_storageType;
     popup_action_confirm = items.popup_action_confirm;
     popup_theme = items.popup_theme;
-    if(verified === false) {
+    if(verified !== true) {
       $("body").html("You have not verified your credentials. Do so in the options.");
       return false;
     }
