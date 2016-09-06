@@ -291,19 +291,7 @@ String.prototype.changeDatetoMALFormat = function() {
   if(this == "") {
     return;
   }
-  /*var dateString_array = this.split(" "); //That makes "5", "September,", and "2016"
-  var dateYear = dateString_array[2];
-  var dateDate = dateString_array[0];
-  if(dateDate.length == "1") {
-    dateDate = "0" + dateDate;
-  }
-  var dateMonth = dateString_array[1].slice(0, -1).getMonthFromString();
-  console.log(dateMonth);
-  if(dateMonth.length == "1") {
-    dateMonth = "0" + dateMonth;
-  }
-  return dateMonth + dateDate + dateYear;*/
-  
+
   dateString_array = this.split("/");
   if(parseInt(dateString_array[1]) > 12) {
     dateString_array[1] = dateString_array[1] % 12;
@@ -581,6 +569,13 @@ $("#modal_delete_confirmation_yes").on("click", function() {
 $("#animeInformation_addToList").click(function() {
   $(this).tooltip("remove");
   if($(this).attr("data-display-add") != "0") {
+    $("#animeEditForm-fieldset2").animate({
+        marginTop: "550px"
+      }, 300, function() {
+        $("#animeEditForm-fieldset1").animate({
+          marginTop: "50px"
+        });
+      });
     $("#overall-progress-bar").css("width", "33.33%");
     $("#addAnimeContainer").fadeOut(400);
     $("#animeInformation_addBackground").fadeIn(400);
