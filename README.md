@@ -81,9 +81,7 @@ Redesigned Popup!! Yeah. Uh-huh. And in-page on Crunchyroll.
 
 #### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
 
-- **BUG** [[#7](https://github.com/FoxInFlame/QuickMyAnimeList/issues/7)] In-Page only works on gogoanime.io (Will be fixed for later 1.X) *Added Crunchyroll in 1.3!*
-- **BUG** [[#11](https://github.com/FoxInFlame/QuickMyAnimeList/issues/11)] Space within Anime Search for MDB theme makes results disappear (WIll be fixed for later 1.X)
-- **Suggestion** [[#12](https://github.com/FoxInFlame/QuickMyAnimeList/issues/12)] A link/button for MAL page of anime in popup *Implemented in MaterializeCSS theme, but not MDB theme*
+Everything is filed under Issues.
 
 There are several ways you can tell me your opinion :
 
