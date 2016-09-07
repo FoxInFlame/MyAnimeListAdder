@@ -16,7 +16,7 @@ I will not put this Chrome Extension on the webstore, simply because I don't wan
 Check out the official website to see specific instructions to installing Chrome extensions from websites.
 
 ## Screenshots
-Check out the official website for screenshots in HD.
+Check out the official website for screenshots.
 
 ## Included Libraries
 - Bootstrap : Used in popup for layout, and because required for MDB
