@@ -1,4 +1,11 @@
+// [+] ==================REPLACE ALL===================== [+]
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
 //Content in the app
+
 $("head").append(
   "<link rel='stylesheet' href='http://www.foxinflame.tk/QuickMyAnimeList/source/content.css' type='text/css'>"
 );
@@ -179,18 +186,11 @@ function contentScriptGoGoAnime() {
       // Try and get Anime Name
       var URL_anime;
       if(window.location.href.contains("gogoanime")) {
+        anime_name_element = $(".main_body .anime_video_body .anime_video_body_cate .anime-info a").html();
+        console.log(anime_name_element);
         URL_anime = window.location.href.split("/");
         URL_anime = URL_anime[URL_anime.length - 1];
-        URL_anime_parts = URL_anime.split("-");
-        // Repeat 2 times for removing both "episode" and the number
-        URL_anime_parts.splice(-1, 1);
-        URL_anime_parts.splice(-1, 1);
-        anime_name = URL_anime_parts;
-        anime_name = anime_name.join("+").capitalizeFirstLetter();
-        if(anime_name.endsWith("+")) {
-          //Special characters become double spaces
-          anime_name = anime_name.substring(0, anime_name.length-1);
-        }
+        anime_name = anime_name_element.replaceAll(" ", "+");
         URL_anime_parts = URL_anime.split("-");
         anime_episode = URL_anime_parts[URL_anime_parts.length - 1];
         console.info("[QMAL@GoGoAnime] QMAL has detected that you are watching " + anime_name);
@@ -229,6 +229,8 @@ function contentScriptGoGoAnime() {
             } else {
               first_result = search_result.entry;
               // Only one result!
+              $("#qmal-update-name-not-this").hide();
+              $("#qmal-update-anime-name").css("width", "100%");
               result_multiple = false;
             }
             if(result_multiple === false) {
