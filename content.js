@@ -1,9 +1,3 @@
-// [+] ==================REPLACE ALL===================== [+]
-String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
-};
-
 //Content in the app
 
 $("head").append(
@@ -60,6 +54,11 @@ String.prototype.contains = function(string) {
 
 String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
 };
 
 
@@ -225,6 +224,8 @@ function contentScriptGoGoAnime() {
             if($.isArray(search_result.entry)) {
               first_result = search_result.entry;
               // Multiple Results.
+              $("#qmal-update-name-not-this").show();
+              $("#qmal-update-anime-name").css("width", "250px");
               result_multiple = true;
             } else {
               first_result = search_result.entry;
@@ -547,10 +548,14 @@ function contentScriptCrunchyroll() {
             if($.isArray(search_result.entry)) {
               first_result = search_result.entry;
               // Multiple Results.
+              $("#qmal-update-name-not-this").show();
+              $("#qmal-update-anime-name").css("width", "250px");
               result_multiple = true;
             } else {
               first_result = search_result.entry;
               // Only one result!
+              $("#qmal-update-name-not-this").hide();
+              $("#qmal-update-anime-name").css("width", "100%");
               result_multiple = false;
             }
             if(result_multiple === false) {
