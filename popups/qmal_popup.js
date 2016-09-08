@@ -52,7 +52,7 @@ function grid_list_init() {
       truncate: true,
       width: 420
     });
-    $(".animeInformation").css("position", "fixed").css("display", "block").animate({
+    $(".animeInformation").css("position", "absolute").css("display", "block").animate({
       opacity: "1",
       height: "100%"
     }, 300);
@@ -192,10 +192,10 @@ function addAnimeInList(id, episode, status, score, storage_type, storage_value,
   if(rewatch_value == "0") {
     rewatch_value = "";
   }
-  if(typeof date_start != 'undefined') {
+  if(typeof date_start == 'undefined') {
     date_start = "";
   }
-  if(typeof date_finish != 'undefined' === null) {
+  if(typeof date_finish == 'undefined') {
     date_finish = "";
   }
   if(priority == "0") {
@@ -291,17 +291,16 @@ String.prototype.changeDatetoMALFormat = function() {
   if(this == "") {
     return;
   }
-
   dateString_array = this.split("/");
   if(parseInt(dateString_array[1]) > 12) {
-    dateString_array[1] = dateString_array[1] % 12;
+    dateString_array[1] = parseInt(dateString_array[1]) % 12;
   }
   date = new Date(dateString_array[0], dateString_array[1], dateString_array[2]);
   if(date.isDateValid === false) {
     console.error("Date is not valid @ String.prototype.changeDatetoMALFormat");
     return;
   } else {
-    return ("0" + date.getMonth() + 1).slice(-2) + ("0" + date.getDate()).slice(-2) + date.getYear();
+    return ("0" + date.getMonth().toString()).slice(-2) + ("0" + date.getDate()).slice(-2) + date.getFullYear();
   }
 }
 
@@ -357,6 +356,8 @@ function checkIfInAnimeList(animeID) {
           } else {
             $("#animeEditForm-startDate").val(my_startDate.replaceAll("-", "/"));
           }
+          console.log(my_startDate);
+          console.log(my_finishDate);
           if(my_finishDate == "0000-00-00") {
             $("#animeEditForm-finishDate").val("");
           } else {
@@ -371,6 +372,7 @@ function checkIfInAnimeList(animeID) {
             });
           };
           $("#animeEditForm-tags").material_chip(data);
+          console.log(data);
           
           $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").removeClass("red").addClass("yellow");
           $("#animeEditForm nav .nav-wrapper span i").text("edit");
@@ -401,7 +403,7 @@ function checkIfInAnimeList(animeID) {
 Date.prototype.isDateValid = function() {
   if (Object.prototype.toString.call(this) === "[object Date]") {
     // it is a date
-    if (isNaN(d.getTime())) {  // d.valueOf() could also work
+    if (isNaN(this.getTime())) {  // d.valueOf() could also work
       // date is not valid
       return false;
     } else {
@@ -570,12 +572,12 @@ $("#animeInformation_addToList").click(function() {
   $(this).tooltip("remove");
   if($(this).attr("data-display-add") != "0") {
     $("#animeEditForm-fieldset2").animate({
-        marginTop: "550px"
-      }, 300, function() {
-        $("#animeEditForm-fieldset1").animate({
-          marginTop: "50px"
-        });
+      marginTop: "550px"
+    }, 300, function() {
+      $("#animeEditForm-fieldset1").animate({
+        marginTop: "50px"
       });
+    });
     $("#overall-progress-bar").css("width", "33.33%");
     $("#addAnimeContainer").fadeOut(400);
     $("#animeInformation_addBackground").fadeIn(400);
@@ -728,6 +730,7 @@ $("#animeEditForm-fieldset2-next").click(function() {
   times_rewatched = "";
   rewatch_value = "";
   date_start = $("#animeEditForm-startDate").val().changeDatetoMALFormat();
+  console.log(date_start);
   date_finish = $("#animeEditForm-finishDate").val().changeDatetoMALFormat();
   priority = "";
   enable_discussion = "";
