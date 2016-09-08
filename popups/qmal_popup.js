@@ -54,7 +54,7 @@ function grid_list_init() {
     });
     $(".animeInformation").css("position", "absolute").css("display", "block").animate({
       opacity: "1",
-      height: "100%"
+      height: $(document).height()
     }, 300);
   });
   $(".animeInformation nav .nav-wrapper #back-nav").on("click", function() {
