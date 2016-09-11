@@ -23,7 +23,7 @@ Check out the official website for screenshots.
 - QuickFit : To create dynamically-resizing text for anime titles in the MaterializeCSS theme
 - MaterialDesignBootstrap : Used in popup for layout, buttons, and animations for the MDB theme
 - ColorPicker : Used in options for selecting Badge Color
-- Bez : To use cubiz-beizers within .animate()
+- Bez : To use cubic-beizers within .animate()
 - jQuery : Used for easy DOM selection, AJAX calls, and everything
 - MaterializeCSS : Used in options and popup for layout, buttons, and animations for the MaterializeCSS theme
 - RateYo : Used in popup to rate the selected anime easily for both themes
