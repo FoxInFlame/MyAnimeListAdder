@@ -363,6 +363,7 @@ function checkIfInAnimeList(animeID) {
           } else {
             $("#animeEditForm-finishDate").val(my_finishDate.replaceAll("-", "/"));
           }
+          tagListArray = "";
           tagListArray = my_tags.split(",");
           console.log(tagListArray);
           var data = new Object({data:[]});
@@ -374,7 +375,6 @@ function checkIfInAnimeList(animeID) {
           };
           $("#animeEditForm-tags").material_chip(data);
           console.log(data);
-          
           $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").removeClass("red").addClass("yellow");
           $("#animeEditForm nav .nav-wrapper span i").text("edit");
           $(".animeInformation #animeInformation_myScore").show();
@@ -384,9 +384,12 @@ function checkIfInAnimeList(animeID) {
         } else {
           //It could be in the list, but not in this particular "each"
           formAnimeStatus = "Add";
+          $("#animeEditForm-tags div").remove();
           $("#animeInformation_addToList").html("<i class=\"material-icons\">add</i>").removeClass("yellow").addClass("red");
           $("#animeEditForm-status").val("");
           $("#animeEditForm-episodes").val("");
+          $("#animeEditForm-startDate").html("");
+          $("#animeEditForm-finishDate").html("");
           $("#animeInformation_addToList").attr("data-tooltip", "Add to List").tooltip({delay:50});
           $("#animeEditForm-rating").rateYo("option", "rating", 0);
           $("#animeEditForm nav .nav-wrapper span i").text("add");

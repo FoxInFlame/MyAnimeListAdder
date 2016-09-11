@@ -432,9 +432,14 @@ fieldset {
   top:87.5px; /*To put it right on top of the button*/
   right:17.5px;
   z-index:71; /*One above button*/
+  -webkit-animation: rotate360 1.5s infinite linear;
 }
 .animeInformation .animeInformation-edit-preloader-wrapper .spinner-layer {
   border-color:#2e51a2;
+}
+@-webkit-keyframes rotate360 {
+  from {-webkit-transform: rotate(0deg);}
+  to {-webkit-transform: rotate(360deg);}
 }
 .animeInformation #animeInformation_addBackground {
   position: absolute;

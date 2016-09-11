@@ -336,6 +336,7 @@ String.prototype.replaceAll = function(search, replacement) {
 
 // [+] ============CHECK IF ANIME IS IN LIST============= [+]
 var formAnimeStatus;
+var tags;
 function checkIfInAnimeList(animeID) {
   $.ajax({
     url: "https://myanimelist.net/malappinfo.php?u="+loginUsername+"&status=all&type=anime",
@@ -380,15 +381,12 @@ function checkIfInAnimeList(animeID) {
           } else {
             $("#animeEditForm-startDate").val(my_startDate.replaceAll("-", "/"));
           }
-          console.log(my_startDate);
-          console.log(my_finishDate);
           if(my_finishDate == "0000-00-00") {
             $("#animeEditForm-finishDate").val("");
           } else {
             $("#animeEditForm-finishDate").val(my_finishDate.replaceAll("-", "/"));
           }
           tagListArray = my_tags.split(",");
-          console.log(tagListArray);
           var data = new Object({data:[]});
           var index;
           for(index = 0; index < tagListArray.length; index++) {
@@ -396,9 +394,10 @@ function checkIfInAnimeList(animeID) {
               tag: tagListArray[index]
             });
           };
-          $("#animeEditForm-tags").material_chip(data);
+          data.placeholder = "+ Tags";
+          data.secondaryPlaceholder = "Enter tags. Now.";
+          tags = data;
           console.log(data);
-          
           $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").removeClass("red").addClass("yellow");
           $("#animeEditForm nav .nav-wrapper span i").text("edit");
           $(".animeInformation #animeInformation_myScore").show();
@@ -408,10 +407,17 @@ function checkIfInAnimeList(animeID) {
         } else {
           //It could be in the list, but not in this particular "each"
           formAnimeStatus = "Add";
+          $("#animeEditForm-tags div.chip").remove();
+          tags = {
+            data: [],
+            placeholder: "+ Tags",
+            secondaryPlaceholder: "Enter tags. Now."
+          };
           $("#animeInformation_addToList").html("<i class=\"material-icons\">add</i>").removeClass("yellow").addClass("red");
           $("#animeEditForm-status").val("");
           $("#animeEditForm-episodes").val("");
-          $("#animeInformation_startDate").html("");
+          $("#animeInformation-startDate").html("");
+          $("#animeInformation-finishDate").html("");
           $("#animeInformation_addToList").attr("data-tooltip", "Add to List").tooltip({delay:50});
           $("#animeEditForm-rating").rateYo("option", "rating", 0);
           $("#animeEditForm nav .nav-wrapper span i").text("add");
@@ -595,6 +601,11 @@ $("#modal_delete_confirmation_yes").on("click", function() {
 // [+] Add to List Button Click
 $("#animeInformation_addToList").click(function() {
   $(this).tooltip("remove");
+  $("#animeEditForm-tags").material_chip({
+    data: tags.data,
+    placeholder: tags.placeholder,
+    secondaryPlaceholder: tags.secondaryPlaceholder
+  });
   if($(this).attr("data-display-add") != "0") {
     $("#animeEditForm-fieldset2").animate({
       marginTop: "550px"
@@ -702,6 +713,7 @@ $("#animeEditForm-fieldset1-next").click(function() {
   $("#overall-progress-bar").css("width", "100%");
   if((parseInt($("#animeEditForm-episodes").val()) > parseInt($("#animeEditForm-episodes").attr("max")) || parseInt($("#animeEditForm-episodes").val()) < 0 ) && parseInt($("#animeEditForm-episodes").attr("max")) != 0) {
     $("#animeEditForm-fieldset1-next").attr("disabled", "dsiabled").text("Incorrect Episode Count!");
+    $("#overall-progress-bar").css("width", "66.66%");
     window.setTimeout(function() {
       $("#animeEditForm-fieldset1-next").removeAttr("disabled").text("Next");
     }, 3000)
@@ -710,15 +722,11 @@ $("#animeEditForm-fieldset1-next").click(function() {
   $("#animeEditForm-fieldset1").animate({
     marginTop: "-550px"
   }, 300, function() {
-    $("#animeEditForm-tags").material_chip({
-      placeholder: "+ Tags",
-      secondaryPlaceholder: "Enter tags."
-    });
     $("#animeEditForm-fieldset2").animate({
       marginTop: "300px"
-    })
-  })
-})
+    });
+  });
+});
 
 // [+] Stage 2 -> Previous
 $("#animeEditForm-fieldset2-previous").click(function() {
