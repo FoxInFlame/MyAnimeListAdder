@@ -381,17 +381,30 @@ function restore_options_popup() {
     document.getElementById("popup_css_theme").value = items.popup_theme;
     $("#popup_action_open").material_select();
     $("#popup_css_theme").material_select();
-    if(parseInt(items.popup_action_open) == 1) {
+    if(parseInt(items.popup_action_open) == 1 && items.popup_theme == 1) {
       $("#popup_quickmalpopup_options").show();
+      $("#popup_quickmalpanel_warning").hide();
+    } else if(parseInt(items.popup_action_open) == 6) {
+      $("#popup_quickmalpanel_warning").show();
+      $("#popup_quickmalpopup_options").hide();
     } else {
       $("#popup_quickmalpopup_options").hide()
+      $("#popup_quickmalpanel_warning").hide();
     }
-  })
-  $("#popup_action_open").on("change", function() {
-    if(this.value == 1) {
+  });
+  $("#popup_quickmalpanel_warning a").on("click", function() {
+    chrome.tabs.create({url: "chrome://flags/#enable-panels"});
+  });
+  $("#popup_action_open, #popup_css_theme").on("change", function() {
+    if($("#popup_action_open").val() == 1 && $("#popup_css_theme").val() == 1) {
       $("#popup_quickmalpopup_options").fadeIn(300);
+      $("#popup_quickmalpanel_warning").fadeOut(300);
+    } else if(this.value == 6) {
+      $("#popup_quickmalpopup_options").fadeOut(300);
+      $("#popup_quickmalpanel_warning").show();
     } else {
       $("#popup_quickmalpopup_options").fadeOut(300)
+      $("#popup_quickmalpanel_warning").fadeOut(300);
     }
   })
 }
