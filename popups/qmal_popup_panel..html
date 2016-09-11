@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html style="width:500px">
+  <head>
+    <title>QuickMyAnimeList Popup MaterializeCSS!</title>
+    <script src="../libraries/jQuery/jquery-2.2.3.min.js"></script>
+    <link rel="stylesheet" href="qmal_popup_MaterializeCSS.css" type="text/css">
+    <link rel="stylesheet" href="../libraries/Google/MaterialIcons.css" type="text/css">
+    <link rel="stylesheet" href="../libraries/MaterializeCSS/materialize.min.css" type="text/css">
+    <link rel="stylesheet" href="../libraries/RateYo/jquery.rateyo.min.css" type="text/css">
+  </head>
+  <body>
+    <div id="qmal_popup_mainContentLoad">
+      <div class="header z-depth-2">
+        <img src="MyAnimeList_logoWhite.png">
+        <button id="openWindow" data-position="left" data-tooltip="Open list in a window" class="tooltipped right-align btn-floating waves-effect waves-light"><i class="material-icons" style="color:#2E51A2">list</i></button>
+        <div class="progress">
+          <div id="overall-progress-bar" class="determinate" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="animeInformation-loading-bar-wrapper progress">
+        <div id="animeInformation-loading-bar" class="indeterminate"></div>
+      </div>
+      <div id="mainForm_tmp">
+        <fieldset>
+          <div class="row">
+            <div class="input-field s12">
+              <input id="animeNameSearch" type="text">
+              <label for="animeNameSearch">Anime Search: </label>
+              <span id="animeNameSearch_status"></span>
+            </div>
+          </div>
+          <div class="grid-list" id="animeNameSearch_results"></div>
+          <div class="animeInformation">
+            <nav class="z-depth-0">
+              <div class="nav-wrapper">
+                <span id="back-nav" class="z-depth-1"><i class="material-icons">arrow_back</i></span>
+              </div>
+            </nav>
+            <div id="animeInformation_image-wrapper" class="z-depth-1">
+              <img src="#" id="animeInformation_image">
+            </div>
+            <a id="animeInformation_deleteFromList" data-position="bottom" data-tooltip="Delete" data-delay="50" class="z-depth-1 tooltipped btn-floating waves-effect waves-light red darken-3"><i class="material-icons">delete</i></a>
+            <a id="animeInformation_myScore" data-position="bottom" data-delay="50" class="z-depth-1 tooltipped btn-floating waves-effect waves-light orange darken-1"><i class="material-icons">star_border</i></a>
+            <a id="animeInformation_link" href="#" data-position="bottom" data-delay="50" data-tooltip="Visit MAL site" target="_blank" class="z-depth-1 tooltipped btn-floating waves-effect waves-light" style="backgroudn:#2e51a2"><i class="material-icons">explore</i></a>
+            <a id="animeInformation_addToList" data-display-add="0" data-position="bottom" data-delay="50" data-tooltip="Add to List" class="z-depth-2 tooltipped btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+            <!-- Put List Info (If in the list) as buttons (watching episodes, status, and rating)-->
+            <div class="animeInformation-edit-preloader-wrapper active">
+              <div class="spinner-layer">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                  <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+            <div class="row" id="generalInfo">
+              <div class="col s12">
+                <div class="card">
+                  <div class="card-content" style="color:#172851">
+                    <span class="card-title"><b class="animeInformation_title" style="font-weight:inherit"></b><span class="right" style="font-size: 15px;color:#2e51a2;">#<b class="animeInformation_id" style="font-weight:inherit"></b></span></span>
+                    <div class="row">
+                      <div class="col s4">
+                        <b>MAL Score:</b> <span class="animeInformation_score"></span>
+                      </div>
+                      <div class="col s4">
+                        <b>Type: </b> <span id="animeInformation_type"></span>
+                      </div>
+                      <div class="col s4">
+                        <b>Episodes:</b> <span class="animeInformation_episodes"></span>
+                      </div>
+                    </div>
+                    <p id="animeInformation_synopsis"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="animeInformation_addBackground" class="z-depth-2">
+              <div class="preloader-wrapper active" style="position: absolute;top: 50%;left:50%">
+                <div class="spinner-layer spinner-red-only">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div>
+                  <div class="gap-patch">
+                    <div class="circle"></div>
+                  </div>
+                  <div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="addAnimeContainer">
+              <form id="animeEditForm">
+                <nav>
+                  <div class="nav-wrapper">
+                    <span><i class="material-icons">add</i></span>
+                    <span><b class="animeInformation_title"></b></span>
+                  </div>
+                </nav>
+                <fieldset id="animeEditForm-fieldset1">
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <select id="animeEditForm-status">
+                        <option value="1" selected>Watching</option>
+                        <option value="2">Completed</option>
+                        <option value="3">On-Hold</option>
+                        <option value="4">Dropped</option>
+                        <option value="6">Plan to Watch</option>
+                      </select>
+                      <label>Anime Status</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field col s6">
+                      Watched Episodes: <input id="animeEditForm-episodes" min="0" type="number" class="validate" style="height:3rem;/*default is 3rem*/ width: 40px"> / <span class="animeInformation_episodes"></span>
+                    </div>
+                    <div class="input-field col s6">
+                      Rating: <div style="height:3rem;display:inline-block;line-height:normal" class="rateYo-rating" id="animeEditForm-rating"></div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field col s6">
+                      <input id="animeEditForm-startDate" type="text" placeholder="YYYY/MM/DD">
+                      <label for="animeEditForm-startDate" class="active">Started Watching</label>
+                    </div>
+                    <div class="input-field col s6">
+                      <input id="animeEditForm-finishDate" type="text" placeholder="YYYY/MM/DD">
+                      <label for="animeEditForm-finishDate" class="active">Finished Watching</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <button id="animeEditForm-fieldset1-next" type="button" class="blue right waves-effect waves-light btn">Next</button>
+                  </div>
+                </fieldset>
+                <fieldset id="animeEditForm-fieldset2">
+                  <div class="row">
+                    <div class="col s12">
+                      Tags:<br>
+                      <div id="animeEditForm-tags" class="chips"></div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <button id="animeEditForm-fieldset2-previous" type="button" class="blue left waves-effect waves-light btn">Previous</button>
+                    <button id="animeEditForm-fieldset2-next" type="button" class="green right waves-effect waves-light btn">Go!</button>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+          
+          <a style="display:none" class="modal-trigger" href="#modal_delete_confirmation">Delete?</a>
+          <div id="modal_delete_confirmation" class="modal bottom-sheet">
+            <div class="modal-content">
+              <h4>Are you sure?</h4>
+              <p>Deleting an anime from your list means all your tags, ratings, statuses and all those are gone. Forever. Unless you add them and type them in again. But that still takes time.</p>
+            </div>
+            <div class="modal-footer">
+              <a id="modal_delete_confirmation_yes" href="#!" class="modal-action waves-effect btn-flat waves-red">Yeah, delete 'em.</a>
+              <a href="#!" class="modal-action modal-close waves-effect btn-flat">Nah, keep it.</a>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div><!--Ajax load end-->
+    
+    <script src="../libraries/RateYo/jquery.rateyo.min.js"></script>
+    <script src="../libraries/MaterializeCSS/materialize.min.js"></script>
+    <script src="../libraries/Bez/jquery.bez.min.js"></script>
+    <script src="../libraries/QuickFit/jquery.quickfit.js"></script>
+    <script src="../popups/qmal_popup_panel.js"></script>
+    <script src="../xml2json.min.js"></script>
+  </body>
+</html>

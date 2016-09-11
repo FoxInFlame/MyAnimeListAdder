@@ -3,6 +3,7 @@
 body {
   font-family: "Roboto", sans-serif;
   font-size: 13px;
+  margin: 0;
 }
 
 .header {
@@ -371,20 +372,9 @@ fieldset {
   padding: 0 10px;
   z-index: 5;
 }
-/*CURRENTLY NOT USED*/
-.animeInformation ~ nav .animeInformation_title {
-  font-size: 30px;
-  position: absolute;
-  max-width: 420px; /* 500px - left:50px = 450px (max)*/
-  top: 0;
-  left: 50px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap
-}
 
 .animeInformation #animeInformation_image-wrapper {
-  overflow: hidden;
+  overflow: auto;
   width: 100%;
   height: 120px;
   z-index: 50;
@@ -442,9 +432,14 @@ fieldset {
   top:87.5px; /*To put it right on top of the button*/
   right:17.5px;
   z-index:71; /*One above button*/
+  -webkit-animation: rotate360 1.5s infinite linear;
 }
 .animeInformation .animeInformation-edit-preloader-wrapper .spinner-layer {
   border-color:#2e51a2;
+}
+@-webkit-keyframes rotate360 {
+  from {-webkit-transform: rotate(0deg);}
+  to {-webkit-transform: rotate(360deg);}
 }
 .animeInformation #animeInformation_addBackground {
   position: absolute;

@@ -61,7 +61,7 @@ $(document).ready(function() {
     popup_input_storageType = items.popup_input_storageType;
     popup_action_confirm = items.popup_action_confirm;
     popup_theme = items.popup_theme;
-    if(verified === false) {
+    if(verified !== true) {
       $("body").html("You have not verified your credentials. Do so in the options.");
       return false;
     }
@@ -99,10 +99,16 @@ $(document).ready(function() {
       insertJS("popups/qmallist_popup.js");
     } else if(popup_action_open == 4) {
       //List in new tab
-      window.open("http://myanimelist.net/animelist/" + loginUsername);
+      window.open("https://myanimelist.net/animelist/" + loginUsername);
     } else if(popup_action_open == 5) {
       //Homepage in new tab
-      window.open("http://myanimelist.net");
+      window.open("https://myanimelist.net");
+    } else if(popup_action_open == 6) {
+      //QuickMAL Popup in panel
+      window.close();
+      chrome.windows.create({'url': 'popups/qmal_popup_panel.html', 'height':600, 'width':500, 'type':'panel'}, function(window) {
+        console.log(window.id);
+      });
     }
   });
 });
