@@ -19,7 +19,8 @@
     "storage",
     "tabs",
     "http://gogoanime.io/*",
-    "http://www.crunchyroll.com/*"
+    "http://www.crunchyroll.com/*",
+    "http://kissanime.to/*"
   ],
   
   "background": {
@@ -38,7 +39,8 @@
     ],
     "matches": [
       "http://gogoanime.io/*",
-      "http://www.crunchyroll.com/*"
+      "http://www.crunchyroll.com/*",
+      "http://kissanime.to/*"
     ],
     "exclude_matches": [
       "http://gogoanime.io/*.html",
