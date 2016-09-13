@@ -71,7 +71,7 @@ function contentScriptGoGoAnime() {
   }
   if(verified === false) {
     $("body").append(
-      "<div class='qmal-dialog' id='qmal-dialog-main'>"+
+      "<div class='qmal-dialog qmal-dialog-gogoanime' id='qmal-dialog-main'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -102,7 +102,7 @@ function contentScriptGoGoAnime() {
   if(verified === true) {
     console.log("[QMAL@GoGoAnime] QMAL has detected that this page is an episode!");
     $("body").append(
-      "<div class='qmal-dialog' id='qmal-dialog-main'>"+
+      "<div class='qmal-dialog qmal-dialog-gogoanime' id='qmal-dialog-main'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -121,7 +121,7 @@ function contentScriptGoGoAnime() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog' id='qmal-dialog-updateadd'>"+
+      "<div class='qmal-dialog qmal-dialog-gogoanime' id='qmal-dialog-updateadd'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -161,7 +161,7 @@ function contentScriptGoGoAnime() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog' id='qmal-dialog-loading'>"+
+      "<div class='qmal-dialog qmal-dialog-gogoanime' id='qmal-dialog-loading'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -390,7 +390,7 @@ function contentScriptCrunchyroll() {
   }
   if(verified === false) {
     $("body").append(
-      "<div class='qmal-dialog' id='qmal-dialog-main'>"+
+      "<div class='qmal-dialog qmal-dialog-crunchyroll' id='qmal-dialog-main'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -421,7 +421,7 @@ function contentScriptCrunchyroll() {
   if(verified === true) {
     console.log("[QMAL@Crunchyroll] QMAL has detected that this page is an episode!");
     $("body").append(
-      "<div class='qmal-dialog' id='qmal-dialog-main'>"+
+      "<div class='qmal-dialog qmal-dialog-crunchyroll' id='qmal-dialog-main'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -440,7 +440,7 @@ function contentScriptCrunchyroll() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog' id='qmal-dialog-updateadd'>"+
+      "<div class='qmal-dialog qmal-dialog-crunchyroll' id='qmal-dialog-updateadd'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -480,7 +480,7 @@ function contentScriptCrunchyroll() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog' id='qmal-dialog-loading'>"+
+      "<div class='qmal-dialog qmal-dialog-crunchyroll' id='qmal-dialog-loading'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -714,7 +714,7 @@ function contentScriptKissAnime() {
   }
   if(verified === false) {
     $("body").append(
-      "<div class='qmal-dialog' id='qmal-dialog-main'>"+
+      "<div class='qmal-dialog qmal-dialog-kissanime' id='qmal-dialog-main'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -745,7 +745,7 @@ function contentScriptKissAnime() {
   if(verified === true) {
     console.log("[QMAL@KissAnime] QMAL has detected that this page is an episode!");
     $("body").append(
-      "<div class='qmal-dialog' id='qmal-dialog-main'>"+
+      "<div class='qmal-dialog qmal-dialog-kissanime' id='qmal-dialog-main'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -764,7 +764,7 @@ function contentScriptKissAnime() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog' id='qmal-dialog-updateadd'>"+
+      "<div class='qmal-dialog qmal-dialog-kissanime' id='qmal-dialog-updateadd'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -804,7 +804,7 @@ function contentScriptKissAnime() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog' id='qmal-dialog-loading'>"+
+      "<div class='qmal-dialog qmal-dialog-kissanime' id='qmal-dialog-loading'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
