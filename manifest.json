@@ -16,11 +16,14 @@
   
   "permissions": [
     "https://myanimelist.net/api",
+    "http://e347c24e.ngrok.io/",
     "storage",
     "tabs",
     "http://gogoanime.io/*",
     "http://www.crunchyroll.com/*",
-    "http://kissanime.to/*"
+    "http://www.foxinflame.tk/QuickMyAnimeList/*",
+    "http://kissanime.to/*",
+    "https://www.google.se/*"
   ],
   
   "background": {
@@ -40,7 +43,8 @@
     "matches": [
       "http://gogoanime.io/*",
       "http://www.crunchyroll.com/*",
-      "http://kissanime.to/*"
+      "http://kissanime.to/*",
+      "https://www.google.se/*"
     ],
     "exclude_matches": [
       "http://gogoanime.io/*.html",

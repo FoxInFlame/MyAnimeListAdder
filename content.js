@@ -1,9 +1,9 @@
 //Content in the app
 
-$("head").append(
+/*$("head").append(
   "<link rel='stylesheet' href='http://www.foxinflame.tk/QuickMyAnimeList/source/content.css' type='text/css'>"
 );
-
+*/
 
 //Content on website
 var username;
@@ -30,7 +30,7 @@ $(document).ready(function() {
     username: "Username",
     password: "password123",
     verified: false,
-    inpage_sites: ["gogoanime.io", "kissanime.to", "crunchyroll.com"],
+    inpage_sites: ["gogoanime.io", "kissanime.to", "crunchyroll.com", "google"],
     inpage_enable: true
   }, function(items) {
     username = items.username;
@@ -41,6 +41,12 @@ $(document).ready(function() {
     inpage_sites.forEach(function(index) {
       if(window.location.href.contains(index)) {
         var location = window.location.href;
+        if(location.contains("google")) {
+          contentScriptGoogleSearch();
+          return;
+        }
+        $("head").append("<link rel='stylesheet' href='http://www.foxinflame.tk/QuickMyAnimeList/source/content.css' type='text/css'>");
+        loadStatus();
         if(location.contains("gogoanime.io")) contentScriptGoGoAnime();
         if(location.contains("crunchyroll.com")) contentScriptCrunchyroll();
         if(location.contains("kissanime.to")) contentScriptKissAnime();
@@ -48,6 +54,24 @@ $(document).ready(function() {
     });
   });
 });
+
+function loadStatus() {
+  $.ajax({
+    url: "http://www.foxinflame.tk/QuickMyAnimeList/source/news.json",
+    method: "GET",
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log("Couldn't grab QMAL news: " + textStatus + " : " + errorThrown);
+    },
+    success: function(data) {
+      console.log(data);
+      $("body").prepend("<div id='qmal-status-alert'><a class='qmal-status-alert' href='#qmal-status-alert'>" + data.message + "</a></div>");
+    }
+  });
+}
+
+function sortStyleStatus(string) {
+  
+}
 
 //Main content
 String.prototype.contains = function(string) {
@@ -62,6 +86,10 @@ String.prototype.replaceAll = function(search, replacement) {
     var target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
 };
+
+function contentScriptGoogleSearch() {
+  $("#rhs").before("<div style='margin-left:790px;position:relative;display:block;padding-bottom:10px;min-width:278px;box-shadow:0px 1px 4px 0px rgba(0,0,0,0.2);white-space: nowrap;margin-bottom:15px'><div style='white-space: nowrap;overflow:hidden;max-width:454px;'>Hey!</div></div>");
+}
 
 
 function contentScriptGoGoAnime() {
