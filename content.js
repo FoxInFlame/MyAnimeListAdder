@@ -63,14 +63,82 @@ function loadStatus() {
       console.log("Couldn't grab QMAL news: " + textStatus + " : " + errorThrown);
     },
     success: function(data) {
-      console.log(data);
-      $("body").prepend("<div id='qmal-status-alert'><a class='qmal-status-alert' href='#qmal-status-alert'>" + data.message + "</a></div>");
+      sortStyleStatus(data);
     }
   });
 }
 
-function sortStyleStatus(string) {
-  
+// To copmare arbitary numbers http://stackoverflow.com/questions/7717109/how-can-i-compare-arbitrary-version-numbers
+function cmpVersion(a, b) {
+    var i, cmp, len, re = /(\.0)+[^\.]*$/;
+    a = (a + '').replace(re, '').split('.');
+    b = (b + '').replace(re, '').split('.');
+    len = Math.min(a.length, b.length);
+    for( i = 0; i < len; i++ ) {
+        cmp = parseInt(a[i], 10) - parseInt(b[i], 10);
+        if( cmp !== 0 ) {
+            return cmp;
+        }
+    }
+    return a.length - b.length;
+}
+function greaterVersion(a, b, c) {
+  if(c) {
+    return cmpVersion(a, b) >= 0;
+  } else {
+    return cmpVersion(a, b) > 0;
+  }
+}
+function smallerVersion(a, b, c) {
+  if(c) {
+    return cmpVersion(a, b) <= 0;
+  } else {
+    return cmpVersion(a, b) < 0;
+  }
+}
+
+function sortStyleStatus(data) {
+  var messages = data.messages;
+  var count = 0;
+  messages.forEach(function(data) {
+    count++;
+    if(!data.priority) data.priority = 1;
+    if(!data.style) data.style = "critical";
+    if(undefined === data.dismissable) data.dismissable = true;
+    if(!data.message) data.message = "Message not specified!";
+    $("body").prepend("<div class='qmal-status-alert' id='qmal-status-alert-" + count + "'><span class='qmal-status-alert-span'>" + data.message + "</a></div>");
+    element = $("#qmal-status-alert-" + count);
+    if(!element) return; // You know, the usual returning.
+    
+    // Okay, let's sort this.
+    if(data.condition) {
+      // Condition is specified. At this point only accept version conditions
+      conditionVersion = data.condition.substring(14);
+      if(conditionVersion == chrome.runtime.getManifest().version) {
+        // Condition Fulfilled.
+      } else {
+        // Condition not Fulfilled.
+        $(element).remove();
+        return;
+      }
+    }
+    
+    // Priorities / z-indexes
+    var priority = 10 - parseInt(data.priority);
+    $(element).css("z-index", "100" + priority.toString());
+    
+    // Dismissables
+    if(data.dismissable === true) {
+      $(element).on("click", function() {
+        $(this).fadeOut(300);
+      });
+    } else {
+      $(element).addClass("qmal-status-alert-cannot-dismiss").attr("data-content", "Cannot Dismiss!");
+    }
+    
+    // Style
+    $(element).children().addClass(data.style);
+  });
 }
 
 //Main content
