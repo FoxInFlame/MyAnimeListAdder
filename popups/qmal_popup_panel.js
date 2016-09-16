@@ -37,6 +37,8 @@ $(document).ready(function() {
 
 // [+] ===================GRID LISTS===================== [+]
 function grid_list_init() {
+  var scrollTop; // Store scroll position
+  var scrollLeft; // These are used in the "back" action
   $(".grid-list-row .col img").on("mouseenter", function() {
     $(this).next().animate({
       bottom: "0px"
@@ -47,6 +49,9 @@ function grid_list_init() {
     }, 195, $.bez([0.4, 0, 1, 1]));
   });
   $(".grid-list-row .col img").on("click", function() {
+    scrollTop = document.body.scrollTop;
+    scrollLeft = document.body.scrollLeft;
+    window.scrollTo(0, 0); // NEW! Scroll to top. http://stackoverflow.com/questions/1144805/scroll-to-the-top-of-the-page-using-javascript-jquery
     $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "block", "important");
     $("#overall-progress-bar").css("width", "33.33%");
     $(".animeInformation #animeInformation_image").attr("src", $(this).attr("src"));
@@ -82,6 +87,7 @@ function grid_list_init() {
     }, 300);
   });
   $(".animeInformation nav .nav-wrapper #back-nav").on("click", function() {
+    window.scrollTo(scrollLeft, scrollTop);
     $("#overall-progress-bar").css("width", "0%");
     $(".animeInformation").animate({
       opacity: "0"
@@ -336,7 +342,6 @@ String.prototype.replaceAll = function(search, replacement) {
 
 // [+] ============CHECK IF ANIME IS IN LIST============= [+]
 var formAnimeStatus;
-var tags;
 function checkIfInAnimeList(animeID) {
   $.ajax({
     url: "https://myanimelist.net/malappinfo.php?u="+loginUsername+"&status=all&type=anime",
@@ -414,10 +419,10 @@ function checkIfInAnimeList(animeID) {
             secondaryPlaceholder: "Enter tags. Now."
           };
           $("#animeInformation_addToList").html("<i class=\"material-icons\">add</i>").removeClass("yellow").addClass("red");
-          $("#animeEditForm-status").val("");
+          $("#animeEditForm-status").val("1").material_select();
           $("#animeEditForm-episodes").val("");
-          $("#animeInformation-startDate").html("");
-          $("#animeInformation-finishDate").html("");
+          $("#animeEditForm-startDate").val(""); // Changed from html() to val()
+          $("#animeEditForm-finishDate").val("");
           $("#animeInformation_addToList").attr("data-tooltip", "Add to List").tooltip({delay:50});
           $("#animeEditForm-rating").rateYo("option", "rating", 0);
           $("#animeEditForm nav .nav-wrapper span i").text("add");
@@ -462,7 +467,7 @@ Date.prototype.isDateValid = function() {
 
 // [+] Popup button at the top
 $("#openWindow").on("click", function() {
-   chrome.windows.create({'url': 'https://myanimelist.net/animelist/' + loginUsername, 'type': 'popup', 'height': 650, 'width':1000, 'type':'panel'}, function(window) {
+   chrome.windows.create({'url': 'https://myanimelist.net/animelist/' + loginUsername, 'type': 'popup', 'height': 650, 'width':1000}, function(window) {
    });
 });
 
@@ -472,7 +477,7 @@ $("#animeNameSearch").donetyping(function() {
   $("#animeNameSearch_status").text("Searching...");
   $(".grid-list-row .col img").css("pointer-events", "none").addClass("grayscale");
   var query = $(this).val();
-  $.ajax({
+   $.ajax({
     url: "https://myanimelist.net/api/anime/search.xml?q=" + query,
     dataType: "xml",
     type: "GET",
