@@ -800,6 +800,7 @@ $("#animeEditForm-fieldset2-next").click(function() {
   $("#addAnimeContainer").fadeOut(400);
   $("#animeInformation_addBackground").fadeIn(400);
   $("#qmal_popup_mainContent").css("overflow", "auto");
+  $(".animeInformation #animeInformation_addToList").css("position", "absolute");
   $("#animeInformation_addBackground").animate({
     top: "95px",
     height: "20px",
