@@ -42,7 +42,7 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 
 The bug fix update. 
 
-#### Features kept from previous veresion (1.3.1)
+#### Features kept from previous version (1.3.1)
 
 - Ability to add edit, or delete an anime to your MAL account
 - Ability to view synopsis and other titles for the chosen anime
