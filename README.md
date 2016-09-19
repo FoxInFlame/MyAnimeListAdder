@@ -1,5 +1,5 @@
 # QuickMyAnimeList
-[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![GitHub commits](https://img.shields.io/github/commits-since/FoxInFlame/QuickMyAnimeList/1.3.1.svg?maxAge=2592000)]() [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QuickMyAnimeList/total.svg?maxAge=2592000)]()
+[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![GitHub commits](https://img.shields.io/github/commits-since/FoxInFlame/QuickMyAnimeList/1.3.2.svg?maxAge=2592000)]() [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QuickMyAnimeList/total.svg?maxAge=2592000)]()
 
 [![GitHub forks](https://img.shields.io/github/forks/FoxInFlame/QuickMyAnimeList.svg?style=social&label=Fork&maxAge=2592000)]()
 [![GitHub watchers](https://img.shields.io/github/watchers/FoxInFlame/QuickMyAnimeList.svg?style=social&label=Watch&maxAge=2592000)]() [![Twitter Follow](https://img.shields.io/twitter/follow/FoxInFlame.svg?style=social&label=Follow&maxAge=2592000)]()
@@ -38,39 +38,37 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 
 
 ## What's new!?
-### Release 1.3.1!
+### Release 1.3.2!
 
-Panels! And In-Page for kissanime.to!
+The bug fix update. 
 
-#### Features kept from previous veresion (1.3)
+#### Features kept from previous version (1.3.1)
 
 - Ability to add edit, or delete an anime to your MAL account
 - Ability to view synopsis and other titles for the chosen anime
-- Ability to search for an anime easily using the Select2 jQuery library and the MAL API
 - Ability to login to your MAL account in the options, and verify if the credentials are real or not
 - Material Design Options pages
+- Panels
 - Choose CSS Theme from Options
-- In-Page QMAL for gogoanime.io and crunchyroll.com
+- In-Page QMAL for gogoanime.io, crunchyroll.com and kissanime.to
 
-#### New features of Version 1.3.1
+#### New features of Version 1.3.2
 
-- In-Page for kissanime.to
-- Can now scroll anime descriptions
-- Added Panels (requires the chrome flag #enable-panels to be on)
-- Fixed 5 Bugs. 
+- Colored text in In-Page QMAL
+- Fixed 5 issued bugs
+- Fixed a bunch of (like 10) unissued minor bugs
+- And also fixed the add/edit button in MaterializeCSS popup moving up and down unnecessarily.
 - Probably more.
 
-#### Removed features from previous version (1.3)
+#### Removed features from previous version (1.3.1)
 
 - Nothing.
 
 #### Next up for 1.X, 2.0, and later on.
 
 - Use a better MAL API
-- Change CSS library from Material Design to Bootstrap (2.0) **ABORTED**
 - More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X)
-- ~~Automatically increase number and change to "Watching" if video site is visited (e.g. gogoanime.io/blah-episode-1) (2.0 or later)~~ **DONE**
-- ~~Display popup on video site (e.g. kissanime.to/Anime/blah/Episode-1) and let user choose if QMAL should automatically update the list or not (2.0 or later)~~ **DONE**
+- Add an option to disable CPU-demanding animations and transitions (1.X)
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0, 3.0)
 
 #### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()

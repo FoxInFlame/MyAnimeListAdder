@@ -140,10 +140,10 @@ function welcome_message_features() {
 }
 function development_github() {
   $.ajax({
-    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.4",
+    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3.3",
     success: function(data) {
       $("#github_latest_commit_sha").html(data[0]["sha"].substring(0,10));
-      $("#github_latest_commit_link").attr("href", data[0]["commit"]["url"]);
+      $("#github_latest_commit_link").attr("href", data[0]["html_url"]);
       var github_latest_commit_date = data[0]["commit"]["author"]["date"];
       var current_date = new Date();
       current_date = current_date.toISOString(); //"2011-12-19T15:28:46.493Z"
@@ -160,7 +160,7 @@ function development_github() {
     url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits",
     success: function(data) {
       $("#github_master_commit_sha").html(data[0]["sha"].substring(0,10));
-      $("#github_master_commit_link").attr("href", data[0]["commit"]["url"]);
+      $("#github_master_commit_link").attr("href", data[0]["html_url"]);
       var github_master_commit_date = data[0]["commit"]["author"]["date"];
       var current_date = new Date();
       current_date = current_date.toISOString(); //"2011-12-19T15:28:46.493Z"
@@ -381,13 +381,22 @@ function restore_options_popup() {
     document.getElementById("popup_css_theme").value = items.popup_theme;
     $("#popup_action_open").material_select();
     $("#popup_css_theme").material_select();
-    if(parseInt(items.popup_action_open) == 1 && items.popup_theme == 1) {
-      $("#popup_quickmalpopup_options").show();
+    if(parseInt(items.popup_action_open) == 1) {
+      $("#popup_csstheme_wrapper").show();
       $("#popup_quickmalpanel_warning").hide();
-    } else if(parseInt(items.popup_action_open) == 6) {
-      $("#popup_quickmalpanel_warning").show();
+      if(items.popup_theme == 1) {
+        $("#popup_quickmalpopup_options").show();
+      } else if(items.popup_theme == 2) {
+        $("#popup_quickmalpopup_options").hide();
+      }
+      return;
+    }
+    if($("#popup_action_open").val() == 6) {
       $("#popup_quickmalpopup_options").hide();
+      $("#popup_csstheme_wrapper").hide();
+      $("#popup_quickmalpanel_warning").show();
     } else {
+      $("#popup_csstheme_wrapper").hide();
       $("#popup_quickmalpopup_options").hide()
       $("#popup_quickmalpanel_warning").hide();
     }
@@ -396,17 +405,26 @@ function restore_options_popup() {
     chrome.tabs.create({url: "chrome://flags/#enable-panels"});
   });
   $("#popup_action_open, #popup_css_theme").on("change", function() {
-    if($("#popup_action_open").val() == 1 && $("#popup_css_theme").val() == 1) {
-      $("#popup_quickmalpopup_options").fadeIn(300);
-      $("#popup_quickmalpanel_warning").fadeOut(300);
-    } else if(this.value == 6) {
-      $("#popup_quickmalpopup_options").fadeOut(300);
-      $("#popup_quickmalpanel_warning").show();
-    } else {
-      $("#popup_quickmalpopup_options").fadeOut(300)
-      $("#popup_quickmalpanel_warning").fadeOut(300);
+    if($("#popup_action_open").val() == 1) {
+      $("#popup_csstheme_wrapper").fadeIn(150);
+      if($("#popup_css_theme").val() == 1) {
+        $("#popup_quickmalpopup_options").fadeIn(150);
+        $("#popup_quickmalpanel_warning").fadeOut(150);
+      } else if($("#popup_css_theme").val() == 2) {
+        $("#popup_quickmalpopup_options").fadeOut(150);
+      }
+      return;
     }
-  })
+    if($("#popup_action_open").val() == 6) {
+      $("#popup_quickmalpopup_options").fadeOut(150);
+      $("#popup_csstheme_wrapper").fadeOut(150);
+      $("#popup_quickmalpanel_warning").fadeIn(150);
+    } else {
+      $("#popup_csstheme_wrapper").fadeOut(150);
+      $("#popup_quickmalpopup_options").fadeOut(150)
+      $("#popup_quickmalpanel_warning").fadeOut(150);
+    }
+  });
 }
 function save_options_popup() {
   var popup_action_open = document.getElementById("popup_action_open").value;

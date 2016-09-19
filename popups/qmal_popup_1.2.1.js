@@ -333,8 +333,18 @@ function select2_init() {
         }
       },
       processResults: function (data, params) {
+        console.log(data);
         var x2js = new X2JS();
         dataXML = x2js.xml2json(data);
+        console.log(dataXML);
+        if(Object.prototype.toString.call(dataXML["anime"]["entry"]) !== "[object Array]") {
+          // Only one result!
+          var array = [];
+          array.push(dataXML["anime"]["entry"]);
+          return {
+            results: array
+          }
+        }
         return {
           results: dataXML["anime"]["entry"]
         }
@@ -350,7 +360,7 @@ function select2_init() {
 
 // -- When searched in Select2 run this function
 function formatAnimeResult(anime) {
-  if(anime.loading) return anime.text;
+  if(anime.loading) return "Searching...";
   
   var animeId = anime.id;
   animeNamesInList[animeId] = anime.title

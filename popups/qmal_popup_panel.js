@@ -37,6 +37,8 @@ $(document).ready(function() {
 
 // [+] ===================GRID LISTS===================== [+]
 function grid_list_init() {
+  var scrollTop; // Store scroll position
+  var scrollLeft; // These are used in the "back" action
   $(".grid-list-row .col img").on("mouseenter", function() {
     $(this).next().animate({
       bottom: "0px"
@@ -47,6 +49,9 @@ function grid_list_init() {
     }, 195, $.bez([0.4, 0, 1, 1]));
   });
   $(".grid-list-row .col img").on("click", function() {
+    scrollTop = document.body.scrollTop;
+    scrollLeft = document.body.scrollLeft;
+    window.scrollTo(0, 0); // NEW! Scroll to top. http://stackoverflow.com/questions/1144805/scroll-to-the-top-of-the-page-using-javascript-jquery
     $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "block", "important");
     $("#overall-progress-bar").css("width", "33.33%");
     $(".animeInformation #animeInformation_image").attr("src", $(this).attr("src"));
@@ -82,6 +87,7 @@ function grid_list_init() {
     }, 300);
   });
   $(".animeInformation nav .nav-wrapper #back-nav").on("click", function() {
+    window.scrollTo(scrollLeft, scrollTop);
     $("#overall-progress-bar").css("width", "0%");
     $(".animeInformation").animate({
       opacity: "0"
@@ -336,7 +342,6 @@ String.prototype.replaceAll = function(search, replacement) {
 
 // [+] ============CHECK IF ANIME IS IN LIST============= [+]
 var formAnimeStatus;
-var tags;
 function checkIfInAnimeList(animeID) {
   $.ajax({
     url: "https://myanimelist.net/malappinfo.php?u="+loginUsername+"&status=all&type=anime",
@@ -414,10 +419,10 @@ function checkIfInAnimeList(animeID) {
             secondaryPlaceholder: "Enter tags. Now."
           };
           $("#animeInformation_addToList").html("<i class=\"material-icons\">add</i>").removeClass("yellow").addClass("red");
-          $("#animeEditForm-status").val("");
+          $("#animeEditForm-status").val("1").material_select();
           $("#animeEditForm-episodes").val("");
-          $("#animeInformation-startDate").html("");
-          $("#animeInformation-finishDate").html("");
+          $("#animeEditForm-startDate").val(""); // Changed from html() to val()
+          $("#animeEditForm-finishDate").val("");
           $("#animeInformation_addToList").attr("data-tooltip", "Add to List").tooltip({delay:50});
           $("#animeEditForm-rating").rateYo("option", "rating", 0);
           $("#animeEditForm nav .nav-wrapper span i").text("add");
@@ -462,7 +467,7 @@ Date.prototype.isDateValid = function() {
 
 // [+] Popup button at the top
 $("#openWindow").on("click", function() {
-   chrome.windows.create({'url': 'https://myanimelist.net/animelist/' + loginUsername, 'type': 'popup', 'height': 650, 'width':1000, 'type':'panel'}, function(window) {
+   chrome.windows.create({'url': 'https://myanimelist.net/animelist/' + loginUsername, 'type': 'popup', 'height': 650, 'width':1000}, function(window) {
    });
 });
 
@@ -472,7 +477,7 @@ $("#animeNameSearch").donetyping(function() {
   $("#animeNameSearch_status").text("Searching...");
   $(".grid-list-row .col img").css("pointer-events", "none").addClass("grayscale");
   var query = $(this).val();
-  $.ajax({
+   $.ajax({
     url: "https://myanimelist.net/api/anime/search.xml?q=" + query,
     dataType: "xml",
     type: "GET",
@@ -618,9 +623,12 @@ $("#animeInformation_addToList").click(function() {
     $("#addAnimeContainer").fadeOut(400);
     $("#animeInformation_addBackground").fadeIn(400);
     $("#qmal_popup_mainContent").css("overflow", "auto");
-    $(".animeInformation #animeInformation_addToList").css("position", "absolute");
+    $(".animeInformation #animeInformation_addToList").css("top", "400px").css("position", "absolute");
     $("#animeInformation_addBackground").animate({
       top: "95px",
+      right: "35px",
+      width: "20px",
+      borderRadius: "4px",
       height: "20px",
       opacity: "0"
     }, {duration: 300, queue: false}, $.bez([0.4, 0, 0.2, 1]));
@@ -629,11 +637,6 @@ $("#animeInformation_addToList").click(function() {
         top: "90px",
         right: "20px"
       }, {duration: 150}, $.bez([0.4, 0, 0.2, 1])).attr("data-position", "bottom").attr("data-tooltip", "Add to List").tooltip();
-      $("#animeInformation_addBackground").animate({
-        width: "20px",
-        borderRadius: "4px",
-        right: "35px"
-      }, {duration: 300, queue: false}, $.bez([0.4, 0, 0.2, 1]));
       $("#animeInformation_addToList i").animate({
         borderSpacing: 0
       }, {
@@ -650,19 +653,17 @@ $("#animeInformation_addToList").click(function() {
   $("#overall-progress-bar").css("width", "66.66%");
   $("#qmal_popup_mainContent").css("width", "500px").css("height", "600px");
   $("#animeEditForm").css("position","fixed").css("width", "100%");
-  $(".animeInformation #animeInformation_addToList").css("position", "fixed");
+  $(".animeInformation #animeInformation_addToList").css("top", "170px").css("position", "fixed"); // 80 header + 70 original absoulte height
   $("#animeInformation_addBackground .preloader-wrapper").show();
   $("#animeInformation_addBackground").animate({
     width: "100%",
+    height: "100%",
+    top: "-80px",
     opacity: "1",
-    right: "0",
+    right: "0px",
     borderRadius: "0px"
   }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
   window.setTimeout(function() {
-    $("#animeInformation_addBackground").animate({
-      top: "0",
-      height: "100%"
-    }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
     $("#animeInformation_addToList").animate({
       top: "480px",
       right: "20px"
@@ -819,7 +820,7 @@ $("#animeEditForm-fieldset2-next").click(function() {
   $("#addAnimeContainer").fadeOut(400);
   $("#animeInformation_addBackground").fadeIn(400);
   $("#qmal_popup_mainContent").css("overflow", "auto");
-  $(".animeInformation #animeInformation_addToList").css("position", "absolute");
+  $(".animeInformation #animeInformation_addToList").css("top", "400px").css("position", "absolute");
   $("#animeInformation_addBackground").animate({
     top: "95px",
     height: "20px",

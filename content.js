@@ -1,9 +1,9 @@
 //Content in the app
 
-$("head").append(
+/*$("head").append(
   "<link rel='stylesheet' href='http://www.foxinflame.tk/QuickMyAnimeList/source/content.css' type='text/css'>"
 );
-
+*/
 
 //Content on website
 var username;
@@ -30,7 +30,7 @@ $(document).ready(function() {
     username: "Username",
     password: "password123",
     verified: false,
-    inpage_sites: ["gogoanime.io", "kissanime.to", "crunchyroll.com"],
+    inpage_sites: ["gogoanime.io", "kissanime.to", "crunchyroll.com", "myanimelist.net"],
     inpage_enable: true
   }, function(items) {
     username = items.username;
@@ -41,6 +41,12 @@ $(document).ready(function() {
     inpage_sites.forEach(function(index) {
       if(window.location.href.contains(index)) {
         var location = window.location.href;
+        if(location.contains("myanimelist")) {
+          contentScriptMAL_description();
+          return;
+        }
+        $("head").append("<link rel='stylesheet' href='http://www.foxinflame.tk/QuickMyAnimeList/source/content.css' type='text/css'>");
+        loadStatus();
         if(location.contains("gogoanime.io")) contentScriptGoGoAnime();
         if(location.contains("crunchyroll.com")) contentScriptCrunchyroll();
         if(location.contains("kissanime.to")) contentScriptKissAnime();
@@ -48,6 +54,92 @@ $(document).ready(function() {
     });
   });
 });
+
+function loadStatus() {
+  $.ajax({
+    url: "http://www.foxinflame.tk/QuickMyAnimeList/source/news.json",
+    method: "GET",
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log("Couldn't grab QMAL news: " + textStatus + " : " + errorThrown);
+    },
+    success: function(data) {
+      sortStyleStatus(data);
+    }
+  });
+}
+
+// To copmare arbitary numbers http://stackoverflow.com/questions/7717109/how-can-i-compare-arbitrary-version-numbers
+function cmpVersion(a, b) {
+    var i, cmp, len, re = /(\.0)+[^\.]*$/;
+    a = (a + '').replace(re, '').split('.');
+    b = (b + '').replace(re, '').split('.');
+    len = Math.min(a.length, b.length);
+    for( i = 0; i < len; i++ ) {
+        cmp = parseInt(a[i], 10) - parseInt(b[i], 10);
+        if( cmp !== 0 ) {
+            return cmp;
+        }
+    }
+    return a.length - b.length;
+}
+function greaterVersion(a, b, c) {
+  if(c) {
+    return cmpVersion(a, b) >= 0;
+  } else {
+    return cmpVersion(a, b) > 0;
+  }
+}
+function smallerVersion(a, b, c) {
+  if(c) {
+    return cmpVersion(a, b) <= 0;
+  } else {
+    return cmpVersion(a, b) < 0;
+  }
+}
+
+function sortStyleStatus(data) {
+  var messages = data.messages;
+  var count = 0;
+  messages.forEach(function(data) {
+    count++;
+    if(!data.priority) data.priority = 1;
+    if(!data.style) data.style = "critical";
+    if(undefined === data.dismissable) data.dismissable = true;
+    if(!data.message) data.message = "Message not specified!";
+    $("body").prepend("<div class='qmal-status-alert' id='qmal-status-alert-" + count + "'><span class='qmal-status-alert-span'>" + data.message + "</a></div>");
+    element = $("#qmal-status-alert-" + count);
+    if(!element) return; // You know, the usual returning.
+    
+    // Okay, let's sort this.
+    if(data.condition) {
+      // Condition is specified. At this point only accept version conditions
+      conditionVersion = data.condition.substring(14);
+      if(conditionVersion == chrome.runtime.getManifest().version) {
+        // Condition Fulfilled.
+      } else {
+        // Condition not Fulfilled.
+        $(element).remove();
+        return;
+      }
+    }
+    
+    // Priorities / z-indexes
+    var priority = 10 - parseInt(data.priority);
+    $(element).css("z-index", "100" + priority.toString());
+    
+    // Dismissables
+    if(data.dismissable === true) {
+      $(element).on("click", function() {
+        $(this).fadeOut(300);
+      });
+    } else {
+      $(element).addClass("qmal-status-alert-cannot-dismiss").attr("data-content", "Cannot Dismiss!");
+    }
+    
+    // Style
+    $(element).children().addClass(data.style);
+  });
+}
 
 //Main content
 String.prototype.contains = function(string) {
@@ -63,6 +155,24 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
+function contentScriptGoogleSearch() {
+  $("#rhs").before("<div style='margin-left:790px;position:relative;display:block;padding-bottom:10px;min-width:278px;box-shadow:0px 1px 4px 0px rgba(0,0,0,0.2);white-space: nowrap;margin-bottom:15px'><div style='white-space: nowrap;overflow:hidden;max-width:454px;'>Hey!</div></div>");
+}
+
+function contentScriptMAL_description() {
+  $("#profileRows").before("<div class=\"pt0\" id=\"profileRows\" style=\"padding:0\">" +
+  "<a href=\"javascript:void(0);\" style=\"border-bottom:none\"><span id=\"openInQMAL\">Open in QMAL</span></a>" +
+  "</div>");
+  $("#openInQMAL").on("click", function() {
+    chrome.runtime.sendMessage({
+      openWindow: true,
+      id: "74"
+    }, function(response) {
+      console.log(response);
+    });
+  });
+}
+
 
 function contentScriptGoGoAnime() {
   if(!window.location.href.contains("episode") || !window.location.href.contains("gogoanime.io")) {
@@ -71,7 +181,7 @@ function contentScriptGoGoAnime() {
   }
   if(verified === false) {
     $("body").append(
-      "<div class='qmal-dialog' id='qmal-dialog-main'>"+
+      "<div class='qmal-dialog qmal-dialog-gogoanime' id='qmal-dialog-main'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -102,7 +212,7 @@ function contentScriptGoGoAnime() {
   if(verified === true) {
     console.log("[QMAL@GoGoAnime] QMAL has detected that this page is an episode!");
     $("body").append(
-      "<div class='qmal-dialog' id='qmal-dialog-main'>"+
+      "<div class='qmal-dialog qmal-dialog-gogoanime' id='qmal-dialog-main'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -121,7 +231,7 @@ function contentScriptGoGoAnime() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog' id='qmal-dialog-updateadd'>"+
+      "<div class='qmal-dialog qmal-dialog-gogoanime' id='qmal-dialog-updateadd'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -132,9 +242,10 @@ function contentScriptGoGoAnime() {
                   "<label for='qmal-update-list-name' class='active'>List</label>" +
                 "</div>" +
                 "<div class='input-field'>" +
-                  "<input type='text' value='Anime could not be detected' disabled id='qmal-update-anime-name' name='qmal-update-anime-name' style='width:250px;overflow:hidden'>" +
+                  "<div id='qmal-update-anime-name-div' style='width:250px;height:3rem;margin:0 3px 15px 3px;cursor:pointer;position:absolute;'></div>" +
+                  "<input type='text' value='Anime could not be detected' disabled id='qmal-update-anime-name' name='qmal-update-anime-name' style='width:250px'>" +
                   "<label for='qmal-update-anime-name' class='active'>Anime Name</label>" +
-                  "<a class='qmal-button' id='qmal-update-name-not-this' style='width:202px;margin-bottom:15px;display:inline;' href='javascript:void(0)'><div class='buttonFlat' fit>Not the Correct Anime?</div></a>" +
+                  "<a class='qmal-button' id='qmal-update-name-not-this' style='width:190px;margin-bottom:15px;display:inline;' href='javascript:void(0)'><div class='buttonFlat fit' style='width:190px;margin:0;padding:0'>Not the Correct Anime?</div></a>" +
                 "</div>" +
                 "<span style='font-size:0.9rem;color:red' id='qmal-update-anime-name-warning'></span>" +
                 "<div class='input-field'>" +
@@ -161,7 +272,7 @@ function contentScriptGoGoAnime() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog' id='qmal-dialog-loading'>"+
+      "<div class='qmal-dialog qmal-dialog-gogoanime' id='qmal-dialog-loading'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -191,7 +302,9 @@ function contentScriptGoGoAnime() {
         console.log(anime_name_element);
         URL_anime = window.location.href.split("/");
         URL_anime = URL_anime[URL_anime.length - 1];
-        anime_name = anime_name_element.replaceAll(" ", "+");
+        anime_name = anime_name_element.replace(" (Dub)", "");
+        console.log(anime_name);
+        anime_name = anime_name.replaceAll(" ", "+");
         URL_anime_parts = URL_anime.split("-");
         anime_episode = URL_anime_parts[URL_anime_parts.length - 1];
         console.info("[QMAL@GoGoAnime] QMAL has detected that you are watching " + anime_name);
@@ -228,25 +341,27 @@ function contentScriptGoGoAnime() {
               // Multiple Results.
               $("#qmal-update-name-not-this").show();
               $("#qmal-update-anime-name").css("width", "250px");
+              $("#qmal-update-anime-name-div").css("width", "250px");
               result_multiple = true;
             } else {
               first_result = search_result.entry;
               // Only one result!
               $("#qmal-update-name-not-this").hide();
               $("#qmal-update-anime-name").css("width", "100%");
+              $("#qmal-update-anime-name-div").css("width", "100%");
               result_multiple = false;
             }
             if(result_multiple === false) {
               search_result_anime_names.push(first_result.title);
               search_result_anime_ids.push(first_result.id);
               search_result_anime_episodes.push(first_result.episodes);
-              search_result_anime_url.push(first_result.url);
+              search_result_anime_url.push("https://myanimelist.net/anime/" + first_result.id);
             } else {
               for(var i = 0; i < first_result.length; i++) {
                 search_result_anime_names.push(first_result[i].title);
                 search_result_anime_ids.push(first_result[i].id);
                 search_result_anime_episodes.push(first_result[i].episodes);
-                search_result_anime_url.push(first_result[i].url);
+                search_result_anime_url.push("https://myanimelist.net/anime/" + first_result[i].id);
               }
             }
           }
@@ -273,8 +388,8 @@ function contentScriptGoGoAnime() {
       $("#qmal-update-list-name-div").on("click", function() {
         window.open(chrome.extension.getURL("options/options_credentials.html"));
       });
-      $("#qmal-update-anime-name").on("click", function() {
-        window.open(this.data("url"));
+      $("#qmal-update-anime-name-div").on("click", function() {
+        window.open($(this).next().data("url"));
       })
 
       var i = 0;
@@ -390,7 +505,7 @@ function contentScriptCrunchyroll() {
   }
   if(verified === false) {
     $("body").append(
-      "<div class='qmal-dialog' id='qmal-dialog-main'>"+
+      "<div class='qmal-dialog qmal-dialog-crunchyroll' id='qmal-dialog-main'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -421,7 +536,7 @@ function contentScriptCrunchyroll() {
   if(verified === true) {
     console.log("[QMAL@Crunchyroll] QMAL has detected that this page is an episode!");
     $("body").append(
-      "<div class='qmal-dialog' id='qmal-dialog-main'>"+
+      "<div class='qmal-dialog qmal-dialog-crunchyroll' id='qmal-dialog-main'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -440,7 +555,7 @@ function contentScriptCrunchyroll() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog' id='qmal-dialog-updateadd'>"+
+      "<div class='qmal-dialog qmal-dialog-crunchyroll' id='qmal-dialog-updateadd'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -451,9 +566,10 @@ function contentScriptCrunchyroll() {
                   "<label for='qmal-update-list-name' class='active'>List</label>" +
                 "</div>" +
                 "<div class='input-field'>" +
-                  "<input type='text' value='Anime could not be detected' disabled id='qmal-update-anime-name' name='qmal-update-anime-name' style='width:250px;overflow:hidden'>" +
+                  "<div id='qmal-update-anime-name-div' style='width:250px;height:3rem;margin:0 3px 15px 3px;cursor:pointer;position:absolute;'></div>" +
+                  "<input type='text' value='Anime could not be detected' disabled id='qmal-update-anime-name' name='qmal-update-anime-name' style='width:250px'>" +
                   "<label for='qmal-update-anime-name' class='active'>Anime Name</label>" +
-                  "<a class='qmal-button' id='qmal-update-name-not-this' style='width:202px;margin-bottom:15px;display:inline;' href='javascript:void(0)'><div class='buttonFlat' fit>Not the Correct Anime?</div></a>" +
+                  "<a class='qmal-button' id='qmal-update-name-not-this' style='width:190px;margin-bottom:15px;display:inline;' href='javascript:void(0)'><div class='buttonFlat fit' style='width:190px;margin:0;padding:0'>Not the Correct Anime?</div></a>" +
                 "</div>" +
                 "<span style='font-size:0.9rem;color:red' id='qmal-update-anime-name-warning'></span>" +
                 "<div class='input-field'>" +
@@ -480,7 +596,7 @@ function contentScriptCrunchyroll() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog' id='qmal-dialog-loading'>"+
+      "<div class='qmal-dialog qmal-dialog-crunchyroll' id='qmal-dialog-loading'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -552,25 +668,27 @@ function contentScriptCrunchyroll() {
               // Multiple Results.
               $("#qmal-update-name-not-this").show();
               $("#qmal-update-anime-name").css("width", "250px");
+              $("#qmal-update-anime-name-div").css("width", "250px");
               result_multiple = true;
             } else {
               first_result = search_result.entry;
               // Only one result!
               $("#qmal-update-name-not-this").hide();
               $("#qmal-update-anime-name").css("width", "100%");
+              $("#qmal-update-anime-name-div").css("width", "100%");
               result_multiple = false;
             }
             if(result_multiple === false) {
               search_result_anime_names.push(first_result.title);
               search_result_anime_ids.push(first_result.id);
               search_result_anime_episodes.push(first_result.episodes);
-              search_result_anime_url.push(first_result.url);
+              search_result_anime_url.push("https://myanimelist.net/anime/" + first_result.id);
             } else {
               for(var i = 0; i < first_result.length; i++) {
                 search_result_anime_names.push(first_result[i].title);
                 search_result_anime_ids.push(first_result[i].id);
                 search_result_anime_episodes.push(first_result[i].episodes);
-                search_result_anime_url.push(first_result[i].url);
+                search_result_anime_url.push("https://myanimelist.net/anime/" + first_result[i].id);
               }
             }
           }
@@ -597,8 +715,8 @@ function contentScriptCrunchyroll() {
       $("#qmal-update-list-name-div").on("click", function() {
         window.open(chrome.extension.getURL("options/options_credentials.html"));
       });
-      $("#qmal-update-anime-name").on("click", function() {
-        window.open(this.data("url"));
+      $("#qmal-update-anime-name-div").on("click", function() {
+        window.open($(this).next().data("url"));
       })
 
       var i = 0;
@@ -714,7 +832,7 @@ function contentScriptKissAnime() {
   }
   if(verified === false) {
     $("body").append(
-      "<div class='qmal-dialog' id='qmal-dialog-main'>"+
+      "<div class='qmal-dialog qmal-dialog-kissanime' id='qmal-dialog-main'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -745,7 +863,7 @@ function contentScriptKissAnime() {
   if(verified === true) {
     console.log("[QMAL@KissAnime] QMAL has detected that this page is an episode!");
     $("body").append(
-      "<div class='qmal-dialog' id='qmal-dialog-main'>"+
+      "<div class='qmal-dialog qmal-dialog-kissanime' id='qmal-dialog-main'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -764,7 +882,7 @@ function contentScriptKissAnime() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog' id='qmal-dialog-updateadd'>"+
+      "<div class='qmal-dialog qmal-dialog-kissanime' id='qmal-dialog-updateadd'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -775,9 +893,10 @@ function contentScriptKissAnime() {
                   "<label for='qmal-update-list-name' class='active'>List</label>" +
                 "</div>" +
                 "<div class='input-field'>" +
-                  "<input type='text' value='Anime could not be detected' disabled id='qmal-update-anime-name' name='qmal-update-anime-name' style='width:250px;overflow:hidden'>" +
+                  "<div id='qmal-update-anime-name-div' style='width:250px;height:3rem;margin:0 3px 15px 3px;cursor:pointer;position:absolute;'></div>" +
+                  "<input type='text' value='Anime could not be detected' disabled id='qmal-update-anime-name' name='qmal-update-anime-name' style='width:250px'>" +
                   "<label for='qmal-update-anime-name' class='active'>Anime Name</label>" +
-                  "<a class='qmal-button' id='qmal-update-name-not-this' style='width:202px;margin-bottom:15px;display:inline;' href='javascript:void(0)'><div class='buttonFlat' fit>Not the Correct Anime?</div></a>" +
+                  "<a class='qmal-button' id='qmal-update-name-not-this' style='width:190px;margin-bottom:15px;display:inline;' href='javascript:void(0)'><div class='buttonFlat fit' style='width:190px;margin:0;padding:0'>Not the Correct Anime?</div></a>" +
                 "</div>" +
                 "<span style='font-size:0.9rem;color:red' id='qmal-update-anime-name-warning'></span>" +
                 "<div class='input-field'>" +
@@ -804,7 +923,7 @@ function contentScriptKissAnime() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog' id='qmal-dialog-loading'>"+
+      "<div class='qmal-dialog qmal-dialog-kissanime' id='qmal-dialog-loading'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -875,25 +994,27 @@ function contentScriptKissAnime() {
               // Multiple Results.
               $("#qmal-update-name-not-this").show();
               $("#qmal-update-anime-name").css("width", "250px");
+              $("#qmal-update-anime-name-div").css("width", "250px");
               result_multiple = true;
             } else {
               first_result = search_result.entry;
               // Only one result!
               $("#qmal-update-name-not-this").hide();
               $("#qmal-update-anime-name").css("width", "100%");
+              $("#qmal-update-anime-name-div").css("width", "100%");
               result_multiple = false;
             }
             if(result_multiple === false) {
               search_result_anime_names.push(first_result.title);
               search_result_anime_ids.push(first_result.id);
               search_result_anime_episodes.push(first_result.episodes);
-              search_result_anime_url.push(first_result.url);
+              search_result_anime_url.push("https://myanimelist.net/anime/" + first_result.id);
             } else {
               for(var i = 0; i < first_result.length; i++) {
                 search_result_anime_names.push(first_result[i].title);
                 search_result_anime_ids.push(first_result[i].id);
                 search_result_anime_episodes.push(first_result[i].episodes);
-                search_result_anime_url.push(first_result[i].url);
+                search_result_anime_url.push("https://myanimelist.net/anime/" + first_result[i].id);
               }
             }
           }
@@ -920,8 +1041,8 @@ function contentScriptKissAnime() {
       $("#qmal-update-list-name-div").on("click", function() {
         window.open(chrome.extension.getURL("options/options_credentials.html"));
       });
-      $("#qmal-update-anime-name").on("click", function() {
-        window.open(this.data("url"));
+      $("#qmal-update-anime-name-div").on("click", function() {
+        window.open($(this).next().data("url"));
       })
 
       var i = 0;
