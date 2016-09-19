@@ -40,7 +40,7 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 ## What's new!?
 ### Release 1.3.2!
 
-Panels! And In-Page for kissanime.to!
+The bug fix update. 
 
 #### Features kept from previous veresion (1.3.1)
 
@@ -55,7 +55,9 @@ Panels! And In-Page for kissanime.to!
 #### New features of Version 1.3.2
 
 - Colored text in In-Page QMAL
-- Fixed 5 Bugs. 
+- Fixed 5 issued bugs
+- Fixed a bunch of (like 10) unissued minor bugs
+- And also fixed the add/edit button in MaterializeCSS popup moving up and down unnecessarily.
 - Probably more.
 
 #### Removed features from previous version (1.3.1)
@@ -66,6 +68,7 @@ Panels! And In-Page for kissanime.to!
 
 - Use a better MAL API
 - More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X)
+- Add an option to disable CPU-demanding animations and transitions (1.X)
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0, 3.0)
 
 #### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
