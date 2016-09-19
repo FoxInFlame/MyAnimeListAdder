@@ -599,9 +599,12 @@ $("#animeInformation_addToList").click(function() {
     $("#addAnimeContainer").fadeOut(400);
     $("#animeInformation_addBackground").fadeIn(400);
     $("#qmal_popup_mainContent").css("overflow", "auto");
-    $(".animeInformation #animeInformation_addToList").css("position", "absolute");
+    $(".animeInformation #animeInformation_addToList").css("top", "400px").css("position", "absolute");
     $("#animeInformation_addBackground").animate({
       top: "95px",
+      right: "35px",
+      width: "20px",
+      borderRadius: "4px",
       height: "20px",
       opacity: "0"
     }, {duration: 300, queue: false}, $.bez([0.4, 0, 0.2, 1]));
@@ -610,11 +613,6 @@ $("#animeInformation_addToList").click(function() {
         top: "90px",
         right: "20px"
       }, {duration: 150}, $.bez([0.4, 0, 0.2, 1])).attr("data-position", "bottom").attr("data-tooltip", "Add to List").tooltip();
-      $("#animeInformation_addBackground").animate({
-        width: "20px",
-        borderRadius: "4px",
-        right: "35px"
-      }, {duration: 300, queue: false}, $.bez([0.4, 0, 0.2, 1]));
       $("#animeInformation_addToList i").animate({
         borderSpacing: 0
       }, {
@@ -631,19 +629,17 @@ $("#animeInformation_addToList").click(function() {
   $("#overall-progress-bar").css("width", "66.66%");
   $("#qmal_popup_mainContent").css("width", "500px").css("height", "600px");
   $("#animeEditForm").css("position","fixed").css("width", "100%");
-  $(".animeInformation #animeInformation_addToList").css("position", "fixed");
+  $(".animeInformation #animeInformation_addToList").css("top", "170px").css("position", "fixed"); // 80 header + 70 original absoulte height
   $("#animeInformation_addBackground .preloader-wrapper").show();
   $("#animeInformation_addBackground").animate({
     width: "100%",
+    height: "100%",
+    top: "-80px",
     opacity: "1",
-    right: "0",
+    right: "0px",
     borderRadius: "0px"
   }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
   window.setTimeout(function() {
-    $("#animeInformation_addBackground").animate({
-      top: "0",
-      height: "100%"
-    }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
     $("#animeInformation_addToList").animate({
       top: "480px",
       right: "20px"
@@ -800,7 +796,7 @@ $("#animeEditForm-fieldset2-next").click(function() {
   $("#addAnimeContainer").fadeOut(400);
   $("#animeInformation_addBackground").fadeIn(400);
   $("#qmal_popup_mainContent").css("overflow", "auto");
-  $(".animeInformation #animeInformation_addToList").css("position", "absolute");
+  $(".animeInformation #animeInformation_addToList").css("top", "400px").css("position", "absolute");
   $("#animeInformation_addBackground").animate({
     top: "95px",
     height: "20px",
