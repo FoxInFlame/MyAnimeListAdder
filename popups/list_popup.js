@@ -1,3 +1,2 @@
 $("html").css("width", "1000px").css("height", "500").css("overflow", "hidden");
-console.log(loginUsername);
-$("#qmal_popup_mainContent").append("<iframe width='100%' height='500px' src='https://myanimelist.net/animelist/" + loginUsername + "' style='-webkit-transform: scale(0.8); -webkit-transform-origin: 0 0'></iframe><span class='copyright'>&copy; QuickMyAnimeList is licenced under the MIT License.</span>");
+$("#qmal_popup_mainContent").append("<iframe width='100%' height='500px' src='https://myanimelist.net/animelist/" + loginUsername + "' style='-webkit-transform: scale(0.8);margin-bottom:-100px; -webkit-transform-origin: 0 0'></iframe>");
