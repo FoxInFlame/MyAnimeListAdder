@@ -22,7 +22,7 @@ $(function() {
     	table_display_status = "Total Animes in List";
   	}
   	$.ajax({
-    	url: "http://myanimelist.net/malappinfo.php?u="+loginUsername+"&status=all&type=anime",
+    	url: "https://myanimelist.net/malappinfo.php?u="+loginUsername+"&status=all&type=anime",
     	type: "GET",
     	dataTpe: "xml",
     	success: function(data) {
@@ -32,7 +32,7 @@ $(function() {
     	  	var anime_episodes = $("my_watched_episodes", this).text() + "/" + $("series_episodes", this).text();
     	  	var anime_rating = $("my_score", this).text() + "/10";
     	    if($("my_status", this).text() == badge_count) {
-    	    	$("#table_table tbody").append("<tr>" + 
+    	    	$("#table_table tbody").append("<tr>" +
             "<td>" + anime_name + "</td>" +
             "<td>" + anime_episodes + "</td>" +
             "<td>" + anime_rating + "</td>" +
@@ -43,5 +43,5 @@ $(function() {
     	  $("h4 #table_display_status").html(table_display_status + " <small>(" + anime_count + ")</small>");
     	}
   	});
-  });  
+  });
 })
