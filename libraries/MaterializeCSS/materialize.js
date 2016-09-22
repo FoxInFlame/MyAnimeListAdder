@@ -3987,6 +3987,7 @@ $(document).ready(function(){
 
     this.addChip = function(chipsIndex, elem, $chips) {
       if (!self.isValid($chips, elem)) {
+        Materialize.toast("You already have that tag!", 1500);
         return;
       }
       var options = $chips.data('options');
