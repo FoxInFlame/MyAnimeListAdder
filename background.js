@@ -125,9 +125,32 @@ function updateBadge() {
   return;
 }
 
+var animeId_panel;
+var animeTitle_panel;
+
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     var response;
+    var windowStatus = false;
+    if(request.subject == "openPanel") {
+      animeId_panel = request.animeid;
+      animeTitle_panel = request.animetitle;
+      chrome.windows.create({
+        url: "popups/qmal_popup_panel.html",
+        height: 600,
+        width: 500,
+        type: "popup" // Because it's only gonna show one anime
+      });
+      return;
+    }
+    if(request.subject == "panelInitialized") {
+      sendResponse({
+        id: animeId_panel,
+        title: animeTitle_panel
+      });
+      animeId_panel = "";
+      animeTitle_panel = "";
+    }
     if(request.updateStatus == "add") {
       response = addAnimeInList(request.id, request.episodes, "1");
     } else if(request.updateStatus == "update") {

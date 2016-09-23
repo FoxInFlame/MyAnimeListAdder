@@ -42,6 +42,10 @@ $(document).ready(function() {
       if(window.location.href.contains(index)) {
         var location = window.location.href;
         if(location.contains("myanimelist")) {
+          chrome.runtime.sendMessage({
+            from: "content",
+            subject: "showPageAction"
+          });
           contentScriptMAL_description();
           return;
         }
@@ -155,18 +159,16 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-function contentScriptGoogleSearch() {
-  $("#rhs").before("<div style='margin-left:790px;position:relative;display:block;padding-bottom:10px;min-width:278px;box-shadow:0px 1px 4px 0px rgba(0,0,0,0.2);white-space: nowrap;margin-bottom:15px'><div style='white-space: nowrap;overflow:hidden;max-width:454px;'>Hey!</div></div>");
-}
-
 function contentScriptMAL_description() {
   $("#profileRows").before("<div class=\"pt0\" id=\"profileRows\" style=\"padding:0\">" +
   "<a href=\"javascript:void(0);\" style=\"border-bottom:none\"><span id=\"openInQMAL\">Open in QMAL</span></a>" +
   "</div>");
   $("#openInQMAL").on("click", function() {
+    var title = $(".page-common #myanimelist .wrapper #contentWrapper .h1 span").html()
     chrome.runtime.sendMessage({
-      openWindow: true,
-      id: "74"
+      subject: "openPanel",
+      animeid: window.location.href.split("/")[4],
+      animetitle: $(".page-common #myanimelist .wrapper #contentWrapper .h1 span").html()
     }, function(response) {
       console.log(response);
     });
