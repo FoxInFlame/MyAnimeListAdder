@@ -1,3 +1,5 @@
+var showOneOnly = false;
+
 // [+] =================DOCUMENT READY=================== [+]
 $(document).ready(function() {
   $("#animeNameSearch").focus();
@@ -9,16 +11,24 @@ $(document).ready(function() {
       return false;
     }
   });
+  
+  chrome.runtime.sendMessage({
+    subject: "panelInitialized",
+  }, function(response) {
+    console.log(response);
+    if(response.id) {
+      // ID is set! Show only this anime.
+      showOneOnly = true;
+      renderShowOneOnly(response.id, response.title);
+    }
+  });
+  
   chrome.storage.sync.get({
   // ---- Default credentials when none are specified
     username: "Username",
     password: "password123",
     verified: false,
     popup_action_open: 1,
-    popup_input_rating: true,
-    popup_input_rewatching: true,
-    popup_input_tags: true,
-    popup_input_storageType: false,
     popup_action_confirm: true,
     popup_theme: 2
   }, function(items) {
@@ -26,14 +36,83 @@ $(document).ready(function() {
     loginPassword = items.password;
     verified = items.verified;
     popup_action_open = items.popup_action_open;
-    popup_input_rating = items.popup_input_rating;
-    popup_input_rewatching = items.popup_input_rewatching;
-    popup_input_tags = items.popup_input_tags;
-    popup_input_storageType = items.popup_input_storageType;
     popup_action_confirm = items.popup_action_confirm;
     popup_theme = items.popup_theme;
   });
 });
+
+
+function renderShowOneOnly(id, title) {
+  $(".animeInformation").show().css("opacity", "1");
+  $(".animeInformation .nav-wrapper").hide();
+  
+  // Until searching with ID is implemented,
+  // display first result in search with title.
+  console.log(title);
+  $.ajax({
+    url: "https://myanimelist.net/api/anime/search.xml?q=" + title,
+    dataType: "xml",
+    type: "GET",
+    username: loginUsername,
+    password: loginPassword,
+    error: function(xhr, status, thrownError) {
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+      $(".animeInformation #generalInfo .animeInformation-title").text(xhr.responseText + ".");
+    },
+    success: function(data, textStatus, jqXHR) {
+      if(data === null || data === undefined) {
+        // Empty return
+        $(".animeInformation-loading-bar-wrapper")[0].style.setProperty("display", "none", "important");
+        $("#animeNameSearch_status").text("No Results.");
+        return;
+      }
+      var x2js = new X2JS();
+      dataJSON = x2js.xml2json(data);
+      showOnlyOne_formatResult(dataJSON);
+    },
+    cache: true
+  });
+}
+
+function showOnlyOne_formatResult(dataJSON) {
+  dataAnimes = dataJSON.anime.entry;
+  if(Object.prototype.toString.call(dataAnimes) !== "[object Array]") {
+    // Only one result
+    dataAnime = dataAnimes;
+  } else {
+    // Multiple results - Get first one
+    dataAnime = dataAnimes[0];
+  }
+  console.log(dataAnime);
+  $(".animeInformation #animeInformation_image").attr("src", dataAnime.image);
+  $(".animeInformation .animeInformation_id").text(dataAnime.id);
+  $(".animeInformation .animeInformation_title").text(dataAnime.title);
+  $(".animeInformation #animeInformation_type").text(dataAnime.type);
+  $(".animeInformation .animeInformation_episodes").text(dataAnime.episodes);
+  $(".animeInformation #animeInformation_synopsis").text(dataAnime.synopsis);
+  $(".animeInformation #animeInformation_link").attr("href", "https://myanimelist.net/anime/" + dataAnime.id);
+  $(".animeInformation .animeInformation_score").text(dataAnime.score);
+  $("#animeEditForm-episodes").attr("max", dataAnime.episodes);
+  checkIfInAnimeList(dataAnime.id);
+  $(".rateYo-rating").rateYo({
+    normalFill: "#e0e0e0",
+    starWidth: "25px",
+    numStars: 5,
+    multiColor: {
+      "startColor": "#A22E51",
+      "endColor": "#51A22E"
+    },
+    halfStar: true,
+    maxValue: 10
+  });
+  $(".animeInformation #generalInfo .animeInformation_title").quickfit({
+    min: 1,
+    max: 30,
+    truncate: true,
+    width: 420
+  });
+}
 
 // [+] ===================GRID LISTS===================== [+]
 function grid_list_init() {
