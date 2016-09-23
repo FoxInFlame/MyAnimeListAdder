@@ -1,5 +1,5 @@
 # QuickMyAnimeList
-[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![GitHub commits](https://img.shields.io/github/commits-since/FoxInFlame/QuickMyAnimeList/1.3.2.svg?maxAge=2592000)]() [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QuickMyAnimeList/total.svg?maxAge=2592000)]()
+[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![GitHub commits](https://img.shields.io/github/commits-since/FoxInFlame/QuickMyAnimeList/1.3.3.svg?maxAge=2592000)]() [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QuickMyAnimeList/total.svg?maxAge=2592000)]()
 
 [![GitHub forks](https://img.shields.io/github/forks/FoxInFlame/QuickMyAnimeList.svg?style=social&label=Fork&maxAge=2592000)]()
 [![GitHub watchers](https://img.shields.io/github/watchers/FoxInFlame/QuickMyAnimeList.svg?style=social&label=Watch&maxAge=2592000)]() [![Twitter Follow](https://img.shields.io/twitter/follow/FoxInFlame.svg?style=social&label=Follow&maxAge=2592000)]()
@@ -38,11 +38,11 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 
 
 ## What's new!?
-### Release 1.3.2!
+### Release 1.3.3!
 
 The bug fix update. 
 
-#### Features kept from previous version (1.3.1)
+#### Features kept from previous version (1.3.2)
 
 - Ability to add edit, or delete an anime to your MAL account
 - Ability to view synopsis and other titles for the chosen anime
@@ -52,20 +52,19 @@ The bug fix update.
 - Choose CSS Theme from Options
 - In-Page QMAL for gogoanime.io, crunchyroll.com and kissanime.to
 
-#### New features of Version 1.3.2
+#### New features of Version 1.3.3
 
-- Colored text in In-Page QMAL
-- Fixed 5 issued bugs
-- Fixed a bunch of (like 10) unissued minor bugs
-- And also fixed the add/edit button in MaterializeCSS popup moving up and down unnecessarily.
+- A link to open QMAL from a MAL anime page!
+- Fixed 3 bugs.
 - Probably more.
 
-#### Removed features from previous version (1.3.1)
+#### Removed features from previous version (1.3.2)
 
 - Nothing.
 
 #### Next up for 1.X, 2.0, and later on.
 
+- Link to open QMAL on many other anime pages, such as AniDB, AniList, gogoAnime, etc.
 - Use a better MAL API
 - More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X)
 - Add an option to disable CPU-demanding animations and transitions (1.X)
