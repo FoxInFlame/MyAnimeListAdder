@@ -152,9 +152,21 @@ chrome.runtime.onMessage.addListener(
       animeTitle_panel = "";
     }
     if(request.updateStatus == "add") {
-      response = addAnimeInList(request.id, request.episodes, "1");
+      response = addAnimeInList({
+        id: request.id,
+        episodes: request.episodes,
+        status: "1",
+        startDate: request.startDate,
+        finishDate: request.finishDate
+      });
     } else if(request.updateStatus == "update") {
-      response = updateAnimeInList(request.id, request.episodes, "1");
+      response = updateAnimeInList({
+        id: request.id,
+        episodes: request.episodes,
+        status: request.status,
+        startDate: request.startDate,
+        finishDate: request.finishDate
+      });
     }
     sendResponse({
       answer: response
@@ -162,19 +174,25 @@ chrome.runtime.onMessage.addListener(
   }
 );
 // ---- Update anime function
-function updateAnimeInList(id, episode, status) {
+function updateAnimeInList(details) {
   
   var editXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
   "<entry>" +
-  "<episode>" + episode + "</episode>" +
-  "<status>" + status + "</status>" +
-  "</entry>";
+  "<episode>" + details.episodes + "</episode>" +
+  "<status>" + details.status + "</status>";
+  if(details.startDate) {
+    editXML += "<start_date>" + details.startDate + "</start_date>";
+  }
+  if(details.finishDate) {
+    editXML += "<finish_date>" + details.finishDate + "</finish_date>";
+  }
+  editXML += "</entry>";
   
-  console.log("[UPDATE] Updating Anime " + id + " as status: " + status + " to list....");
-  console.log("[UPDATE] Watched Episodes: " + episode);
-  
+  console.log("[UPDATE] Updating Anime " + details.id + " as status: " + details.status + " to list....");
+  console.log("[UPDATE] Watched Episodes: " + details.episodes);
+
   $.ajax({
-    url: "https://myanimelist.net/api/animelist/update/" + id + ".xml",
+    url: "https://myanimelist.net/api/animelist/update/" + details.id + ".xml",
     type: "GET",
     data: {"data": editXML},
     username: loginUsername,
@@ -182,7 +200,7 @@ function updateAnimeInList(id, episode, status) {
     contentType: "application/xml",
     async: false,
     success: function(ajaxData) {
-      console.log("[DONE] Anime ID " + id + " has been updated on " + loginUsername + "'s list!");
+      console.log("[DONE] Anime ID " + details.id + " has been updated on " + loginUsername + "'s list!");
       error = "Updated";
     },
     error: function(xhr, status, thrownError) {
@@ -192,23 +210,30 @@ function updateAnimeInList(id, episode, status) {
       error = xhr.responseText;
     }
   });
+  
   return error;
 }
 
 // ---- Add anime function
-function addAnimeInList(id, episode, status) {
+function addAnimeInList(details) {
   
   var myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
   "<entry>" +
-  "<episode>" + episode + "</episode>" +
-  "<status>" + status + "</status>" +
-  "</entry>";
+  "<episode>" + details.episodes + "</episode>" +
+  "<status>" + details.status + "</status>";
+  if(details.startDate) {
+    editXML += "<start_date>" + details.startDate + "</start_date>";
+  }
+  if(details.finishDate) {
+    editXML += "<finish_date>" + details.finishDate + "</finish_date>";
+  }
+  editXML += "</entry>";
   
-  console.log("[ADD] Adding Anime " + id + " as status: " + status + " to list.");
-  console.log("[ADD] Watched Episodes: " + episode);
+  console.log("[ADD] Adding Anime " + details.id + " as status: " + details.status + " to list.");
+  console.log("[ADD] Watched Episodes: " + details.episodes);
   
   $.ajax({
-    url: "https://myanimelist.net/api/animelist/add/" + id + ".xml",
+    url: "https://myanimelist.net/api/animelist/add/" + details.id + ".xml",
     type: "GET",
     data: {"data": myXML},
     username: loginUsername,
@@ -216,7 +241,7 @@ function addAnimeInList(id, episode, status) {
     contentType: "application/xml",
     async: false,
     success: function(ajaxData) {
-      console.log("Anime ID " + id + " has been added to " + loginUsername + "'s list!");
+      console.log("Anime ID " + details.id + " has been added to " + loginUsername + "'s list!");
       error = "Added";
     },
     error: function(xhr, status, thrownError) {

@@ -41,11 +41,7 @@ $(document).ready(function() {
     inpage_sites.forEach(function(index) {
       if(window.location.href.contains(index)) {
         var location = window.location.href;
-        if(location.contains("myanimelist")) {
-          chrome.runtime.sendMessage({
-            from: "content",
-            subject: "showPageAction"
-          });
+        if(location.contains("myanimelist") && location.contains("/anime/")) {
           contentScriptMAL_description();
           return;
         }
@@ -158,6 +154,15 @@ String.prototype.replaceAll = function(search, replacement) {
     var target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
 };
+
+function getFormattedDate(date) {
+  var year = date.getFullYear();
+  var month = (1 + date.getMonth()).toString();
+  month = month.length > 1 ? month : '0' + month;
+  var day = date.getDate().toString();
+  day = day.length > 1 ? day : '0' + day;
+  return month + day + year;
+}
 
 function contentScriptMAL_description() {
   $("#profileRows").before("<div class=\"pt0\" id=\"profileRows\" style=\"padding:0\">" +
@@ -301,12 +306,13 @@ function contentScriptGoGoAnime() {
       var URL_anime;
       if(window.location.href.contains("gogoanime")) {
         anime_name_element = $(".main_body .anime_video_body .anime_video_body_cate .anime-info a").html();
-        console.log(anime_name_element);
         URL_anime = window.location.href.split("/");
         URL_anime = URL_anime[URL_anime.length - 1];
         anime_name = anime_name_element.replace(" (Dub)", "");
-        console.log(anime_name);
         anime_name = anime_name.replaceAll(" ", "+");
+        if(anime_name.endsWith("+")) {
+          anime_name = anime_name.slice(0, -1);
+        }
         URL_anime_parts = URL_anime.split("-");
         anime_episode = URL_anime_parts[URL_anime_parts.length - 1];
         console.info("[QMAL@GoGoAnime] QMAL has detected that you are watching " + anime_name);
@@ -458,8 +464,18 @@ function contentScriptGoGoAnime() {
       var anime_update_status;
       var animeUpdateChosenID = $("#qmal-update-anime-name").val().split(" : ")[0];
       var animeUpdateChosenEpisodes = $("#qmal-update-anime-episodes").val();
+      var animeInformation = {
+        id: animeUpdateChosenID,
+        episodes: animeUpdateChosenEpisodes
+      }
       if(animeUpdateChosenEpisodes == search_result_chosen_anime_episode) {
-        // It's the last episode! Oh my god! Need to set it as completed now!
+        // It's the last episode! Oh my god! Need to set it as completed now! mmddyyyy
+        animeInformation.finishDate = getFormattedDate(new Date());
+        animeInformation.status = "2";
+      } else if(animeUpdateChosenEpisodes == "1") {
+        // It's the first episode! Set the start date! mmddyyyy
+        animeInformation.startDate = getFormattedDate(new Date());
+        animeInformation.status = "1";
       }
       $.ajax({
         url: "https://myanimelist.net/malappinfo.php?u="+username+"&status=all&type=anime",
@@ -482,12 +498,9 @@ function contentScriptGoGoAnime() {
               anime_update_status = "add";
             }
           });
-          console.log(anime_update_status);
-          chrome.runtime.sendMessage({
-            updateStatus: anime_update_status,
-            id: animeUpdateChosenID,
-            episodes: animeUpdateChosenEpisodes
-          }, function(response) {
+          animeInformation.updateStatus = anime_update_status;
+          console.log(animeInformation);
+          chrome.runtime.sendMessage(animeInformation, function(response) {
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
             window.setTimeout(function() {
               $("#qmal-dialog-loading").fadeOut(300);
@@ -625,15 +638,12 @@ function contentScriptCrunchyroll() {
       var URL_anime;
       if(window.location.href.contains("crunchyroll")) {
         URL_anime = window.location.href.split("/");
-        console.log(URL_anime);
         // 4 because 0 is http, 1 is empty, 2 is crunchyroll
         URL_anime_parts = URL_anime[3].split("-");
-        console.log(URL_anime_parts);
         anime_name = URL_anime_parts;
         anime_name = anime_name.join("+").capitalizeFirstLetter();
         if(anime_name.endsWith("+")) {
-          //Special characters become double spaces
-          anime_name = anime_name.substring(0, anime_name.length-1);
+          anime_name = anime_name.slice(0, -1);
         }
         anime_episode = URL_anime[4].split("-")[1];
         console.info("[QMAL@Crunchyroll] QMAL has detected that you are watching " + anime_name);
@@ -785,8 +795,18 @@ function contentScriptCrunchyroll() {
       var anime_update_status;
       var animeUpdateChosenID = $("#qmal-update-anime-name").val().split(" : ")[0];
       var animeUpdateChosenEpisodes = $("#qmal-update-anime-episodes").val();
+      var animeInformation = {
+        id: animeUpdateChosenID,
+        episodes: animeUpdateChosenEpisodes
+      }
       if(animeUpdateChosenEpisodes == search_result_chosen_anime_episode) {
-        // It's the last episode! Oh my god! Need to set it as completed now!
+        // It's the last episode! Oh my god! Need to set it as completed now! mmddyyyy
+        animeInformation.finishDate = getFormattedDate(new Date());
+        animeInformation.status = "2";
+      } else if(animeUpdateChosenEpisodes == "1") {
+        // It's the first episode! Set the start date! mmddyyyy
+        animeInformation.startDate = getFormattedDate(new Date());
+        animeInformation.status = "1";
       }
       $.ajax({
         url: "https://myanimelist.net/malappinfo.php?u="+username+"&status=all&type=anime",
@@ -809,12 +829,9 @@ function contentScriptCrunchyroll() {
               anime_update_status = "add";
             }
           });
-          console.log(anime_update_status);
-          chrome.runtime.sendMessage({
-            updateStatus: anime_update_status,
-            id: animeUpdateChosenID,
-            episodes: animeUpdateChosenEpisodes
-          }, function(response) {
+          animeInformation.updateStatus = anime_update_status;
+          console.log(animeInformation);
+          chrome.runtime.sendMessage(animeInformation, function(response) {
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
             window.setTimeout(function() {
               $("#qmal-dialog-loading").fadeOut(300);
@@ -951,10 +968,15 @@ function contentScriptKissAnime() {
       // Try and get Anime Name
       var URL_anime;
       if(window.location.href.contains("kissanime")) {
-        anime_name_element = $("div#navsubbar p a").attr("href").replace("http://kissanime.to/Anime/", "").replace("/", "");
+        anime_name_element = $("#containerRoot #headnav #navsubbar p a").text().split("\n")[2];
+        console.log(anime_name_element);
+        anime_name = anime_name_element.replace("(Sub)", " ");
+        anime_name = anime_name.replace("(Dub)", " ");
+        anime_name = anime_name.trim();
+        anime_name = anime_name.replaceAll(" ", "+");
+        
         URL_anime = window.location.href.split("/");
         URL_anime = URL_anime[URL_anime.length - 1]; // Last item
-        anime_name = anime_name_element.replaceAll("-", "+");
         if(window.location.href.contains("Movie")) {
           anime_episode = "1";
         } else if(window.location.href.contains("Episode")) {
@@ -1111,8 +1133,18 @@ function contentScriptKissAnime() {
       var anime_update_status;
       var animeUpdateChosenID = $("#qmal-update-anime-name").val().split(" : ")[0];
       var animeUpdateChosenEpisodes = $("#qmal-update-anime-episodes").val();
+      var animeInformation = {
+        id: animeUpdateChosenID,
+        episodes: animeUpdateChosenEpisodes
+      }
       if(animeUpdateChosenEpisodes == search_result_chosen_anime_episode) {
-        // It's the last episode! Oh my god! Need to set it as completed now!
+        // It's the last episode! Oh my god! Need to set it as completed now! mmddyyyy
+        animeInformation.finishDate = getFormattedDate(new Date());
+        animeInformation.status = "2";
+      } else if(animeUpdateChosenEpisodes == "1") {
+        // It's the first episode! Set the start date! mmddyyyy
+        animeInformation.startDate = getFormattedDate(new Date());
+        animeInformation.status = "1";
       }
       $.ajax({
         url: "https://myanimelist.net/malappinfo.php?u="+username+"&status=all&type=anime",
@@ -1135,12 +1167,9 @@ function contentScriptKissAnime() {
               anime_update_status = "add";
             }
           });
-          console.log(anime_update_status);
-          chrome.runtime.sendMessage({
-            updateStatus: anime_update_status,
-            id: animeUpdateChosenID,
-            episodes: animeUpdateChosenEpisodes
-          }, function(response) {
+          animeInformation.updateStatus = anime_update_status;
+          console.log(animeInformation);
+          chrome.runtime.sendMessage(animeInformation, function(response) {
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
             window.setTimeout(function() {
               $("#qmal-dialog-loading").fadeOut(300);
