@@ -41,7 +41,7 @@ $(document).ready(function() {
     inpage_sites.forEach(function(index) {
       if(window.location.href.contains(index)) {
         var location = window.location.href;
-        if(location.contains("myanimelist") && location.contains("/anime/")) {
+        if(location.contains("myanimelist") && (location.contains("/anime/") || location.contains("/anime.php?id="))) {
           contentScriptMAL_description();
           return;
         }
@@ -155,6 +155,16 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 function getFormattedDate(date) {
   var year = date.getFullYear();
   var month = (1 + date.getMonth()).toString();
@@ -169,10 +179,13 @@ function contentScriptMAL_description() {
   "<a href=\"javascript:void(0);\" style=\"border-bottom:none\"><span id=\"openInQMAL\">Open in QMAL</span></a>" +
   "</div>");
   $("#openInQMAL").on("click", function() {
-    var title = $(".page-common #myanimelist .wrapper #contentWrapper .h1 span").html()
+    var animeid;
+    var title = $(".page-common #myanimelist .wrapper #contentWrapper .h1 span").html();
+    if(window.location.href.contains("/anime/")) animeid = window.location.href.split("/")[4];
+    if(window.location.href.contains("/anime.php?id=")) animeid = getParameterByName("id");
     chrome.runtime.sendMessage({
       subject: "openPanel",
-      animeid: window.location.href.split("/")[4],
+      animeid: animeid,
       animetitle: $(".page-common #myanimelist .wrapper #contentWrapper .h1 span").html()
     }, function(response) {
       console.log(response);
