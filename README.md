@@ -28,6 +28,7 @@ Check out the official website for screenshots.
 - MaterializeCSS : Used in options and popup for layout, buttons, and animations for the MaterializeCSS theme
 - RateYo : Used in popup to rate the selected anime easily for both themes
 - Select2 : Used in popup to search and select the anime easily for the MDB theme
+- xml2json : Convert XML to JSON easily. Used with like, all of the AJAX requests.
 
 ## Development
 The Chrome Extension uses jQuery for mostly everything, including the AJAX Requests, the Show/Hide toggles, the Next/Previous buttons, and a lot more. Without jQuery, this Chrome Extension would be nothing.
