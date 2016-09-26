@@ -502,7 +502,6 @@ function contentScriptGoGoAnime() {
         success: function(data) {
           $("anime", data).each(function(){
             if($("series_animedb_id", this).text() == animeUpdateChosenID) {
-              console.log("found it!");
               // It's in the list! And it's in this "each" module
               anime_update_status = "update";
               return false;
@@ -512,7 +511,6 @@ function contentScriptGoGoAnime() {
             }
           });
           animeInformation.updateStatus = anime_update_status;
-          console.log(animeInformation);
           chrome.runtime.sendMessage(animeInformation, function(response) {
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
             window.setTimeout(function() {
@@ -833,7 +831,6 @@ function contentScriptCrunchyroll() {
         success: function(data) {
           $("anime", data).each(function(){
             if($("series_animedb_id", this).text() == animeUpdateChosenID) {
-              console.log("found it!");
               // It's in the list! And it's in this "each" module
               anime_update_status = "update";
               return false;
@@ -843,7 +840,6 @@ function contentScriptCrunchyroll() {
             }
           });
           animeInformation.updateStatus = anime_update_status;
-          console.log(animeInformation);
           chrome.runtime.sendMessage(animeInformation, function(response) {
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
             window.setTimeout(function() {
@@ -1171,7 +1167,6 @@ function contentScriptKissAnime() {
         success: function(data) {
           $("anime", data).each(function(){
             if($("series_animedb_id", this).text() == animeUpdateChosenID) {
-              console.log("found it!");
               // It's in the list! And it's in this "each" module
               anime_update_status = "update";
               return false;
@@ -1181,7 +1176,6 @@ function contentScriptKissAnime() {
             }
           });
           animeInformation.updateStatus = anime_update_status;
-          console.log(animeInformation);
           chrome.runtime.sendMessage(animeInformation, function(response) {
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
             window.setTimeout(function() {
