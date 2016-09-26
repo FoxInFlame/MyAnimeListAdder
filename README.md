@@ -40,7 +40,7 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 ## What's new!?
 ### Release 1.3.3!
 
-The bug fix update. 
+Really, not much.
 
 #### Features kept from previous version (1.3.2)
 
@@ -54,8 +54,8 @@ The bug fix update.
 
 #### New features of Version 1.3.3
 
-- A link to open QMAL from a MAL anime page!
-- Fixed 3 bugs.
+- A link to open QMAL from a MAL anime page! (Even though it probably won't be useful)
+- Fixed 9 bugs.
 - Probably more.
 
 #### Removed features from previous version (1.3.2)
