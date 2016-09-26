@@ -181,10 +181,10 @@ function updateAnimeInList(details) {
   "<episode>" + details.episodes + "</episode>" +
   "<status>" + details.status + "</status>";
   if(details.startDate) {
-    editXML += "<start_date>" + details.startDate + "</start_date>";
+    editXML += "<date_start>" + details.startDate + "</date_start>";
   }
   if(details.finishDate) {
-    editXML += "<finish_date>" + details.finishDate + "</finish_date>";
+    editXML += "<date_finish>" + details.finishDate + "</date_finish>";
   }
   editXML += "</entry>";
   
@@ -217,17 +217,17 @@ function updateAnimeInList(details) {
 // ---- Add anime function
 function addAnimeInList(details) {
   
-  var myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+  var addXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
   "<entry>" +
   "<episode>" + details.episodes + "</episode>" +
   "<status>" + details.status + "</status>";
   if(details.startDate) {
-    editXML += "<start_date>" + details.startDate + "</start_date>";
+    addXML += "<date_start>" + details.startDate + "</date_start>";
   }
   if(details.finishDate) {
-    editXML += "<finish_date>" + details.finishDate + "</finish_date>";
+    addXML += "<date_finish>" + details.finishDate + "</date_finish>";
   }
-  editXML += "</entry>";
+  addXML += "</entry>";
   
   console.log("[ADD] Adding Anime " + details.id + " as status: " + details.status + " to list.");
   console.log("[ADD] Watched Episodes: " + details.episodes);
@@ -235,7 +235,7 @@ function addAnimeInList(details) {
   $.ajax({
     url: "https://myanimelist.net/api/animelist/add/" + details.id + ".xml",
     type: "GET",
-    data: {"data": myXML},
+    data: {"data": addXML},
     username: loginUsername,
     password: loginPassword,
     contentType: "application/xml",
