@@ -67,6 +67,7 @@ Really, not much.
 
 #### Next up for 1.X, 2.0, and later on.
 
+- Detailed Options for In-Page QMAL
 - Link to open QMAL on many other anime pages, such as AniDB, AniList, gogoAnime, etc.
 - Use a better MAL API
 - More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X)
