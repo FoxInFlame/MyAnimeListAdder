@@ -140,7 +140,7 @@ function welcome_message_features() {
 }
 function development_github() {
   $.ajax({
-    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3.3",
+    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3.4",
     success: function(data) {
       $("#github_latest_commit_sha").html(data[0]["sha"].substring(0,10));
       $("#github_latest_commit_link").attr("href", data[0]["html_url"]);
@@ -323,13 +323,13 @@ function restore_options_badge() {
   chrome.storage.sync.get({
     badge_enable: false,
     badge_color: "#5be825",
-    badge_interval: "300",
+    badge_interval: "3600",
     badge_count: "1"
   }, function(items) {
     document.getElementById("badge_enable").checked = items.badge_enable;
     document.getElementById("badge_color").value = items.badge_color;
     document.getElementById("badge_color").style.backgroundColor = items.badge_color;
-    document.getElementById("badge_interval").value = items.badge_interval;
+    document.getElementById("badge_interval").value = (parseInt(items.badge_interval) / 60).toString();
     document.getElementById("badge_count").value = parseInt(items.badge_count);
     $("#badge_count").material_select();
   });
@@ -337,7 +337,8 @@ function restore_options_badge() {
 function save_options_badge() {
   var badge_enable = document.getElementById("badge_enable").checked;
   var badge_color = document.getElementById("badge_color").value;
-  var badge_interval = document.getElementById("badge_interval").value;
+  var badge_interval_min = document.getElementById("badge_interval").value;
+  var badge_interval = (parseInt(badge_interval_min) * 60).toString();
   var badge_count = document.getElementById("badge_count").value.toString();
   chrome.storage.sync.set({
     badge_enable: badge_enable,
