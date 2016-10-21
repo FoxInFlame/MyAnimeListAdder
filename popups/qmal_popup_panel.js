@@ -419,6 +419,21 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
+// [+] ===========REMOVE DUPLICATE IN ARRAY============== [+]
+Array.prototype.unique = function() {
+  var a = this.concat();
+  for(var i=0; i<a.length; ++i) {
+    for(var j=i+1; j<a.length; ++j) {
+      if(a[i] === a[j]) {
+        a.splice(j--, 1);
+        Materialize.toast("You already have the tag '" + a[i] + "'!", 1500);
+      }
+    }
+  }
+  return a;
+};
+
+
 // [+] ============CHECK IF ANIME IS IN LIST============= [+]
 var formAnimeStatus;
 function checkIfInAnimeList(animeID) {
@@ -817,6 +832,52 @@ $("#animeEditForm-fieldset2-previous").click(function() {
     $("#animeEditForm-fieldset1").animate({
       marginTop: "50px"
     });
+  });
+});
+
+// [+] Stage 2 -> Autofill Genres
+$("#animeEditForm-fieldset2-tags-autoFill").click(function() {
+  var toastID = Materialize.toast("Please wait....");
+  $.ajax({
+    url: "http://www.foxinflame.tk/dev/matomari/api/animeInfo.php?id=" + $(".animeInformation .animeInformation_id").text(),
+    method: "GET",
+    success: function(data) {
+      function containsObject(obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+          if (list[i] === obj) {
+            return true;
+          }
+        }
+        return false;
+      }
+      var x = 0;
+      var tags_materialChips = $("#animeEditForm-tags").material_chip("data");
+      var tags_array = [];
+      var tags_array_fin = [];
+      while(tags_materialChips.length > x) {
+        tags_array.push(tags_materialChips[x].tag.trim());
+        x++;
+      }
+      Materialize.toastRemove();
+      tags_array = tags_array.concat(data.genres).unique();
+      for(var i=0; i<tags_array.length;i++) {
+        var tmp = {
+          tag: tags_array[i]
+        }
+        tags_array_fin.push(tmp);
+      }
+      $("#animeEditForm-tags").material_chip({
+        data: tags_array_fin,
+        placeholder: tags.placeholder,
+        secondaryPlaceholder: tags.secondaryPlaceholder
+      });
+    },
+    error: function(jqXHR, textStatus, thrownError) {
+      console.log(jqXHR);
+      console.log(textStatus);
+      console.log(thrownError);
+    }
   });
 });
 
