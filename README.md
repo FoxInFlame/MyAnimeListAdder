@@ -31,7 +31,7 @@ Check out the official website for screenshots.
 - xml2json : Convert XML to JSON easily. Used with like, all of the AJAX requests.
 
 ## Development
-The Chrome Extension uses jQuery for mostly everything, including the AJAX Requests, the Show/Hide toggles, the Next/Previous buttons, and a lot more. Without jQuery, this Chrome Extension would be nothing.
+The Chrome Extension uses JavaScript for everything, including the AJAX Requests, the Show/Hide toggles, the Next/Previous buttons, and a lot more. This Chrome Extension would be nothing without JavaScript. 
 
 The MAL API also hepled out a TON in creating this. Well, not helped out, but more like, was neccessary. Becuase without the API, the extension wouldn't have been able to retreive, add, and delete data from your anime list.
 
@@ -56,12 +56,14 @@ Really, not much.
 #### New features of Version 1.3.3
 
 - A link to open QMAL from a MAL anime page! (Even though it probably won't be useful)
-- Fixed 9 bugs.
+- Import tags from anime genre (uses FoxInFlame's MAL scraper)
+- Update Interval in Minutes (in the options).
+- Fixed 11 bugs.
 - Probably more.
 
 #### Removed features from previous version (1.3.2)
 
-- Nothing.
+- Update Interval in Seconds (in the options).
 
 #### Next up for 1.X, 2.0, and later on.
 
@@ -84,6 +86,7 @@ There are several ways you can tell me your opinion :
 - Tweet to me at @FoxInFlame with the hashtag "#QuickMyAnimeList" or "#QMAL"
 - PM me on Reddit @FoxInFlame
 - Chat on the [Gitter.im chat](https://gitter.im/QuickMyAnimeList/Lobby)
+- Submit stuff on the subreddit [/r/QuickMyAnimeList](https://reddit.com/r/QuickMyAnimeList)
 - etc.
 
 ## License
