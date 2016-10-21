@@ -1945,6 +1945,10 @@ $(document).ready(function(){
     }, false);
 
 })(window);
+;Materialize.toastRemove = function() {
+  var toasts = document.getElementById('toast-container').innerHTML = '';
+  return Materialize;
+};
 ;Materialize.toast = function (message, displayLength, className, completeCallback) {
     className = className || "";
 
