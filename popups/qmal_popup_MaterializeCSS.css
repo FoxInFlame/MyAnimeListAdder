@@ -389,6 +389,9 @@ fieldset {
   font-size: 24px;
   line-height: 24px;
 }
+.animeInformation #generalInfo .col .card .card-content .card-title .animeInformation_title {
+  vertical-align: middle;
+}
 .animeInformation #generalInfo .col .card .card-content .row {
   margin-top: 8px;
   margin-bottom: 4px;
