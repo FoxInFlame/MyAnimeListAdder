@@ -1,5 +1,5 @@
 # QuickMyAnimeList
-[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![GitHub commits](https://img.shields.io/github/commits-since/FoxInFlame/QuickMyAnimeList/1.3.2.svg?maxAge=2592000)]() [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QuickMyAnimeList/total.svg?maxAge=2592000)]()
+[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QuickMyAnimeList/total.svg?maxAge=2592000)]()
 
 [![GitHub forks](https://img.shields.io/github/forks/FoxInFlame/QuickMyAnimeList.svg?style=social&label=Fork&maxAge=2592000)]()
 [![GitHub watchers](https://img.shields.io/github/watchers/FoxInFlame/QuickMyAnimeList.svg?style=social&label=Watch&maxAge=2592000)]() [![Twitter Follow](https://img.shields.io/twitter/follow/FoxInFlame.svg?style=social&label=Follow&maxAge=2592000)]()
@@ -28,9 +28,10 @@ Check out the official website for screenshots.
 - MaterializeCSS : Used in options and popup for layout, buttons, and animations for the MaterializeCSS theme
 - RateYo : Used in popup to rate the selected anime easily for both themes
 - Select2 : Used in popup to search and select the anime easily for the MDB theme
+- xml2json : Convert XML to JSON easily. Used with like, all of the AJAX requests.
 
 ## Development
-The Chrome Extension uses jQuery for mostly everything, including the AJAX Requests, the Show/Hide toggles, the Next/Previous buttons, and a lot more. Without jQuery, this Chrome Extension would be nothing.
+The Chrome Extension uses JavaScript for everything, including the AJAX Requests, the Show/Hide toggles, the Next/Previous buttons, and a lot more. This Chrome Extension would be nothing without JavaScript. 
 
 The MAL API also hepled out a TON in creating this. Well, not helped out, but more like, was neccessary. Becuase without the API, the extension wouldn't have been able to retreive, add, and delete data from your anime list.
 
@@ -38,37 +39,40 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 
 
 ## What's new!?
-### Release 1.3.2!
+### Release 1.3.3!
 
-The bug fix update. 
+Really, not much.
 
-#### Features kept from previous version (1.3.1)
+#### Features kept from previous version (1.3.2)
 
 - Ability to add edit, or delete an anime to your MAL account
-- Ability to view synopsis and other titles for the chosen anime
-- Ability to login to your MAL account in the options, and verify if the credentials are real or not
-- Material Design Options pages
-- Panels
+- Login to your MAL account in the options, and verify if the credentials are real or not
 - Choose CSS Theme from Options
+- Awesome icon.
 - In-Page QMAL for gogoanime.io, crunchyroll.com and kissanime.to
 
-#### New features of Version 1.3.2
+#### New features of Version 1.3.3
 
-- Colored text in In-Page QMAL
-- Fixed 5 issued bugs
-- Fixed a bunch of (like 10) unissued minor bugs
-- And also fixed the add/edit button in MaterializeCSS popup moving up and down unnecessarily.
+- A link to open QMAL from a MAL anime page! (Even though it probably won't be useful)
+- Import tags from anime genre (uses FoxInFlame's MAL scraper)
+- Update Interval in Minutes (in the options).
+- Update in-page QMAL later option.
+- Fixed 12 reported bugs.
 - Probably more.
 
-#### Removed features from previous version (1.3.1)
+#### Removed features from previous version (1.3.2)
 
-- Nothing.
+- Update Interval in Seconds (in the options).
 
 #### Next up for 1.X, 2.0, and later on.
 
+- Detailed Options for In-Page QMAL
+- Link to open QMAL on many other anime pages, such as AniDB, AniList, gogoAnime, etc.
 - Use a better MAL API
 - More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X)
 - Add an option to disable CPU-demanding animations and transitions (1.X)
+- Login using Google+, Twitter, or third-party auth.
+- Use more of FoxInFlame's MAL scraper.
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0, 3.0)
 
 #### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
@@ -84,6 +88,7 @@ There are several ways you can tell me your opinion :
 - Tweet to me at @FoxInFlame with the hashtag "#QuickMyAnimeList" or "#QMAL"
 - PM me on Reddit @FoxInFlame
 - Chat on the [Gitter.im chat](https://gitter.im/QuickMyAnimeList/Lobby)
+- Submit stuff on the subreddit [/r/QuickMyAnimeList](https://reddit.com/r/QuickMyAnimeList)
 - etc.
 
 ## License

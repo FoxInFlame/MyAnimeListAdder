@@ -1945,6 +1945,10 @@ $(document).ready(function(){
     }, false);
 
 })(window);
+;Materialize.toastRemove = function() {
+  var toasts = document.getElementById('toast-container').innerHTML = '';
+  return Materialize;
+};
 ;Materialize.toast = function (message, displayLength, className, completeCallback) {
     className = className || "";
 
@@ -3890,6 +3894,20 @@ $(document).ready(function(){
       self.$document.off('focusout', SELS.CHIPS).on('focusout', SELS.CHIPS + ' ' + SELS.INPUT, function(e){
         $(e.target).closest(SELS.CHIPS).removeClass('focus');
       });
+      
+      self.$document.off('paste', SELS.CHIPS).on('paste', SELS.CHIPS + ' ' + SELS.INPUT, function(e){
+        var $target = $(e.target);
+        var $chips = $target.closest(SELS.CHIPS);
+        var chipsIndex = $chips.data('index');
+        var chipsLength = $chips.children(SELS.CHIP).length;
+        
+        var clipboarddata = e.originalEvent.clipboardData.getData('text');
+        dataArray = clipboarddata.split(",");
+        dataArray.forEach(function(index) {
+          self.addChip(chipsIndex,{tag: index}, $chips);
+        });
+        return false;
+      });
 
       self.$document.off('keydown', SELS.CHIPS).on('keydown', SELS.CHIPS + ' ' + SELS.INPUT, function(e){
         var $target = $(e.target);
@@ -3898,7 +3916,7 @@ $(document).ready(function(){
         var chipsLength = $chips.children(SELS.CHIP).length;
 
         // enter
-        if (13 === e.which) {
+        if (13 === e.which || 188 === e.which) {
           e.preventDefault();
           self.addChip(chipsIndex, {tag: $target.val()}, $chips);
           $target.val('');
@@ -3973,6 +3991,7 @@ $(document).ready(function(){
 
     this.addChip = function(chipsIndex, elem, $chips) {
       if (!self.isValid($chips, elem)) {
+        Materialize.toast("You already have that tag!", 1500);
         return;
       }
       var options = $chips.data('options');

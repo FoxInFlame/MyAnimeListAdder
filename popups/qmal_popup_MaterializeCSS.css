@@ -374,7 +374,7 @@ fieldset {
 }
 
 .animeInformation #animeInformation_image-wrapper {
-  overflow: auto;
+  overflow: hidden;
   width: 100%;
   height: 120px;
   z-index: 50;
@@ -388,6 +388,9 @@ fieldset {
 .animeInformation #generalInfo .col .card .card-content .card-title {
   font-size: 24px;
   line-height: 24px;
+}
+.animeInformation #generalInfo .col .card .card-content .card-title .animeInformation_title {
+  vertical-align: middle;
 }
 .animeInformation #generalInfo .col .card .card-content .row {
   margin-top: 8px;
@@ -418,11 +421,11 @@ fieldset {
   right: 20px;
   top: 90px;
   z-index: 70;
-  background-color: #e53935;
-  transition: background-color linear 0.2s, background linear 0.2s;
+  background: #e53935;
+  transition: background-color 0.3s linear, background 0.3s linear, box-shadow 0.25s;
 }
 
-.animeInformation #animeInformation_addToList i{
+.animeInformation #animeInformation_addToList i {
   border-spacing: 0;
 }
 .animeInformation .animeInformation-edit-preloader-wrapper {
@@ -435,7 +438,7 @@ fieldset {
   -webkit-animation: rotate360 1.5s infinite linear;
 }
 .animeInformation .animeInformation-edit-preloader-wrapper .spinner-layer {
-  border-color:#2e51a2;
+  border-color:#e1e7f5;
 }
 @-webkit-keyframes rotate360 {
   from {-webkit-transform: rotate(0deg);}
@@ -520,4 +523,8 @@ fieldset {
 #animeEditForm #animeEditForm-fieldset2 #animeEditForm-tags {
   width: 100%;
   min-width: 100%;
+}
+
+#animeEditForm #animeEditForm-fieldset2 .row:nth-child(2) {
+  text-align: center;
 }
