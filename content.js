@@ -243,6 +243,9 @@ function contentScriptGoGoAnime() {
               "<a class='qmal-button' id='qmal-update-no' href='javascript:void(0)'>" +
                 "<div class='buttonFlat' id='buttonOne' fit>DON'T UPDATE</div>" +
               "</a>"+
+              "<a class='qmal-button' id='qmal-update-later' href='javascript:void(0)'>" +
+                "<div class='buttonFlat' id='buttonThree' fit>LATER</div>" +
+              "</a>" +
               "<a class='qmal-button' id='qmal-update-yes' href='javascript:void(0)'>" +
                 "<div class='buttonFlat' id='buttonTwo' fit>UPDATE</div>" +
               "</a>"+
@@ -311,6 +314,11 @@ function contentScriptGoGoAnime() {
     $("#qmal-update-anime-name-warning").hide();
     $("#qmal-update-anime-episodes-warning").hide();
     $("#qmal-update-anime-episodes-isCompleted").hide();
+    var update_later = false;
+    $("#qmal-update-later").on("click", function() {
+      $("#qmal-dialog-main").fadeOut(300);
+      update_later = true;
+    });
     $("#qmal-update-yes").on("click", function(event) {
       $("#qmal-dialog-main").fadeOut(300);
       $("#qmal-dialog-updateadd").fadeIn(300);
@@ -460,6 +468,7 @@ function contentScriptGoGoAnime() {
     });
     $("#qmal-update-no").on("click", function() {
       $("#qmal-dialog-main").fadeOut(300);
+      update_later = false;
       return false;
     });
     $(".qmal-dialog input[type=text]").on("focus", function() {
@@ -496,8 +505,8 @@ function contentScriptGoGoAnime() {
         dataTpe: "xml",
         error: function(jqXHR, textStatus, errorThrown) {
           console.log(jqXHR);
-          console.log(textStatus)
-          console.log(errorThrown)
+          console.log(textStatus);
+          console.log(errorThrown);
         },
         success: function(data) {
           $("anime", data).each(function(){
@@ -512,6 +521,7 @@ function contentScriptGoGoAnime() {
           });
           animeInformation.updateStatus = anime_update_status;
           chrome.runtime.sendMessage(animeInformation, function(response) {
+            update_later = false;
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
             window.setTimeout(function() {
               $("#qmal-dialog-loading").fadeOut(300);
@@ -520,6 +530,14 @@ function contentScriptGoGoAnime() {
         }
       });
     })
+    
+    window.onbeforeunload = function(e) {
+      if(update_later === true) {
+        $("#qmal-dialog-main").fadeIn(300);
+        e.returnValue = "You haven't updated MAL yet...";
+        return "You haven't updated MAL yet...";
+      }
+    }
     return;
   }
 }
@@ -573,6 +591,9 @@ function contentScriptCrunchyroll() {
               "<a class='qmal-button' id='qmal-update-no' href='javascript:void(0)'>" +
                 "<div class='buttonFlat' id='buttonOne' fit>DON'T UPDATE</div>" +
               "</a>"+
+              "<a class='qmal-button' id='qmal-update-later' href='javascript:void(0)'>" +
+                "<div class='buttonFlat' id='buttonThree' fit>LATER</div>" +
+              "</a>" +
               "<a class='qmal-button' id='qmal-update-yes' href='javascript:void(0)'>" +
                 "<div class='buttonFlat' id='buttonTwo' fit>UPDATE</div>" +
               "</a>"+
@@ -641,23 +662,29 @@ function contentScriptCrunchyroll() {
     $("#qmal-update-anime-name-warning").hide();
     $("#qmal-update-anime-episodes-warning").hide();
     $("#qmal-update-anime-episodes-isCompleted").hide();
+    var update_later = false;
+    $("#qmal-update-later").on("click", function() {
+      $("#qmal-dialog-main").fadeOut(300);
+      update_later = true;
+    });
     $("#qmal-update-yes").on("click", function(event) {
       $("#qmal-dialog-main").fadeOut(300);
       $("#qmal-dialog-updateadd").fadeIn(300);
       var error = 0;
       // Try and get Anime Name
       var URL_anime;
-      if(window.location.href.contains("crunchyroll")) {
+      if(window.location.href.contains("gogoanime")) {
+        anime_name_element = $(".main_body .anime_video_body .anime_video_body_cate .anime-info a").html();
         URL_anime = window.location.href.split("/");
-        // 4 because 0 is http, 1 is empty, 2 is crunchyroll
-        URL_anime_parts = URL_anime[3].split("-");
-        anime_name = URL_anime_parts;
-        anime_name = anime_name.join("+").capitalizeFirstLetter();
+        URL_anime = URL_anime[URL_anime.length - 1];
+        anime_name = anime_name_element.replace(" (Dub)", "");
+        anime_name = anime_name.replaceAll(" ", "+");
         if(anime_name.endsWith("+")) {
           anime_name = anime_name.slice(0, -1);
         }
-        anime_episode = URL_anime[4].split("-")[1];
-        console.info("[QMAL@Crunchyroll] QMAL has detected that you are watching " + anime_name);
+        URL_anime_parts = URL_anime.split("-");
+        anime_episode = URL_anime_parts[URL_anime_parts.length - 1];
+        console.info("[QMAL@GoGoAnime] QMAL has detected that you are watching " + anime_name);
         $("#qmal-update-list-name").val(username + "'s List");
         $("#qmal-update-anime-name").val(anime_name);
         $("#qmal-update-anime-episodes").val(anime_episode);
@@ -789,6 +816,7 @@ function contentScriptCrunchyroll() {
     });
     $("#qmal-update-no").on("click", function() {
       $("#qmal-dialog-main").fadeOut(300);
+      update_later = false;
       return false;
     });
     $(".qmal-dialog input[type=text]").on("focus", function() {
@@ -825,8 +853,8 @@ function contentScriptCrunchyroll() {
         dataTpe: "xml",
         error: function(jqXHR, textStatus, errorThrown) {
           console.log(jqXHR);
-          console.log(textStatus)
-          console.log(errorThrown)
+          console.log(textStatus);
+          console.log(errorThrown);
         },
         success: function(data) {
           $("anime", data).each(function(){
@@ -841,6 +869,7 @@ function contentScriptCrunchyroll() {
           });
           animeInformation.updateStatus = anime_update_status;
           chrome.runtime.sendMessage(animeInformation, function(response) {
+            update_later = false;
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
             window.setTimeout(function() {
               $("#qmal-dialog-loading").fadeOut(300);
@@ -849,6 +878,14 @@ function contentScriptCrunchyroll() {
         }
       });
     })
+    
+    window.onbeforeunload = function(e) {
+      if(update_later === true) {
+        $("#qmal-dialog-main").fadeIn(300);
+        e.returnValue = "You haven't updated MAL yet...";
+        return "You haven't updated MAL yet...";
+      }
+    }
     return;
   }
 }
@@ -902,6 +939,9 @@ function contentScriptKissAnime() {
               "<a class='qmal-button' id='qmal-update-no' href='javascript:void(0)'>" +
                 "<div class='buttonFlat' id='buttonOne' fit>DON'T UPDATE</div>" +
               "</a>"+
+              "<a class='qmal-button' id='qmal-update-later' href='javascript:void(0)'>" +
+                "<div class='buttonFlat' id='buttonThree' fit>LATER</div>" +
+              "</a>" +
               "<a class='qmal-button' id='qmal-update-yes' href='javascript:void(0)'>" +
                 "<div class='buttonFlat' id='buttonTwo' fit>UPDATE</div>" +
               "</a>"+
@@ -970,30 +1010,29 @@ function contentScriptKissAnime() {
     $("#qmal-update-anime-name-warning").hide();
     $("#qmal-update-anime-episodes-warning").hide();
     $("#qmal-update-anime-episodes-isCompleted").hide();
+    var update_later = false;
+    $("#qmal-update-later").on("click", function() {
+      $("#qmal-dialog-main").fadeOut(300);
+      update_later = true;
+    });
     $("#qmal-update-yes").on("click", function(event) {
       $("#qmal-dialog-main").fadeOut(300);
       $("#qmal-dialog-updateadd").fadeIn(300);
       var error = 0;
       // Try and get Anime Name
       var URL_anime;
-      if(window.location.href.contains("kissanime")) {
-        anime_name_element = $("#containerRoot #headnav #navsubbar p a").text().split("\n")[2];
-        console.log(anime_name_element);
-        anime_name = anime_name_element.replace("(Sub)", " ");
-        anime_name = anime_name.replace("(Dub)", " ");
-        anime_name = anime_name.trim();
-        anime_name = anime_name.replaceAll(" ", "+");
-        
+      if(window.location.href.contains("gogoanime")) {
+        anime_name_element = $(".main_body .anime_video_body .anime_video_body_cate .anime-info a").html();
         URL_anime = window.location.href.split("/");
-        URL_anime = URL_anime[URL_anime.length - 1]; // Last item
-        if(window.location.href.contains("Movie")) {
-          anime_episode = "1";
-        } else if(window.location.href.contains("Episode")) {
-          URL_anime_parts1 = URL_anime.split("?")[0];
-          URL_anime_parts2 = parseInt(URL_anime_parts1.split("-")[1], 10);
-          anime_episode = URL_anime_parts2;
+        URL_anime = URL_anime[URL_anime.length - 1];
+        anime_name = anime_name_element.replace(" (Dub)", "");
+        anime_name = anime_name.replaceAll(" ", "+");
+        if(anime_name.endsWith("+")) {
+          anime_name = anime_name.slice(0, -1);
         }
-        console.info("[QMAL@KissAnime] QMAL has detected that you are watching " + anime_name);
+        URL_anime_parts = URL_anime.split("-");
+        anime_episode = URL_anime_parts[URL_anime_parts.length - 1];
+        console.info("[QMAL@GoGoAnime] QMAL has detected that you are watching " + anime_name);
         $("#qmal-update-list-name").val(username + "'s List");
         $("#qmal-update-anime-name").val(anime_name);
         $("#qmal-update-anime-episodes").val(anime_episode);
@@ -1006,7 +1045,7 @@ function contentScriptKissAnime() {
           username: username,
           password: password,
           error: function(jqXHR, textStatus, errorThrown) {
-            console.warn("[QMAL@KissAnime] AJAX Aborted:");
+            console.warn("[QMAL@GoGoAnime] AJAX Aborted:");
             console.info("                 Error Type: " + jqXHR);
             console.info("                 Error Status: " + textStatus);
             console.info("                 Error HTML: " + errorThrown);
@@ -1125,6 +1164,7 @@ function contentScriptKissAnime() {
     });
     $("#qmal-update-no").on("click", function() {
       $("#qmal-dialog-main").fadeOut(300);
+      update_later = false;
       return false;
     });
     $(".qmal-dialog input[type=text]").on("focus", function() {
@@ -1161,8 +1201,8 @@ function contentScriptKissAnime() {
         dataTpe: "xml",
         error: function(jqXHR, textStatus, errorThrown) {
           console.log(jqXHR);
-          console.log(textStatus)
-          console.log(errorThrown)
+          console.log(textStatus);
+          console.log(errorThrown);
         },
         success: function(data) {
           $("anime", data).each(function(){
@@ -1177,6 +1217,7 @@ function contentScriptKissAnime() {
           });
           animeInformation.updateStatus = anime_update_status;
           chrome.runtime.sendMessage(animeInformation, function(response) {
+            update_later = false;
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
             window.setTimeout(function() {
               $("#qmal-dialog-loading").fadeOut(300);
@@ -1185,6 +1226,14 @@ function contentScriptKissAnime() {
         }
       });
     })
+    
+    window.onbeforeunload = function(e) {
+      if(update_later === true) {
+        $("#qmal-dialog-main").fadeIn(300);
+        e.returnValue = "You haven't updated MAL yet...";
+        return "You haven't updated MAL yet...";
+      }
+    }
     return;
   }
 }
