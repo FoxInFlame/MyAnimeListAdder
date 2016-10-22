@@ -56,6 +56,7 @@ Really, not much.
 - A link to open QMAL from a MAL anime page! (Even though it probably won't be useful)
 - Import tags from anime genre (uses FoxInFlame's MAL scraper)
 - Update Interval in Minutes (in the options).
+- Update in-page QMAL later option.
 - Fixed 12 reported bugs.
 - Probably more.
 
