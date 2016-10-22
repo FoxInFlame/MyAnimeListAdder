@@ -46,11 +46,9 @@ Really, not much.
 #### Features kept from previous version (1.3.2)
 
 - Ability to add edit, or delete an anime to your MAL account
-- Ability to view synopsis and other titles for the chosen anime
-- Ability to login to your MAL account in the options, and verify if the credentials are real or not
-- Material Design Options pages
-- Panels
+- Login to your MAL account in the options, and verify if the credentials are real or not
 - Choose CSS Theme from Options
+- Awesome icon.
 - In-Page QMAL for gogoanime.io, crunchyroll.com and kissanime.to
 
 #### New features of Version 1.3.3
@@ -72,6 +70,8 @@ Really, not much.
 - Use a better MAL API
 - More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X)
 - Add an option to disable CPU-demanding animations and transitions (1.X)
+- Login using Google+, Twitter, or third-party auth.
+- Use more of FoxInFlame's MAL scraper.
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0, 3.0)
 
 #### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
