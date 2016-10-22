@@ -89,10 +89,18 @@ function showOnlyOne_formatResult(dataJSON) {
   $(".animeInformation .animeInformation_id").text(dataAnime.id);
   $(".animeInformation .animeInformation_title").text(dataAnime.title);
   $(".animeInformation #animeInformation_type").text(dataAnime.type);
-  $(".animeInformation .animeInformation_episodes").text(dataAnime.episodes);
+  if(dataAnime.episodes == "0") {
+    $(".animeInformation .animeInformation_episodes").text("N/A");
+  } else {
+     $(".animeInformation .animeInformation_episodes").text(dataAnime.episodes);
+  }
   $(".animeInformation #animeInformation_synopsis").text(dataAnime.synopsis);
   $(".animeInformation #animeInformation_link").attr("href", "https://myanimelist.net/anime/" + dataAnime.id);
-  $(".animeInformation .animeInformation_score").text(dataAnime.score);
+  if(dataAnime.score == "0.00") {
+    $(".animeInformation .animeInformation_score").text("N/A");
+  } else {
+    $(".animeInformation .animeInformation_score").text(dataAnime.score);
+  }
   $("#animeEditForm-episodes").attr("max", dataAnime.episodes);
   checkIfInAnimeList(dataAnime.id);
   $(".rateYo-rating").rateYo({
@@ -128,6 +136,8 @@ function grid_list_init() {
     }, 195, $.bez([0.4, 0, 1, 1]));
   });
   $(".grid-list-row .col img").on("click", function() {
+    $(".animeInformation #animeInformation_addToList").css("background", "#2e51a2");
+    $(".animeInformation #animeInformation_addToList .material-icons").text("hourglass_empty");
     scrollTop = document.body.scrollTop;
     scrollLeft = document.body.scrollLeft;
     window.scrollTo(0, 0); // NEW! Scroll to top. http://stackoverflow.com/questions/1144805/scroll-to-the-top-of-the-page-using-javascript-jquery
@@ -137,10 +147,18 @@ function grid_list_init() {
     $(".animeInformation .animeInformation_id").text($(this).parent().data("id"));
     $(".animeInformation .animeInformation_title").text($(this).parent().data("title"));
     $(".animeInformation #animeInformation_type").text($(this).parent().data("type"));
-    $(".animeInformation .animeInformation_episodes").text($(this).parent().data("episodes"));
+    if($(this).parent().data("episodes") == "0") {
+      $(".animeInformation .animeInformation_episodes").text("N/A");
+    } else {
+      $(".animeInformation .animeInformation_episodes").text($(this).parent().data("episodes"));
+    }
     $(".animeInformation #animeInformation_synopsis").text($(this).parent().data("synopsis"));
     $(".animeInformation #animeInformation_link").attr("href", $(this).parent().data("url"));
-    $(".animeInformation .animeInformation_score").text($(this).parent().data("score"));
+    if($(this).parent().data("score") == "0.00") {
+      $(".animeInformation .animeInformation_score").text("N/A");
+    } else {
+      $(".animeInformation .animeInformation_score").text($(this).parent().data("score"));
+    }
     $("#animeEditForm-episodes").attr("max", $(this).parent().data("episodes"));
     checkIfInAnimeList($(this).parent().data("id"));
     $(".rateYo-rating").rateYo({
@@ -494,9 +512,8 @@ function checkIfInAnimeList(animeID) {
             });
           };
           data.placeholder = "+ Tags";
-          data.secondaryPlaceholder = "Enter tags. Now.";
+          data.secondaryPlaceholder = "Enter tags.";
           tags = data;
-          console.log(data);
           $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").removeClass("red").addClass("yellow");
           $("#animeEditForm nav .nav-wrapper span i").text("edit");
           $(".animeInformation #animeInformation_myScore").show();
