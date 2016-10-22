@@ -56,7 +56,7 @@ Really, not much.
 - A link to open QMAL from a MAL anime page! (Even though it probably won't be useful)
 - Import tags from anime genre (uses FoxInFlame's MAL scraper)
 - Update Interval in Minutes (in the options).
-- Fixed 11 bugs.
+- Fixed 12 reported bugs.
 - Probably more.
 
 #### Removed features from previous version (1.3.2)
