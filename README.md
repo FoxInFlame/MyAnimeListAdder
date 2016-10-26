@@ -1,3 +1,4 @@
+![Banner](http://i.imgur.com/U2piPr4.png)
 # QuickMyAnimeList
 [![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QuickMyAnimeList/total.svg?maxAge=2592000)]()
 
@@ -39,30 +40,26 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 
 
 ## What's new!?
-### Release 1.3.3!
+### Release 1.3.4!
 
-Really, not much.
+More links!
 
-#### Features kept from previous version (1.3.2)
+#### Features kept from previous version (1.3.3)
 
 - Ability to add edit, or delete an anime to your MAL account
 - Login to your MAL account in the options, and verify if the credentials are real or not
-- Choose CSS Theme from Options
+- Choose what to open when icon clicked (popup, panel, website, etc)
 - Awesome icon.
 - In-Page QMAL for gogoanime.io, crunchyroll.com and kissanime.to
 
-#### New features of Version 1.3.3
+#### New features of Version 1.3.4
 
-- A link to open QMAL from a MAL anime page! (Even though it probably won't be useful)
-- Import tags from anime genre (uses FoxInFlame's MAL scraper)
-- Update Interval in Minutes (in the options).
-- Update in-page QMAL later option.
-- Fixed 12 reported bugs.
+
 - Probably more.
 
-#### Removed features from previous version (1.3.2)
+#### Removed features from previous version (1.3.3)
 
-- Update Interval in Seconds (in the options).
+- None.
 
 #### Next up for 1.X, 2.0, and later on.
 
