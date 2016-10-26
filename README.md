@@ -26,7 +26,7 @@ Check out the official website for screenshots.
 - ColorPicker : Used in options for selecting Badge Color
 - Bez : To use cubic-beizers within .animate()
 - jQuery : Used for easy DOM selection, AJAX calls, and everything
-- MaterializeCSS : Used in options and popup for layout, buttons, and animations for the MaterializeCSS theme
+- Custom edited MaterializeCSS : Used in options and popup for layout, buttons, and animations for the MaterializeCSS theme
 - RateYo : Used in popup to rate the selected anime easily for both themes
 - Select2 : Used in popup to search and select the anime easily for the MDB theme
 - xml2json : Convert XML to JSON easily. Used with like, all of the AJAX requests.
