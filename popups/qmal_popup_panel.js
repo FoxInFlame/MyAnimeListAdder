@@ -748,7 +748,7 @@ $("#modal_delete_confirmation_yes").on("click", function() {
       $("#animeEditForm-rating").rateYo("option", "rating", 0);
       $("#animeEditForm-tags .chips").remove();
       $("#animeEditForm nav .nav-wrapper span i").text("add");
-      $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link").fadeOut(150);
+      $("#animeInformation_deleteFromList, #animeInformation_myScore").fadeOut(150);
       $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "none", "important");
       $("#animeEditForm-fieldset2").animate({
         marginTop: "550px"
