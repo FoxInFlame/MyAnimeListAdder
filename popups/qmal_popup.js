@@ -635,8 +635,7 @@ $("#modal_delete_confirmation_yes").on("click", function() {
       $("#animeEditForm-rating").rateYo("option", "rating", 0);
       $("#animeEditForm-tags .chips").remove();
       $("#animeEditForm nav .nav-wrapper span i").text("add");
-      $(".animeInformation #animeInformation_myScore").hide();
-      $(".animeInformation #animeInformation_deleteFromList").hide();
+      $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link").fadeOut(150);
       $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "none", "important");
       $("#animeEditForm-fieldset2").animate({
         marginTop: "550px"
@@ -856,7 +855,6 @@ $("#animeEditForm-fieldset2-next").click(function() {
   times_rewatched = "";
   rewatch_value = "";
   date_start = $("#animeEditForm-startDate").val().changeDatetoMALFormat();
-  console.log(date_start);
   date_finish = $("#animeEditForm-finishDate").val().changeDatetoMALFormat();
   priority = "";
   enable_discussion = "";
@@ -892,8 +890,7 @@ $("#animeEditForm-fieldset2-next").click(function() {
   
   $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").css("background", "#2e8ba2");
   $("#animeEditForm nav .nav-wrapper span i").text("edit");
-  $(".animeInformation #animeInformation_myScore").show();
-  $(".animeInformation #animeInformation_deleteFromList").show();
+  $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link").fadeIn(150);
   $(".animeInformation #animeInformation_myScore").attr("data-tooltip", "My Score: " + rating).tooltip({delay:50});
   formAnimeStatus = "Update";
   $("#animeEditForm-fieldset2").animate({

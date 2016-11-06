@@ -1,5 +1,9 @@
 @import url(https://f3a7a1b1655de4833e3bed3b1779c5a9d85839f8.googledrive.com/host/0BxjwQr0BBXs-aDYxM2JlaFM2bnM);
 /*All that anime covers!*/
+::-webkit-scrollbar {
+  display: none;
+}
+
 body {
   font-family: "Roboto", sans-serif;
   font-size: 13px;
