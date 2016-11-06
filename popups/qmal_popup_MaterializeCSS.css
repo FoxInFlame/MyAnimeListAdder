@@ -14,6 +14,7 @@ body {
   position: fixed;
   width: 100%;
   top: 0;
+  height: 50px;
 }
 
 .header img {
@@ -34,14 +35,14 @@ body {
 
 .animeInformation-loading-bar-wrapper {
   position: fixed !important;
-  top: 73px;
+  top: 43px;
   z-index: 102;
   border-radius: 0px !important;
   display: none !important;
 }
 
 #mainForm_tmp {
-  margin-top: 90px;
+  margin-top: 70px;
 }
 
 fieldset {
@@ -337,7 +338,7 @@ fieldset {
   background: #eaedf5;
   position: fixed;
   z-index: 50;
-  top: 80px;
+  top: 50px;
   left: 0;
 }
 
@@ -404,17 +405,20 @@ fieldset {
   right: 190px;
   top: 100px;
   display: none;
+  z-index: 51; /* Bug Fix: 1 Higher than the image! */
 }
 .animeInformation #animeInformation_myScore {
   position: absolute;
   right: 140px;
   top: 100px;
   display: none;
+  z-index: 51; /* Bug Fix: 1 Higher than the image! */
 }
 .animeInformation #animeInformation_link {
   position: absolute;
   right: 90px;
   top: 100px;
+  z-index: 51; /* Bug Fix: 1 Higher than the image! */
 }
 .animeInformation #animeInformation_addToList {
   position: absolute;
@@ -434,7 +438,7 @@ fieldset {
   position: absolute;
   top:87.5px; /*To put it right on top of the button*/
   right:17.5px;
-  z-index:71; /*One above button*/
+  z-index: 75; /*Five above button*/
   -webkit-animation: rotate360 1.5s infinite linear;
 }
 .animeInformation .animeInformation-edit-preloader-wrapper .spinner-layer {
@@ -453,7 +457,7 @@ fieldset {
   width: 20px;
   top: 95px;
   height: 20px;
-  z-index: 15;
+  z-index: 20;
 }
 .animeInformation #animeInformation_addBackground .preloader-wrapper {
   display: none;
@@ -514,10 +518,10 @@ fieldset {
 }
 
 #animeEditForm #animeEditForm-fieldset1 {
-  margin-top: 50px;
+  margin-top: 40px;
 }
 #animeEditForm #animeEditForm-fieldset2 {
-  margin-top: 550px;
+  margin-top: 540px;
 }
 
 #animeEditForm #animeEditForm-fieldset2 #animeEditForm-tags {
