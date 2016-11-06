@@ -22,17 +22,12 @@
     "http://www.crunchyroll.com/*",
     "http://www.foxinflame.tk/QuickMyAnimeList/*",
     "http://kissanime.to/*",
-    "https://myanimelist.net/*",
-    "https://api.twitter.com/oauth/request_token",
-    "https://api.twitter.com/oauth/authorize",
-    "https://api.twitter.com/oauth/access_token"
+    "https://myanimelist.net/*"
   ],
   
   "background": {
     "scripts": [
       "libraries/jQuery/jquery-2.2.3.min.js",
-      "OAuth/chrome_ex_oauthsimple.js",
-      "OAuth/chrome_ex_oauth.js",
       "background.js"
     ]
   },
