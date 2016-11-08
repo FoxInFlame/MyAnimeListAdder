@@ -618,34 +618,34 @@ $(".animeInformation #animeInformation_deleteFromList").on("click", function() {
   });
 });
 $("#modal_delete_confirmation_yes").on("click", function() {
-    if(deleteAnimeInList($(".animeInformation .animeInformation_id").text()) !== 0) {
-      // Returns 0 if no error
-      // Returns a string with information if error
-      Materialize.toast(response, 4000);
-      return;
-    } else {
-      Materialize.toast("Deleted anime " + $(".animeInformation .animeInformation_id").text() + " from list.", 4000);
-      $("#modal_delete_confirmation").closeModal();
-      formAnimeStatus = "Add";
-      currentStatus = "none";
-      $("#animeInformation_addToList").html("<i class=\"material-icons\">add</i>").css("background", "#51a22e");
-      $("#animeEditForm-status").val("").material_select();
-      $("#animeEditForm-episodes").val("");
-      $("#animeInformation_addToList").attr("data-tooltip", "Add to List").tooltip({delay:50});
-      $("#animeEditForm-rating").rateYo("option", "rating", 0);
-      $("#animeEditForm-tags .chips").remove();
-      $("#animeEditForm nav .nav-wrapper span i").text("add");
-      $("#animeInformation_deleteFromList, #animeInformation_myScore").fadeOut(150);
-      $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "none", "important");
-      $("#animeEditForm-fieldset2").animate({
-        marginTop: "550px"
-      }, 300, function() {
-        $("#animeEditForm-fieldset1").animate({
-          marginTop: "50px"
-        });
+  if(deleteAnimeInList($(".animeInformation .animeInformation_id").text()) !== 0) {
+    // Returns 0 if no error
+    // Returns a string with information if error
+    Materialize.toast(response, 4000);
+    return;
+  } else {
+    Materialize.toast("Deleted anime " + $(".animeInformation .animeInformation_id").text() + " from list.", 4000);
+    $("#modal_delete_confirmation").closeModal();
+    formAnimeStatus = "Add";
+    currentStatus = "none";
+    $("#animeInformation_addToList").html("<i class=\"material-icons\">add</i>").css("background", "#51a22e");
+    $("#animeEditForm-status").val("").material_select();
+    $("#animeEditForm-episodes").val("");
+    $("#animeInformation_addToList").attr("data-tooltip", "Add to List").tooltip({delay:50});
+    $("#animeEditForm-rating").rateYo("option", "rating", 0);
+    $("#animeEditForm-tags .chip").remove();
+    $("#animeEditForm nav .nav-wrapper span i").text("add");
+    $("#animeInformation_deleteFromList, #animeInformation_myScore").fadeOut(150);
+    $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "none", "important");
+    $("#animeEditForm-fieldset2").animate({
+      marginTop: "550px"
+    }, 300, function() {
+      $("#animeEditForm-fieldset1").animate({
+        marginTop: "50px"
       });
-    }
-  });
+    });
+  }
+});
   
 // [+] Add to List Button Click
 $("#animeInformation_addToList").click(function() {
@@ -866,13 +866,13 @@ $("#animeEditForm-fieldset2-next").click(function() {
     tags_array.push(tags_materialChips[x].tag);
     x++;
   }
-  tags = tags_array.join(", ");
+  tags_str = tags_array.join(", ");
   
   var response;
   if(formAnimeStatus == "Update") {
-    response = updateAnimeInList(id, episodesWatched, status, rating, storage_type, storage_value, times_rewatched, rewatch_value, date_start, date_finish, priority, enable_discussion, enable_rewatching, tags);
+    response = updateAnimeInList(id, episodesWatched, status, rating, storage_type, storage_value, times_rewatched, rewatch_value, date_start, date_finish, priority, enable_discussion, enable_rewatching, tags_str);
   } else {
-    response = addAnimeInList(id, episodesWatched, status, rating, storage_type, storage_value, times_rewatched, rewatch_value, date_start, date_finish, priority, enable_discussion, enable_rewatching, tags);
+    response = addAnimeInList(id, episodesWatched, status, rating, storage_type, storage_value, times_rewatched, rewatch_value, date_start, date_finish, priority, enable_discussion, enable_rewatching, tags_str);
   }
   if(response !== 0) {
     // Returns 0 if no error
