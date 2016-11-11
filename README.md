@@ -55,7 +55,8 @@ More links!
 #### New features of Version 1.3.4
 
 - Waaaaay quicker loading time in the popup (remember how you had to wait a while before pressing add/edit?)
-- Fixed 1 bug
+- Smoother animation when clicking on the add/edit button in the popup
+- Fixed 2 bugs
 - Probably more.
 
 #### Removed features from previous version (1.3.3)
