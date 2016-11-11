@@ -666,7 +666,7 @@ $("#animeInformation_addToList").click(function() {
     $("#addAnimeContainer").fadeOut(400);
     enableScroll();
     $(".animeInformation #animeInformation_addToList").css("top", "400px").css("position", "absolute");
-    $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link").fadeIn(150);
+    $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link, .animeInformation>nav").fadeIn(100);
     $(".animeInformation #animeInformation_image-wrapper").animate({
       height: "120px"
     }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
@@ -702,10 +702,10 @@ $("#animeInformation_addToList").click(function() {
     $(this).attr("data-display-add", "0");
     return;
   }
+  $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link, .animeInformation>nav").fadeOut(100);
   $("#qmal_popup_mainContent").css("width", "500px").css("height", "600px");
   $("#animeEditForm").css("width", "100%");
   $(".animeInformation #animeInformation_addToList").css("top", "170px").css("position", "fixed"); // 80 header + 70 original absoulte height
-  $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link").fadeOut(150);
   disableScroll();
   $(".animeInformation #animeInformation_image-wrapper").animate({
     height: "550px"
