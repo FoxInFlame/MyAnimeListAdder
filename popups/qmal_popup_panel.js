@@ -45,13 +45,13 @@ $(document).ready(function() {
 
 function renderShowOneOnly(id, title) {
   $(".animeInformation").show().css("opacity", "1");
-  $(".animeInformation>nav").hide();
+  $(".animeInformation > nav").hide();
   
   // Until searching with ID is implemented,
   // display first result in search with title.
   $.ajax({
-    url: "https://myanimelist.net/api/anime/search.xml?q=" + title,
-    dataType: "xml",
+    url: "http://www.foxinflame.tk/dev/matomari/api/animeInfo/" + id,
+    dataType: "json",
     type: "GET",
     username: loginUsername,
     password: loginPassword,
@@ -64,45 +64,34 @@ function renderShowOneOnly(id, title) {
       if(data === null || data === undefined) {
         // Empty return
         $(".animeInformation-loading-bar-wrapper")[0].style.setProperty("display", "none", "important");
-        $("#animeNameSearch_status").text("No Results.");
+        $(".animeInformation #generalInfo .animeInformation-title").text("Not Found.");
         return;
       }
-      var x2js = new X2JS();
-      dataJSON = x2js.xml2json(data);
-      showOnlyOne_formatResult(dataJSON);
+      showOnlyOne_formatResult(data);
     },
     cache: true
   });
 }
 
-function showOnlyOne_formatResult(dataJSON) {
-  dataAnimes = dataJSON.anime.entry;
-  if(Object.prototype.toString.call(dataAnimes) !== "[object Array]") {
-    // Only one result
-    dataAnime = dataAnimes;
-  } else {
-    // Multiple results - Get first one
-    dataAnime = dataAnimes[0];
-  }
-  console.log(dataAnime);
-  $(".animeInformation #animeInformation_image").attr("src", dataAnime.image);
-  $(".animeInformation .animeInformation_id").text(dataAnime.id);
-  $(".animeInformation .animeInformation_title").text(dataAnime.title);
-  $(".animeInformation #animeInformation_type").text(dataAnime.type);
-  if(dataAnime.episodes == "0") {
+function showOnlyOne_formatResult(data) {
+  $(".animeInformation #animeInformation_image").attr("src", data.image_url);
+  $(".animeInformation .animeInformation_id").text(data.id);
+  $(".animeInformation .animeInformation_title").text(data.title);
+  $(".animeInformation #animeInformation_type").text(data.type);
+  if(data.episodes === null) {
     $(".animeInformation .animeInformation_episodes").text("N/A");
   } else {
-     $(".animeInformation .animeInformation_episodes").text(dataAnime.episodes);
+     $(".animeInformation .animeInformation_episodes").text(data.episodes);
   }
-  $(".animeInformation #animeInformation_synopsis").text(dataAnime.synopsis);
-  $(".animeInformation #animeInformation_link").attr("href", "https://myanimelist.net/anime/" + dataAnime.id);
-  if(dataAnime.score == "0.00") {
+  $(".animeInformation #animeInformation_synopsis").text(data.synopsis);
+  $(".animeInformation #animeInformation_link").attr("href", "https://myanimelist.net/anime/" + data.id);
+  if(data.members_score === null) {
     $(".animeInformation .animeInformation_score").text("N/A");
   } else {
-    $(".animeInformation .animeInformation_score").text(dataAnime.score);
+    $(".animeInformation .animeInformation_score").text(data.score);
   }
-  $("#animeEditForm-episodes").attr("max", dataAnime.episodes);
-  checkIfInAnimeList(dataAnime.id);
+  $("#animeEditForm-episodes").attr("max", data.episodes);
+  checkIfInAnimeList(data.id);
   $(".rateYo-rating").rateYo({
     normalFill: "#e0e0e0",
     starWidth: "25px",
@@ -784,7 +773,10 @@ $("#animeInformation_addToList").click(function() {
     $("#addAnimeContainer").fadeOut(400);
     enableScroll();
     $(".animeInformation #animeInformation_addToList").css("top", "400px").css("position", "absolute");
-    $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link, .animeInformation>nav").fadeIn(100);
+    $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link").fadeIn(100);
+    if(!showOneOnly) {
+      $(".animeInformation>nav").fadeIn(100);
+    }
     $(".animeInformation #animeInformation_image-wrapper").animate({
       height: "120px"
     }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
