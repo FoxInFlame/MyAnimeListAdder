@@ -186,7 +186,7 @@ function contentScriptMAL_description() {
     chrome.runtime.sendMessage({
       subject: "openPanel",
       animeid: animeid,
-      animetitle: $(".page-common #myanimelist .wrapper #contentWrapper .h1 span").html()
+      animetitle: $(".page-common #myanimelist .wrapper #contentWrapper .h1 span").html().trim()
     }, function(response) {
       console.log(response);
     });
