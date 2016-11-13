@@ -516,6 +516,12 @@ $("#openWindow").on("click", function() {
    });
 });
 
+$("#openSettings").on("click", function() {
+  chrome.tabs.create({
+    url: "../options/options.html"
+  });
+});
+
 // [+] Done Typing -> Render Results
 $("#animeNameSearch").donetyping(function() {
   $(".animeInformation-loading-bar-wrapper")[0].style.setProperty("display", "block", "important");

@@ -37,6 +37,12 @@ body {
   float: right;
 }
 
+.header #openSettings {
+  background: white;
+  float: right;
+  margin-left: 16px;
+}
+
 .animeInformation-loading-bar-wrapper {
   position: fixed !important;
   top: 43px;
