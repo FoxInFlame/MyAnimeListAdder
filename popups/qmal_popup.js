@@ -528,6 +528,12 @@ $("#animeNameSearch").donetyping(function() {
   $("#animeNameSearch_status").text("Searching...");
   $(".grid-list-row .col img").css("pointer-events", "none").addClass("grayscale");
   var query = $(this).val();
+  if(query == "") {
+    $("#animeNameSearch_status").text("Start Typing to Search.");
+    $(".animeInformation-loading-bar-wrapper")[0].style.setProperty("display", "none", "important");
+    $("#animeNameSearch_results").html("");
+    return;
+  }
   $.ajax({
     url: "https://myanimelist.net/api/anime/search.xml?q=" + query,
     dataType: "xml",
