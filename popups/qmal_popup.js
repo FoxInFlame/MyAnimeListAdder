@@ -65,7 +65,7 @@ function grid_list_init() {
       min: 1,
       max: 30,
       truncate: true,
-      width: 420
+      width: 380
     });
     $(".animeInformation").css("position", "absolute").css("display", "block").animate({
       opacity: "1",
@@ -902,7 +902,7 @@ $("#animeEditForm-fieldset2-next").click(function() {
   
   $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").css("background", "#2e8ba2");
   $("#animeEditForm nav .nav-wrapper span i").text("edit");
-  $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link").fadeIn(150);
+  $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link, .animeInformation>nav").fadeIn(100);
   $(".animeInformation #animeInformation_myScore").attr("data-tooltip", "My Score: " + rating).tooltip({delay:50});
   formAnimeStatus = "Update";
   $("#animeEditForm-fieldset2").animate({
