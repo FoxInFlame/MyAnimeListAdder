@@ -47,8 +47,6 @@ function renderShowOneOnly(id, title) {
   $(".animeInformation").show().css("opacity", "1");
   $(".animeInformation > nav").hide();
   
-  // Until searching with ID is implemented,
-  // display first result in search with title.
   $.ajax({
     url: "http://www.foxinflame.tk/dev/matomari/api/animeInfo/" + id,
     dataType: "json",
@@ -183,40 +181,40 @@ function grid_list_init() {
 
 // [+] ==================DONE TYPING===================== [+]
 ;(function($){
-    $.fn.extend({
-        donetyping: function(callback,timeout){
-            timeout = timeout || 1e3; // 1 second default timeout
-            var timeoutReference,
-                doneTyping = function(el){
-                    if (!timeoutReference) return;
-                    timeoutReference = null;
-                    callback.call(el);
-                };
+  $.fn.extend({
+    donetyping: function(callback,timeout){
+      timeout = timeout || 1e3; // 1 second default timeout
+      var timeoutReference,
+          doneTyping = function(el){
+            if (!timeoutReference) return;
+              timeoutReference = null;
+              callback.call(el);
+            };
             return this.each(function(i,el){
-                var $el = $(el);
-                // Chrome Fix (Use keyup over keypress to detect backspace)
-                // thank you @palerdot
-                $el.is(':input') && $el.on('keyup keypress paste',function(e){
-                    // This catches the backspace button in chrome, but also prevents
-                    // the event from triggering too preemptively. Without this line,
-                    // using tab/shift+tab will make the focused element fire the callback.
-                    if (e.type=='keyup' && e.keyCode!=8) return;
-                    
-                    // Check if timeout has been set. If it has, "reset" the clock and
-                    // start over again.
-                    if (timeoutReference) clearTimeout(timeoutReference);
-                    timeoutReference = setTimeout(function(){
-                        // if we made it here, our timeout has elapsed. Fire the
-                        // callback
-                        doneTyping(el);
-                    }, timeout);
-                }).on('blur',function(){
-                    // If we can, fire the event since we're leaving the field
-                    doneTyping(el);
-                });
-            });
-        }
-    });
+              var $el = $(el);
+              // Chrome Fix (Use keyup over keypress to detect backspace)
+              // thank you @palerdot
+              $el.is(':input') && $el.on('keyup keypress paste',function(e){
+                // This catches the backspace button in chrome, but also prevents
+                // the event from triggering too preemptively. Without this line,
+                // using tab/shift+tab will make the focused element fire the callback.
+                if (e.type=='keyup' && e.keyCode!=8) return;
+                
+                // Check if timeout has been set. If it has, "reset" the clock and
+                // start over again.
+                if (timeoutReference) clearTimeout(timeoutReference);
+                timeoutReference = setTimeout(function(){
+                  // if we made it here, our timeout has elapsed. Fire the
+                  // callback
+                  doneTyping(el);
+                }, timeout);
+              }).on('blur',function(){
+            // If we can, fire the event since we're leaving the field
+          doneTyping(el);
+        });
+      });
+    }
+  });
 })(jQuery);
 
 // left: 37, up: 38, right: 39, down: 40,
@@ -230,10 +228,10 @@ function preventDefault(e) {
   e.returnValue = false;
 }
 function preventDefaultForScrollKeys(e) {
-    if (keys[e.keyCode]) {
-        preventDefault(e);
-        return false;
-    }
+  if (keys[e.keyCode]) {
+    preventDefault(e);
+    return false;
+  }
 }
 function disableScroll() {
   if (window.addEventListener) // older FF
@@ -244,12 +242,12 @@ function disableScroll() {
   document.onkeydown  = preventDefaultForScrollKeys;
 }
 function enableScroll() {
-    if (window.removeEventListener)
-        window.removeEventListener('DOMMouseScroll', preventDefault, false);
-    window.onmousewheel = document.onmousewheel = null;
-    window.onwheel = null;
-    window.ontouchmove = null;
-    document.onkeydown = null;
+  if (window.removeEventListener)
+      window.removeEventListener('DOMMouseScroll', preventDefault, false);
+  window.onmousewheel = document.onmousewheel = null;
+  window.onwheel = null;
+  window.ontouchmove = null;
+  document.onkeydown = null;
 }
 
 // [+] =================UPDATE ANIME===================== [+]
@@ -565,8 +563,8 @@ function checkIfInAnimeList(animeID) {
           secondaryPlaceholder: "Enter tags."
         };
         $("#animeInformation_addToList").html("<i class=\"material-icons\">add</i>").css("background", "#51a22e");
-        $("#animeEditForm-status").val("1").material_select();
-        $("#animeEditForm-episodes").val("");
+        $("#animeEditForm-status").val("none").material_select();
+        $("#animeEditForm-episodes").val("0");
         $("#animeEditForm-startDate").val(""); // Changed from html() to val()
         $("#animeEditForm-finishDate").val("");
         $("#animeInformation_addToList").attr("data-tooltip", "Add to List").tooltip({delay:50});
@@ -779,7 +777,7 @@ $("#animeInformation_addToList").click(function() {
     $("#addAnimeContainer").fadeOut(400);
     enableScroll();
     $(".animeInformation #animeInformation_addToList").css("top", "400px").css("position", "absolute");
-    $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link").fadeIn(100);
+    $("#animeInformation_link").fadeIn(100);
     if(!showOneOnly) {
       $(".animeInformation>nav").fadeIn(100);
     }
@@ -792,7 +790,6 @@ $("#animeInformation_addToList").click(function() {
         right: "20px"
       }, {duration: 150}, $.bez([0.4, 0, 0.2, 1])).attr("data-position", "bottom");
       var statuses= {
-        "none": "Add to List",
         "watching": "Watching: Ep " + $("#animeEditForm-episodes").val(),
         "completed": "Completed",
         "onhold": "On Hold",
@@ -801,6 +798,7 @@ $("#animeInformation_addToList").click(function() {
       }
       if(statuses.hasOwnProperty(currentStatus)) {
         $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").css("background", "#2e8ba2").attr("data-tooltip", statuses[currentStatus]).tooltip();
+        $("#animeInformation_deleteFromList, #animeInformation_myScore").fadeIn(100);
       } else {
         // No need to change color because it's the same
         $("#animeInformation_addToList").attr("data-tooltip", "Add to List").tooltip();
@@ -877,6 +875,14 @@ $("#animeEditForm-fieldset1-next").click(function() {
     }, 3000)
     return;
   }
+  if($("#animeEditForm-status").val() == null) {
+    $("#animeEditForm-fieldset1-next").attr("disabled", "dsiabled").text("Please choose a status!");
+    window.setTimeout(function() {
+      $("#animeEditForm-fieldset1-next").removeAttr("disabled").text("Next");
+    }, 3000)
+    return;
+  }
+  enableScroll();
   $("#animeEditForm-fieldset1").animate({
     marginTop: "-550px"
   }, 300, function() {
@@ -888,6 +894,7 @@ $("#animeEditForm-fieldset1-next").click(function() {
 
 // [+] Stage 2 -> Previous
 $("#animeEditForm-fieldset2-previous").click(function() {
+  disableScroll();
   $("#animeEditForm-fieldset2").animate({
     marginTop: "550px"
   }, 300, function() {
