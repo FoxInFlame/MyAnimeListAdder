@@ -18,13 +18,22 @@ var initial = 1;
 
 chrome.runtime.onInstalled.addListener(function() {
   getChromeStorage(function() {
-    var badge_timer = window.setTimeout(updateBadge, 1000);
+    chrome.alarms.create("updateBadge", {
+      when: Date.now() + 1000
+    });
   });
 });
 chrome.runtime.onStartup.addListener(function() {
   getChromeStorage(function() {
-    var badge_timer = window.setTimeout(updateBadge, 1000);
+    chrome.alarms.create("updateBadge", {
+      when: Date.now() + 1000
+    });
   });
+});
+chrome.alarms.onAlarm.addListener(function(alarm) {
+  if(alarm.name === "updateBadge") {
+    updateBadge();
+  }
 });
 
 function twitter_signin() {
@@ -94,7 +103,9 @@ function updateBadge() {
       chrome.browserAction.setBadgeText({
         text: ". . ."
       });
-      window.setTimeout(updateBadge, badge_interval * 1000);
+      chrome.alarms.create("updateBadge", {
+        when: Date.now() + 1000
+      });
       return;
     } else {
       chrome.browserAction.setIcon({
@@ -106,7 +117,9 @@ function updateBadge() {
       chrome.browserAction.setBadgeText({
         text: ""
       });
-      window.setTimeout(updateBadge, badge_interval * 1000);
+      chrome.alarms.create("updateBadge", {
+        when: Date.now() + 1000
+      });
       return;
     }
     
@@ -159,6 +172,9 @@ function updateBadge() {
     });
     chrome.browserAction.setTitle({
       title: badge_count.toString() + " " + badge_text
+    });
+    chrome.alarms.create("updateBadge", {
+      when: Date.now() + (badge_interval * 1000)
     });
     badge_timer = window.setTimeout(updateBadge, badge_interval * 1000);
     return;

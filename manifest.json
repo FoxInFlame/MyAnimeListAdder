@@ -18,11 +18,12 @@
     "https://myanimelist.net/api",
     "storage",
     "tabs",
-    "http://gogoanime.io/*",
-    "http://www.crunchyroll.com/*",
+    "alarms",
+    "*://*.gogoanime.io/*",
+    "*://*.crunchyroll.com/*",
     "http://www.foxinflame.tk/QuickMyAnimeList/*",
-    "http://kissanime.to/*",
-    "https://myanimelist.net/*"
+    "*://*.kissanime.to/*",
+    "*://*.myanimelist.net/*"
   ],
   
   "background": {
@@ -40,15 +41,16 @@
       "content.js"
     ],
     "matches": [
-      "http://gogoanime.io/*",
-      "http://www.crunchyroll.com/*",
-      "http://kissanime.to/*",
-      "https://myanimelist.net/*"
+      "*://*.gogoanime.io/*",
+      "*://*.crunchyroll.com/*",
+      "http://www.foxinflame.tk/QuickMyAnimeList/*",
+      "*://*.kissanime.to/*",
+      "*://*.myanimelist.net/*"
     ],
     "exclude_matches": [
-      "http://gogoanime.io/*.html",
-      "http://gogoanime.io/category/*",
-      "http://gogoanime.io/",
+      "*://*.gogoanime.io/*.html",
+      "*://*.gogoanime.io/category/*",
+      "*://*.gogoanime.io/",
       "https://myanimelist.net/animelist/*",
       "https://myanimelist.net/mangalist/*",
       "https://myanimelist.net/forums/*"

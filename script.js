@@ -3,12 +3,17 @@ var loginUsername;
 var loginPassword;
 
 var popup_action_open,
-    popup_input_rating,
+    popup_theme;
+
+var popup_mcss_show;
+
+var popup_input_rating,
     popup_input_rewatching,
     popup_input_tags,
     popup_input_storageType,
-    popup_action_confirm,
-    popup_theme;
+    popup_action_confirm;
+    
+
 
 function insertJS(rootjsLink) {
   $.getScript(rootjsLink).fail(function( jqxhr, settings, exception ) {
@@ -44,6 +49,16 @@ $(document).ready(function() {
     password: "password123",
     verified: false,
     popup_action_open: 1,
+    popup_mcss_show: [
+      "score",
+      "type",
+      "episodes",
+      "externalapi",
+      "rank",
+      "source",
+      "totalduration",
+      "members"
+    ],
     popup_input_rating: true,
     popup_input_rewatching: true,
     popup_input_tags: true,
@@ -55,6 +70,7 @@ $(document).ready(function() {
     loginPassword = items.password;
     verified = items.verified;
     popup_action_open = items.popup_action_open;
+    popup_mcss_show = items.popup_mcss_show;
     popup_input_rating = items.popup_input_rating;
     popup_input_rewatching = items.popup_input_rewatching;
     popup_input_tags = items.popup_input_tags;
