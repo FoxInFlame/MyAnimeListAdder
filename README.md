@@ -56,6 +56,7 @@ More links!
 
 - Waaaaay quicker loading time in the popup (remember how you had to wait a while before pressing add/edit?)
 - Smoother animation when clicking on the add/edit button in the popup
+- Now uses chrome.alerts instead of window.setTimeout in the background to reduce CPU usage
 - Fixed 2 bugs
 - Probably more.
 
