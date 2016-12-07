@@ -5,7 +5,7 @@ var loginPassword;
 var popup_action_open,
     popup_theme;
 
-var popup_mcss_show;
+var popup_mcss_show = [];
 
 var popup_input_rating,
     popup_input_rewatching,
@@ -49,16 +49,6 @@ $(document).ready(function() {
     password: "password123",
     verified: false,
     popup_action_open: 1,
-    popup_mcss_show: [
-      "score",
-      "type",
-      "episodes",
-      "externalapi",
-      "rank",
-      "source",
-      "totalduration",
-      "members"
-    ],
     popup_input_rating: true,
     popup_input_rewatching: true,
     popup_input_tags: true,
@@ -70,7 +60,6 @@ $(document).ready(function() {
     loginPassword = items.password;
     verified = items.verified;
     popup_action_open = items.popup_action_open;
-    popup_mcss_show = items.popup_mcss_show;
     popup_input_rating = items.popup_input_rating;
     popup_input_rewatching = items.popup_input_rewatching;
     popup_input_tags = items.popup_input_tags;
@@ -95,7 +84,6 @@ $(document).ready(function() {
         //QuickMAL Popup
         disableCSS("libraries/Bootstrap/bootstrap.min.css");
         disableCSS("styles.css");
-        enableCSS("https://f3a7a1b1655de4833e3bed3b1779c5a9d85839f8.googledrive.com/host/0BxjwQr0BBXs-aDYxM2JlaFM2bnM");
         enableCSS("popups/qmal_popup_MaterializeCSS.css");
         enableCSS("libraries/Google/MaterialIcons.css");
         enableCSS("libraries/MaterializeCSS/materialize.min.css");
