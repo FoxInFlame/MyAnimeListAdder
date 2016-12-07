@@ -1,3 +1,4 @@
+
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -384,22 +385,24 @@ function restore_options_popup() {
     $("#popup_css_theme").material_select();
     if(parseInt(items.popup_action_open) == 1) {
       $("#popup_csstheme_wrapper").show();
-      $("#popup_quickmalpanel_warning").hide();
+      $("#popup_qmalpanel_warning").hide();
       if(items.popup_theme == 1) {
-        $("#popup_quickmalpopup_options").show();
+        $("#popup_qmalpopup_mcss_options").hide();
+        $("#popup_qmalpopup_mdb_options").show();
       } else if(items.popup_theme == 2) {
-        $("#popup_quickmalpopup_options").hide();
+        $("#popup_qmalpopup_mcss_options").show();
+        $("#popup_qmalpopup_mdb_options").hide();
       }
       return;
     }
     if($("#popup_action_open").val() == 6) {
-      $("#popup_quickmalpopup_options").hide();
+      $("#popup_qmalpopup_mdb_options").hide();
       $("#popup_csstheme_wrapper").hide();
-      $("#popup_quickmalpanel_warning").show();
+      $("#popup_qmalpanel_warning").show();
     } else {
       $("#popup_csstheme_wrapper").hide();
-      $("#popup_quickmalpopup_options").hide()
-      $("#popup_quickmalpanel_warning").hide();
+      $("#popup_qmalpopup_mdb_options").hide()
+      $("#popup_qmalpanel_warning").hide();
     }
   });
   $("#popup_quickmalpanel_warning a").on("click", function() {
@@ -407,23 +410,25 @@ function restore_options_popup() {
   });
   $("#popup_action_open, #popup_css_theme").on("change", function() {
     if($("#popup_action_open").val() == 1) {
-      $("#popup_csstheme_wrapper").fadeIn(150);
+      $("#popup_csstheme_wrapper").slideDown(150);
       if($("#popup_css_theme").val() == 1) {
-        $("#popup_quickmalpopup_options").fadeIn(150);
-        $("#popup_quickmalpanel_warning").fadeOut(150);
+        $("#popup_qmalpopup_mcss_options").slideUp(150);
+        $("#popup_qmalpopup_mdb_options").slideDown(150);
       } else if($("#popup_css_theme").val() == 2) {
-        $("#popup_quickmalpopup_options").fadeOut(150);
+        $("#popup_qmalpopup_mcss_options").slideDown(150);
+        $("#popup_qmalpopup_mdb_options").slideUp(150);
       }
-      return;
-    }
-    if($("#popup_action_open").val() == 6) {
-      $("#popup_quickmalpopup_options").fadeOut(150);
-      $("#popup_csstheme_wrapper").fadeOut(150);
-      $("#popup_quickmalpanel_warning").fadeIn(150);
+      $("#popup_qmalpanel_warning").slideUp(150);
+    } else if($("#popup_action_open").val() == 6) {
+      $("#popup_qmalpopup_mcss_options").slideDown(150)
+      $("#popup_qmalpopup_mdb_options").slideUp(150);
+      $("#popup_csstheme_wrapper").slideUp(150);
+      $("#popup_qmalpanel_warning").slideDown(150);
     } else {
-      $("#popup_csstheme_wrapper").fadeOut(150);
-      $("#popup_quickmalpopup_options").fadeOut(150)
-      $("#popup_quickmalpanel_warning").fadeOut(150);
+      $("#popup_csstheme_wrapper").slideUp(150);
+      $("#popup_qmalpopup_mcss_options").slideUp(150)
+      $("#popup_qmalpopup_mdb_options").slideUp(150)
+      $("#popup_qmalpanel_warning").slideUp(150);
     }
   });
 }
@@ -435,6 +440,7 @@ function save_options_popup() {
   var popup_input_storageType = document.getElementById("popup_input_storageType").checked;
   var popup_action_confirm = document.getElementById("popup_action_confirm").checked;
   var popup_css_theme = document.getElementById("popup_css_theme").value;
+  
   chrome.storage.sync.set({
     popup_action_open: popup_action_open,
     popup_input_rating: popup_input_rating,
@@ -467,3 +473,32 @@ function save_options_inpage() {
 $(".helper").on("click", ".helper_toggle", function() {
   $(this).next().toggle();
 });
+
+function twitter_signin() {
+  var oauth = ChromeExOAuth.initBackgroundPage({
+    "request_url": "https://api.twitter.com/oauth/request_token",
+    "authorize_url": "https://api.twitter.com/oauth/authorize",
+    "access_url": "https://api.twitter.com/oauth/access_token",
+    "consumer_key": "dmg2VTIwhsEYsXIx9rBE4LABY",
+    "consumer_secret": "mypE878IPViVYhyEHu4hBSpj8sEdmPSuWKRH1P42AKoBSSL3KR"
+  });
+  
+  function callback(resp, xhr) {
+    console.log("Response: " + resp);
+    console.log("XHR: " + xhr);
+  }
+  
+  function onAuthorized() {
+    var url = "https://api.twitter.com/1.1/statuses/update.json";
+    var request = {
+      "method": "POST",
+      "parameters": {
+        "status": "Testing out the Twitter API... :D"
+      }
+    }
+    
+    //oauth.sendSignedRequest(url, callback, request);
+  }
+  
+  oauth.authorize(onAuthorized);
+}

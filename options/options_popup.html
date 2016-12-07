@@ -34,18 +34,119 @@
       <span>When icon clicked:</span>
       <div class="input-field" style="width:500px;display:inline-block">
         <select id="popup_action_open">
-          <option value="1">Open QuickMAL Popup</option>
+          <option value="1">Open QMAL Popup</option>
           <option value="2">Open your MAL List in Popup</option>
-          <option value="3">Open the QuickMAL List in Popup</option>
+          <option value="3">Open the QMAL List in Popup</option>
           <option value="4">Open your MAL List in New Tab</option>
           <option value="5">Open MAL Homepage in New Tab</option>
-          <option value="6">Open QuickMAL in Panel</option>
+          <option value="6">Open QMAL in Panel</option>
         </select>
       </div>
-      <div id="popup_quickmalpanel_warning" style="color:red">
+      <div id="popup_qmalpanel_warning" style="color:red;display:none">
         <p>Enable the flag <a href="#">#enable-panels</a> to use this!</p>
       </div>
-      <div id="popup_quickmalpopup_options">
+      <div id="popup_csstheme_wrapper">
+        <span style="/*color:graytext*/">CSS Theme to be used in popup:</span>
+        <div class="input-field" style="width:500px;display:inline-block">
+          <select id="popup_css_theme">
+            <option value="1" selected>Material Design Bootstrap</option>
+            <option value="2">MaterializeCSS</option>
+          </select>
+        </div>
+      </div>
+      <!--<div id="popup_qmalpopup_mcss_options">
+        <span>Show these in popup / panel: </span>
+        <ul class="collection" style="width: 600px">
+          <li class="collection-item">Anime Title<span class="badge">REQUIRED</span></li>
+          <li class="collection-item">ID on MAL<span class="badge">REQUIRED</span></li>
+          <li class="collection-item">Score on MAL
+            <div class="switch right" style="display:inline">
+              <label>
+                <input id="popup_mcss_show_score" type="checkbox">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </li>
+          <li class="collection-item">Anime Type
+            <div class="switch right" style="display:inline">
+              <label>
+                <input id="popup_mcss_show_type" type="checkbox">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </li>
+          <li class="collection-item">Total Episodes
+            <div class="switch right" style="display:inline">
+              <label>
+                <input id="popup_mcss_show_episodes" type="checkbox">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </li>
+          <li class="collection-item">Anime Synopsis<span class="badge">REQUIRED</span></li>
+          <li class="collection-item">Use External API
+            <div class="switch right" style="display:inline">
+              <label>
+                <input id="popup_mcss_externalAPI" type="checkbox">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </li>
+          <li id="externalAPI_options" style="display: none">
+            <ul class="collection" style="margin-left:8px;">
+              <li class="collection-item" style="background:#f3f3f3">Rank on MAL
+                <div class="switch right" style="display:inline">
+                  <label>
+                    <input id="popup_mcss_show_rank" type="checkbox">
+                    <span class="lever"></span>
+                  </label>
+                </div>
+              </li>
+              <li class="collection-item" style="background:#f3f3f3">Popularity on MAL
+                <div class="switch right" style="display:inline">
+                  <label>
+                    <input id="popup_mcss_show_popularity" type="checkbox">
+                    <span class="lever"></span>
+                  </label>
+                </div>
+              </li>
+              <li class="collection-item" style="background:#f3f3f3">Anime Source
+                <div class="switch right" style="display:inline">
+                  <label>
+                    <input id="popup_mcss_show_source" type="checkbox">
+                    <span class="lever"></span>
+                  </label>
+                </div>
+              </li>
+              <li class="collection-item" style="background:#f3f3f3">Episode Duration
+                <div class="switch right" style="display:inline">
+                  <label>
+                    <input id="popup_mcss_show_duration" type="checkbox">
+                    <span class="lever"></span>
+                  </label>
+                </div>
+              </li>
+              <li class="collection-item" style="background:#f3f3f3">Total Duration
+                <div class="switch right" style="display:inline">
+                  <label>
+                    <input id="popup_mcss_show_totalduration" type="checkbox">
+                    <span class="lever"></span>
+                  </label>
+                </div>
+              </li>
+              <li class="collection-item" style="background:#f3f3f3">Members on MAL
+                <div class="switch right" style="display:inline">
+                  <label>
+                    <input id="popup_mcss_show_members" type="checkbox">
+                    <span class="lever"></span>
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>-->
+      <div id="popup_qmalpopup_mdb_options" style="display:none">
         <span>Input Fields to display: </span>
         <ul class="collection" style="width:600px">
           <li class="collection-item">Search Input<span class="badge">REQUIRED</span></li>
@@ -92,15 +193,6 @@
             <span class="lever"></span>
           </label>
           <div class="helper" data-help-title="Show Confirmation Page" data-help-content="Turning this on will show a page at the end in the popup, showing the data you inputted before submission."></div>
-        </div>
-      </div>
-      <div id="popup_csstheme_wrapper">
-        <span style="/*color:graytext*/">CSS Theme to be used in popup:</span>
-        <div class="input-field" style="width:500px;display:inline-block">
-          <select id="popup_css_theme">
-            <option value="1" selected>Material Design Bootstrap</option>
-            <option value="2">MaterializeCSS</option>
-          </select>
         </div>
       </div>
       <br>
