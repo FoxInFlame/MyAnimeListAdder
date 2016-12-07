@@ -1,4 +1,10 @@
 var currentStatus = "none";
+console.log(popup_mcss_show);
+console.log(popup_mcss_show.length);
+console.log(popup_mcss_show.length);
+for(var i = 1; popup_mcss_show.length > i; i++) {
+  console.log(popup_mcss_show[i]);
+}
 // [+] =================DOCUMENT READY=================== [+]
 $(document).ready(function() {
   $("#animeNameSearch").focus();
@@ -32,24 +38,38 @@ function grid_list_init() {
     scrollLeft = document.body.scrollLeft;
     window.scrollTo(0, 0); // NEW! Scroll to top. http://stackoverflow.com/questions/1144805/scroll-to-the-top-of-the-page-using-javascript-jquery
     $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "block", "important");
-    $(".animeInformation #animeInformation_image").attr("src", $(this).attr("src"));
-    $(".animeInformation .animeInformation_id").text($(this).parent().data("id"));
-    $(".animeInformation .animeInformation_title").text($(this).parent().data("title"));
-    $(".animeInformation #animeInformation_type").text($(this).parent().data("type"));
-    if($(this).parent().data("episodes") == "0") {
+    var selected_imageSource = $(this).attr("src"),
+        selected_id = $(this).parent().data("id"),
+        selected_title = $(this).parent().data("title"),
+        selected_type = $(this).parent().data("type"),
+        selected_episodes = $(this).parent().data("episodes"),
+        selected_synopsis = $(this).parent().data("synopsis"),
+        selected_url = $(this).parent().data("url"),
+        selected_score = $(this).parent().data("score");
+    $(".animeInformation #animeInformation_image").attr("src", selected_imageSource);
+    $(".animeInformation .animeInformation_id").text(selected_id);
+    $(".animeInformation .animeInformation_title").text(selected_title);
+    $("#animeInformation_info1").text("Loading : ");
+    $("#animeInformation_info1_text").text("");
+    $("#animeInformation_info2").text("Loading : ");
+    $("#animeInformation_info2_text").text("");
+    $("#animeInformation_info3").text("Loading : ");
+    $("#animeInformation_info3_text").text("");
+    $(".animeInformation #animeInformation_type").text(selected_type);
+    if(selected_episodes == "0") {
       $(".animeInformation .animeInformation_episodes").text("N/A");
     } else {
-      $(".animeInformation .animeInformation_episodes").text($(this).parent().data("episodes"));
+      $(".animeInformation .animeInformation_episodes").text(selected_episodes);
     }
-    $(".animeInformation #animeInformation_synopsis").text($(this).parent().data("synopsis"));
-    $(".animeInformation #animeInformation_link").attr("href", $(this).parent().data("url"));
-    if($(this).parent().data("score") == "0.00") {
+    $(".animeInformation #animeInformation_synopsis").text(selected_synopsis);
+    $(".animeInformation #animeInformation_link").attr("href", selected_url);
+    if(selected_score == "0.00") {
       $(".animeInformation .animeInformation_score").text("N/A");
     } else {
-      $(".animeInformation .animeInformation_score").text($(this).parent().data("score"));
+      $(".animeInformation .animeInformation_score").text(selected_score);
     }
-    $("#animeEditForm-episodes").attr("max", $(this).parent().data("episodes"));
-    checkIfInAnimeList($(this).parent().data("id"));
+    $("#animeEditForm-episodes").attr("max", selected_episodes);
+    checkIfInAnimeList(selected_id);
     $(".rateYo-rating").rateYo({
       normalFill: "#e0e0e0",
       starWidth: "25px",
@@ -339,17 +359,22 @@ String.prototype.changeDatetoMALFormat = function() {
   if(this == "") {
     return;
   }
-  dateString_array = this.split("/");
+  var dateString_array = this.split("/");
   if(parseInt(dateString_array[1]) > 12) {
     dateString_array[1] = parseInt(dateString_array[1]) % 12;
   }
-  date = new Date(dateString_array[0], dateString_array[1], dateString_array[2]);
+  var date = new Date(dateString_array[0], dateString_array[1], dateString_array[2]);
   if(date.isDateValid === false) {
     console.error("Date is not valid @ String.prototype.changeDatetoMALFormat");
     return;
   } else {
     return ("0" + date.getMonth().toString()).slice(-2) + ("0" + date.getDate()).slice(-2) + date.getFullYear();
   }
+}
+
+// [+] =================TO TITLE CASE==================== [+]
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
 // [+] ==================REPLACE ALL===================== [+]
