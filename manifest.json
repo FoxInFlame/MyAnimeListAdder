@@ -29,6 +29,7 @@
   "background": {
     "scripts": [
       "libraries/jQuery/jquery-2.2.3.min.js",
+      "libraries/codebird/codebird.js",
       "background.js"
     ]
   },
@@ -51,7 +52,6 @@
       "*://*.gogoanime.io/*.html",
       "*://*.gogoanime.io/category/*",
       "*://*.gogoanime.io/",
-      "https://myanimelist.net/animelist/*",
       "https://myanimelist.net/mangalist/*",
       "https://myanimelist.net/forums/*"
     ]

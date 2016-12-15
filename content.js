@@ -522,10 +522,16 @@ function contentScriptGoGoAnime() {
           animeInformation.updateStatus = anime_update_status;
           chrome.runtime.sendMessage(animeInformation, function(response) {
             update_later = false;
-            $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
-            window.setTimeout(function() {
-              $("#qmal-dialog-loading").fadeOut(300);
-            }, 1000)
+            $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!<br>Tweeting...");
+            chrome.runtime.sendMessage({
+              subject: "twitter-post",
+              body: "I finished watching episode " + animeInformation.episodes + " on " + $("#qmal-update-anime-name").val().split(" : ")[1] + " #QMAL #Anime"
+            }, function(response) {
+              $("#qmal-dialog-loading-span").html("Successfully tweeted!");
+              window.setTimeout(function() {
+                $("#qmal-dialog-loading").fadeOut(300);
+              }, 1000);
+            });
           });
         }
       });
@@ -871,9 +877,15 @@ function contentScriptCrunchyroll() {
           chrome.runtime.sendMessage(animeInformation, function(response) {
             update_later = false;
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
-            window.setTimeout(function() {
-              $("#qmal-dialog-loading").fadeOut(300);
-            }, 1000)
+            chrome.runtime.sendMessage({
+              subject: "twitter-post",
+              body: "I finished watching episode " + animeInformation.episodes + " on " + $("#qmal-update-anime-name").val().split(" : ")[1] + " #QMAL #Anime"
+            }, function(response) {
+              $("#qmal-dialog-loading-span").html("Successfully tweeted!");
+              window.setTimeout(function() {
+                $("#qmal-dialog-loading").fadeOut(300);
+              }, 1000);
+            });
           });
         }
       });
@@ -1219,9 +1231,15 @@ function contentScriptKissAnime() {
           chrome.runtime.sendMessage(animeInformation, function(response) {
             update_later = false;
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
-            window.setTimeout(function() {
-              $("#qmal-dialog-loading").fadeOut(300);
-            }, 1000)
+            chrome.runtime.sendMessage({
+              subject: "twitter-post",
+              body: "I finished watching episode " + animeInformation.episodes + " on " + $("#qmal-update-anime-name").val().split(" : ")[1] + " #QMAL #Anime"
+            }, function(response) {
+              $("#qmal-dialog-loading-span").html("Successfully tweeted!");
+              window.setTimeout(function() {
+                $("#qmal-dialog-loading").fadeOut(300);
+              }, 1000);
+            });
           });
         }
       });

@@ -36,33 +36,42 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
   }
 });
 
-function twitter_signin() {
-  var oauth = ChromeExOAuth.initBackgroundPage({
-    "request_url": "https://api.twitter.com/oauth/request_token",
-    "authorize_url": "https://api.twitter.com/oauth/authorize",
-    "access_url": "https://api.twitter.com/oauth/access_token",
-    "consumer_key": "dmg2VTIwhsEYsXIx9rBE4LABY",
-    "consumer_secret": "mypE878IPViVYhyEHu4hBSpj8sEdmPSuWKRH1P42AKoBSSL3KR"
-  });
-  
-  function callback(resp, xhr) {
-    console.log("Response: " + resp);
-    console.log("XHR: " + xhr);
-  }
-  
-  function onAuthorized() {
-    var url = "https://api.twitter.com/1.1/statuses/update.json";
-    var request = {
-      "method": "POST",
-      "parameters": {
-        "status": "Testing out the Twitter API... :D"
-      }
+function twitter_post(status) {
+  chrome.storage.sync.get({
+    "twitter_oauth_token": "",
+    "twitter_oauth_token_secret": "",
+    "twitter_screen_name": ""
+  }, function(data) {
+    if(data.twitter_oauth_token === "" || data.twitter_oauth_token_secret === "") {
+      return;
     }
-    
-    //oauth.sendSignedRequest(url, callback, request);
-  }
-  
-  oauth.authorize(onAuthorized);
+    $.ajax({
+      url: "http://www.foxinflame.tk/QuickMyAnimeList/source/twitter.php?from=" + chrome.runtime.id,
+      method: "GET",
+      type: "data/json",
+      success: function(consumerdata) {
+        var codebird = new Codebird;
+        var consumer_key = consumerdata.consumer_key;
+        var consumer_secret = consumerdata.consumer_secret;
+        codebird.setConsumerKey(consumer_key, consumer_secret);
+        codebird.setToken(data.twitter_oauth_token, data.twitter_oauth_token_secret);
+        codebird.__call(
+          "statuses_update",
+          {
+            "status": status
+          },
+          function(reply) {
+            console.log("A tweet was posted to " + reply.user.screen_name);
+            console.log(reply.text);
+            if(reply.truncated) {
+              console.log("It was truncated.");
+            }
+            console.log(reply);
+          }
+        );
+      }
+    });
+  });
 }
 
 // Get badge options, and username/password/verified status
@@ -205,6 +214,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     animeId_panel = "";
     animeTitle_panel = "";
   }
+  if(request.subject == "twitter-post") {
+    twitter_post(request.body);
+  }
   if(request.updateStatus == "add") {
     response = addAnimeInList({
       id: request.id,
@@ -213,7 +225,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       startDate: request.startDate,
       finishDate: request.finishDate
     });
-  } else if(request.updateStatus == "update") {
+  }
+  if(request.updateStatus == "update") {
     response = updateAnimeInList({
       id: request.id,
       episodes: request.episodes,
