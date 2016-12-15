@@ -1,4 +1,3 @@
-
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -21,6 +20,8 @@ $(document).ready(function() {
     restore_options_popup();
   } else if(filename == "options_inpage.html") {
     restore_options_inpage();
+  } else if(filename == "options_twitter.html") {
+    twitter();
   } else {
     options_main();
   }
@@ -465,7 +466,6 @@ function save_options_popup() {
 function restore_options_inpage() {
 
 }
-
 function save_options_inpage() {
 
 }
@@ -474,31 +474,100 @@ $(".helper").on("click", ".helper_toggle", function() {
   $(this).next().toggle();
 });
 
-function twitter_signin() {
-  var oauth = ChromeExOAuth.initBackgroundPage({
-    "request_url": "https://api.twitter.com/oauth/request_token",
-    "authorize_url": "https://api.twitter.com/oauth/authorize",
-    "access_url": "https://api.twitter.com/oauth/access_token",
-    "consumer_key": "dmg2VTIwhsEYsXIx9rBE4LABY",
-    "consumer_secret": "mypE878IPViVYhyEHu4hBSpj8sEdmPSuWKRH1P42AKoBSSL3KR"
-  });
-  
-  function callback(resp, xhr) {
-    console.log("Response: " + resp);
-    console.log("XHR: " + xhr);
-  }
-  
-  function onAuthorized() {
-    var url = "https://api.twitter.com/1.1/statuses/update.json";
-    var request = {
-      "method": "POST",
-      "parameters": {
-        "status": "Testing out the Twitter API... :D"
-      }
+function twitter() {
+  chrome.storage.sync.get({
+    "twitter_oauth_token": "",
+    "twitter_oauth_token_secret": "",
+    "twitter_screen_name": ""
+  }, function(data) {
+    if(data.twitter_oauth_token === "" || data.twitter_oauth_token === "") {
+      document.getElementById("not-authenticated").style.display = "block";
+      document.getElementById("authenticated").style.display = "none";
+    } else {
+      document.getElementById("twitter_displayname").innerHTML = data.twitter_screen_name;
+      document.getElementById("not-authenticated").style.display = "none";
+      document.getElementById("authenticated").style.display = "block";
     }
-    
-    //oauth.sendSignedRequest(url, callback, request);
-  }
-  
-  oauth.authorize(onAuthorized);
+  });
+  var codebird = new Codebird;
+  document.getElementById("twitter-auth").addEventListener("click", function() {
+    $.ajax({
+      url: "http://www.foxinflame.tk/QuickMyAnimeList/source/twitter.php?from=" + chrome.runtime.id,
+      method: "GET",
+      type: "data/json",
+      success: function(data) {
+        var consumer_key = data.consumer_key;
+        var consumer_secret = data.consumer_secret;
+        codebird.setConsumerKey(consumer_key, consumer_secret);
+        codebird.__call(
+          "oauth_requestToken",
+          {
+            oauth_callback: "oob"
+          },
+          function (reply) {
+            codebird.setToken(reply.oauth_token, reply.oauth_token_secret);
+            codebird.__call(
+              "oauth_authorize",
+              {},
+              function (auth_url) {
+                window.codebird_auth = window.open(auth_url);
+              }
+            );
+          }
+        );
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR);
+        console.log(textStatus);
+        console.log(errorThrown);
+      }
+    });
+  });
+  document.getElementById("twitter-auth-code").addEventListener("change", function() {
+    if($(this).val().trim() == "") {
+      $("#twitter-auth-code-verify").addClass("disabled");
+    } else {
+      $("#twitter-auth-code-verify").removeClass("disabled");
+    }
+  });
+  document.getElementById("twitter-auth-code-verify").addEventListener("click", function() {
+    codebird.__call(
+      "oauth_accessToken",
+      {
+        oauth_verifier: document.getElementById("twitter-auth-code").value.trim()
+      },
+      function (reply) {
+        codebird.setToken(reply.oauth_token, reply.oauth_token_secret);
+        /*
+        {
+          oauth_token: "14648265-rPn8EJwfB**********************",
+          oauth_token_secret: "agvf3L3**************************",
+          user_id: 14648265,
+          screen_name: "jublonet",
+          httpstatus: 200
+        }
+        */
+        chrome.storage.sync.set({
+          "twitter_oauth_token": reply.oauth_token,
+          "twitter_oauth_token_secret": reply.oauth_token_secret,
+          "twitter_screen_name": reply.screen_name
+        }, function() {
+          document.getElementById("twitter_displayname").innerHTML = reply.screen_name;
+          document.getElementById("not-authenticated").style.display = "none";
+          document.getElementById("authenticated").style.display = "block";
+        });
+      }
+    );
+  });
+  document.getElementById("twitter-logout").addEventListener("click", function() {
+    codebird.logout();
+    chrome.storage.sync.set({
+      "twitter_oauth_token": "",
+      "twitter_oauth_token_secret": "",
+      "twitter_screen_name": ""
+    }, function() {
+      document.getElementById("not-authenticated").style.display = "block";
+      document.getElementById("authenticated").style.display = "none";
+    });
+  });
 }
