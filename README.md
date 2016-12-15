@@ -29,6 +29,7 @@ Check out the official website for screenshots.
 - Custom edited MaterializeCSS : Used in options and popup for layout, buttons, and animations for the MaterializeCSS theme
 - RateYo : Used in popup to rate the selected anime easily for both themes
 - Select2 : Used in popup to search and select the anime easily for the MDB theme
+- Codebird : Unofficial Twitter JavaScript library
 - xml2json : Convert XML to JSON easily. Used with like, all of the AJAX requests.
 
 ## Development
@@ -42,7 +43,7 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 ## What's new!?
 ### Release 1.3.4!
 
-More links!
+More links! Twitter!
 
 #### Features kept from previous version (1.3.3)
 
@@ -57,6 +58,7 @@ More links!
 - Waaaaay quicker loading time in the popup (remember how you had to wait a while before pressing add/edit?)
 - Smoother animation when clicking on the add/edit button in the popup
 - Now uses chrome.alerts instead of window.setTimeout in the background to reduce CPU usage
+- Post to Twitter on update!
 - Fixed 2 bugs
 - Probably more.
 
