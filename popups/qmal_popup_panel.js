@@ -48,7 +48,7 @@ function renderShowOneOnly(id, title) {
   $(".animeInformation > nav").hide();
   
   $.ajax({
-    url: "http://www.foxinflame.tk/dev/matomari/api/animeInfo/" + id,
+    url: "http://www.foxinflame.tk/dev/matomari/api/anime/info/" + id + ".json?timestamp=" + new Date(),
     dataType: "json",
     type: "GET",
     username: loginUsername,
@@ -59,7 +59,7 @@ function renderShowOneOnly(id, title) {
       $(".animeInformation #generalInfo .animeInformation-title").text(xhr.responseText + ".");
     },
     success: function(data, textStatus, jqXHR) {
-      if(data === null || data === undefined) {
+      if(data === null || data === undefined || data.error == "Anime with specified id was not found.") {
         // Empty return
         $(".animeInformation-loading-bar-wrapper")[0].style.setProperty("display", "none", "important");
         $(".animeInformation #generalInfo .animeInformation-title").text("Not Found.");
@@ -67,7 +67,7 @@ function renderShowOneOnly(id, title) {
       }
       showOnlyOne_formatResult(data);
     },
-    cache: true
+    cache: false
   });
 }
 
@@ -908,7 +908,7 @@ $("#animeEditForm-fieldset2-previous").click(function() {
 $("#animeEditForm-fieldset2-tags-autoFill").click(function() {
   var toastID = Materialize.toast("Please wait....");
   $.ajax({
-    url: "http://www.foxinflame.tk/dev/matomari/api/animeInfo.php?id=" + $(".animeInformation .animeInformation_id").text(),
+    url: "http://www.foxinflame.tk/dev/matomari/api/anime/info/" + $(".animeInformation .animeInformation_id").text() + ".json",
     method: "GET",
     success: function(data) {
       function containsObject(obj, list) {
