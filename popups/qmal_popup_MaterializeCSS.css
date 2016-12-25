@@ -434,7 +434,7 @@ fieldset {
   position: absolute;
   right: 20px;
   top: 90px;
-  z-index: 70;
+  z-index: 55; /*5 lower than Edit Form*/
   background: #e53935;
   transition: background-color 0.3s linear, background 0.3s linear, box-shadow 0.25s;
 }
@@ -448,7 +448,7 @@ fieldset {
   position: absolute;
   top:87.5px; /*To put it right on top of the button*/
   right:17.5px;
-  z-index: 75; /*Five above button*/
+  z-index: 65; /*Ten above button*/
   -webkit-animation: rotate360 1.5s infinite linear;
 }
 .animeInformation .animeInformation-edit-preloader-wrapper .spinner-layer {
@@ -492,7 +492,7 @@ fieldset {
   z-index: 60; /*Higher than Anime content (50), lower than Title bar (100)*/
 }
 
-#animeEditForm nav{
+#animeEditForm nav {
   position: relative;
   height: 50px;
   line-height: 50px;
@@ -523,15 +523,31 @@ fieldset {
   white-space: nowrap
 }
 
+#animeEditForm #animeEditForm-back {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+}
+
+#animeEditForm #animeEditForm-next {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+}
+
 #animeEditForm #animeEditForm-fieldset1 .row {
   margin-bottom: 0;
 }
 
 #animeEditForm #animeEditForm-fieldset1 {
   margin-top: 40px;
+  height: 400px;
 }
 #animeEditForm #animeEditForm-fieldset2 {
-  margin-top: 540px;
+  margin-top: 140px;
+  height: 400px;
 }
 
 #animeEditForm #animeEditForm-fieldset2 #animeEditForm-tags {

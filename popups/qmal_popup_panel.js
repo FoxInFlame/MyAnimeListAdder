@@ -748,13 +748,6 @@ $("#modal_delete_confirmation_yes").on("click", function() {
     $("#animeEditForm nav .nav-wrapper span i").text("add");
     $("#animeInformation_deleteFromList, #animeInformation_myScore").fadeOut(150);
     $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "none", "important");
-    $("#animeEditForm-fieldset2").animate({
-      marginTop: "550px"
-    }, 300, function() {
-      $("#animeEditForm-fieldset1").animate({
-        marginTop: "50px"
-      });
-    });
   }
 });
   
@@ -766,78 +759,15 @@ $("#animeInformation_addToList").click(function() {
     placeholder: tags.placeholder,
     secondaryPlaceholder: tags.secondaryPlaceholder
   });
-  if($(this).attr("data-display-add") != "0") {
-    $("#animeEditForm-fieldset2").animate({
-      marginTop: "550px"
-    }, 300, function() {
-      $("#animeEditForm-fieldset1").animate({
-        marginTop: "50px"
-      });
-    });
-    $("#addAnimeContainer").fadeOut(400);
-    enableScroll();
-    $(".animeInformation #animeInformation_addToList").css("top", "400px").css("position", "absolute");
-    $("#animeInformation_link").fadeIn(100);
-    if(!showOneOnly) {
-      $(".animeInformation>nav").fadeIn(100);
-    }
-    $(".animeInformation #animeInformation_image-wrapper").animate({
-      height: "120px"
-    }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
-    window.setTimeout(function() {
-      $("#animeInformation_addToList").animate({
-        top: "90px",
-        right: "20px"
-      }, {duration: 150}, $.bez([0.4, 0, 0.2, 1])).attr("data-position", "bottom");
-      var statuses= {
-        "watching": "Watching: Ep " + $("#animeEditForm-episodes").val(),
-        "completed": "Completed",
-        "onhold": "On Hold",
-        "dropped": "Dropped",
-        "ptw": "Planned to Watch"
-      }
-      if(statuses.hasOwnProperty(currentStatus)) {
-        $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").css("background", "#2e8ba2").attr("data-tooltip", statuses[currentStatus]).tooltip();
-        $("#animeInformation_deleteFromList, #animeInformation_myScore").fadeIn(100);
-      } else {
-        // No need to change color because it's the same
-        $("#animeInformation_addToList").attr("data-tooltip", "Add to List").tooltip();
-      }
-      $("#animeInformation_addToList i").animate({
-        borderSpacing: 0
-      }, {
-        duration: 150,
-        queue: false,
-        step: function(now, fx) {
-          $(this).css("-webkit-transform", "rotate(" + now + "deg)");
-        }
-      });
-    }, 50);
-    $(this).attr("data-display-add", "0");
-    return;
-  }
   $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link, .animeInformation>nav").fadeOut(100);
-  $("#qmal_popup_mainContent").css("width", "500px").css("height", "600px");
+  $("#qmal_popup_mainContent").css("width", "500px").css("height", "500px");
   $("#animeEditForm").css("width", "100%");
-  $(".animeInformation #animeInformation_addToList").css("top", "170px").css("position", "fixed"); // 80 header + 70 original absoulte height
   disableScroll();
+  $("#animeEditForm #animeEditForm-back").fadeIn(100);
+  $("#animeEditForm #animeEditForm-next").fadeIn(100);
   $(".animeInformation #animeInformation_image-wrapper").animate({
     height: "550px"
   }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
-  $("#animeInformation_addToList").animate({
-    top: "480px",
-    right: "20px"
-  }, {duration: 150}, $.bez([0.4, 0, 0.2, 1])).attr("data-position", "top").attr("data-tooltip", "Cancel").tooltip().attr("data-display-add", "1");
-  $("#animeInformation_addToList").html("<i class=\"material-icons\">add</i>").css("background", "#51a22e");
-  $("#animeInformation_addToList i").animate({
-    borderSpacing: -135
-  }, {
-    duration: 150,
-    queue: false,
-    step: function(now, fx) {
-      $(this).css("-webkit-transform", "rotate(" + now + "deg)");
-    }
-  }, $.bez([0.4, 0, 0.2, 1]));
   window.setTimeout(function() {
     $("#addAnimeContainer").fadeIn(400);
   }, 250);
@@ -866,42 +796,64 @@ $("#animeEditForm-status").on("change", function() {
   }
 })
 
-// [+] Stage 1 -> Next
-$("#animeEditForm-fieldset1-next").click(function() {
-  if((parseInt($("#animeEditForm-episodes").val()) > parseInt($("#animeEditForm-episodes").attr("max")) || parseInt($("#animeEditForm-episodes").val()) < 0 ) && parseInt($("#animeEditForm-episodes").attr("max")) != 0) {
-    $("#animeEditForm-fieldset1-next").attr("disabled", "dsiabled").text("Incorrect Episode Count!");
-    window.setTimeout(function() {
-      $("#animeEditForm-fieldset1-next").removeAttr("disabled").text("Next");
-    }, 3000)
-    return;
-  }
-  if($("#animeEditForm-status").val() == null) {
-    $("#animeEditForm-fieldset1-next").attr("disabled", "dsiabled").text("Please choose a status!");
-    window.setTimeout(function() {
-      $("#animeEditForm-fieldset1-next").removeAttr("disabled").text("Next");
-    }, 3000)
-    return;
-  }
-  enableScroll();
-  $("#animeEditForm-fieldset1").animate({
-    marginTop: "-550px"
-  }, 300, function() {
-    $("#animeEditForm-fieldset2").animate({
-      marginTop: "300px"
+// [+] Next Button
+$("#animeEditForm #animeEditForm-next").on("click", function() {
+  console.log($(this).data("action"));
+  // [+] Stage 1 -> Stage 2
+  if($(this).data("action") == "page2") {
+    if((parseInt($("#animeEditForm-episodes").val()) > parseInt($("#animeEditForm-episodes").attr("max")) || parseInt($("#animeEditForm-episodes").val()) < 0) && parseInt($("#animeEditForm-episodes").attr("max")) !== 0) {
+      Materialize.toast("Incorrect Episode count!", 3000);
+      return;
+    }
+    if($("#animeEditForm-status").val() == null) {
+      Materialize.toast("Empty status is not allowed!", 3000);
+      return;
+    }
+    enableScroll();
+    $("#animeEditForm-fieldset1").animate({
+      marginTop: "-500px"
     });
-  });
+    $(this).data("action", "submit").css("background", "#51a22e").html("<i class=\"material-icons\">send</i>");
+    $("#animeEditForm #animeEditForm-back").data("action", "page1").html("<i class=\"material-icons\">arrow_back</i>");
+    return;
+  }
+  // [+] Stage 2 -> Submit
+  if($(this).data("action") == "submit") {
+    submitEditForm();
+    return;
+  }
 });
 
-// [+] Stage 2 -> Previous
-$("#animeEditForm-fieldset2-previous").click(function() {
-  disableScroll();
-  $("#animeEditForm-fieldset2").animate({
-    marginTop: "550px"
-  }, 300, function() {
+// [+] Back BUtton
+$("#animeEditForm #animeEditForm-back").on("click", function() {
+  // [+] Stage 1 -> Close
+  if($(this).data("action") == "close") {
     $("#animeEditForm-fieldset1").animate({
-      marginTop: "50px"
+      marginTop: "40px"
     });
-  });
+    $("#addAnimeContainer").fadeOut(400);
+    enableScroll();
+    $("#animeInformation_link, .animeInformation>nav").fadeIn(100);
+    $("#animeEditForm #animeEditForm-back").data("action", "close").fadeOut(100);
+    $("#animeEditForm #animeEditForm-next").data("action", "page2").fadeOut(100);
+    $(".animeInformation #animeInformation_image-wrapper").animate({
+      height: "120px"
+    }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
+    return;
+    $(this).data("action", "close");
+    $("#animeEditForm-next").data("action", "page1");
+    return;
+  }
+  // [+] Stage 2 -> Stage 1
+  if($(this).data("action") == "page1") {
+    disableScroll();
+    $("#animeEditForm-fieldset1").animate({
+      marginTop: "40px"
+    });
+    $(this).data("action", "close").html("<i class=\"material-icons\">close</i>");
+    $("#animeEditForm-next").data("action", "page2").css("background", "#2e51a2").html("<i class=\"material-icons\">arrow_forward</i>");
+    return;
+  }
 });
 
 // [+] Stage 2 -> Autofill Genres
@@ -951,7 +903,7 @@ $("#animeEditForm-fieldset2-tags-autoFill").click(function() {
 });
 
 // [+] Stage 2 -> Next -> Proccess and Submit
-$("#animeEditForm-fieldset2-next").click(function() {
+function submitEditForm() {
   var id;
   var episodesWatched;
   var status;
@@ -1008,13 +960,9 @@ $("#animeEditForm-fieldset2-next").click(function() {
     }
   }
   
-  
   $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").css("background", "#2e8ba2");
   $("#animeEditForm nav .nav-wrapper span i").text("edit");
-  $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link").fadeIn(100);
-  if(!showOneOnly) {
-    $(".animeInformation>nav").fadeIn(100);
-  }
+  $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link, .animeInformation>nav").fadeIn(100);
   $(".animeInformation #animeInformation_myScore").attr("data-tooltip", "My Score: " + rating).tooltip({delay:50});
   formAnimeStatus = "Update";
   $("#animeEditForm-fieldset2").animate({
@@ -1022,21 +970,18 @@ $("#animeEditForm-fieldset2-next").click(function() {
   }, 300, function() {
     $("#animeEditForm-fieldset1").animate({
       marginTop: "50px"
-    })
+    });
   });
-  
-  // Fade out container
   $("#addAnimeContainer").fadeOut(400);
   enableScroll();
-  $(".animeInformation #animeInformation_addToList").css("top", "400px").css("position", "absolute");
+  $("#animeInformation_link, .animeInformation>nav").fadeIn(100);
+  $("#animeEditForm #animeEditForm-back").data("action", "close").fadeOut(100);
+  $("#animeEditForm #animeEditForm-next").data("action", "page2").fadeOut(100);
+  
   $(".animeInformation #animeInformation_image-wrapper").animate({
     height: "120px"
   }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
   window.setTimeout(function() {
-    $("#animeInformation_addToList").animate({
-      top: "90px",
-      right: "20px"
-    }, {duration: 150}, $.bez([0.4, 0, 0.2, 1])).attr("data-position", "bottom");
     if(status == "1") {
       //Watching
       $("#animeInformation_addToList").attr("data-tooltip", "Watching: Ep " + episodesWatched);
@@ -1054,15 +999,7 @@ $("#animeEditForm-fieldset2-next").click(function() {
       $("#animeInformation_addToList").attr("data-tooltip", "Planned to Watch");
     }
     $("#animeInformation_addToList").tooltip({delay: 50});
-    $("#animeInformation_addToList i").animate({
-      borderSpacing: 0
-    }, {
-      duration: 150,
-      queue: false,
-      step: function(now, fx) {
-        $(this).css("-webkit-transform", "rotate(" + now + "deg)");
-      }
-    });
   }, 50);
-  $("#animeInformation_addToList").attr("data-display-add", "0");
-});
+  $("#animeEditForm-back").data("action", "close");
+  $("#animeEditForm-next").data("action", "page1");
+};
