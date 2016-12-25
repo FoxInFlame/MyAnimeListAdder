@@ -440,7 +440,7 @@ String.prototype.changeDatetoMALFormat = function() {
   if(parseInt(dateString_array[1]) > 12) {
     dateString_array[1] = parseInt(dateString_array[1]) % 12;
   }
-  date = new Date(dateString_array[0], dateString_array[1], dateString_array[2]);
+  date = new Date(dateString_array[0], (dateString_array[1] - 1), dateString_array[2]);
   if(date.isDateValid === false) {
     console.error("Date is not valid @ String.prototype.changeDatetoMALFormat");
     return;

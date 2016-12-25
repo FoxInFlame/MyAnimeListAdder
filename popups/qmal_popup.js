@@ -363,11 +363,13 @@ String.prototype.changeDatetoMALFormat = function() {
   if(parseInt(dateString_array[1]) > 12) {
     dateString_array[1] = parseInt(dateString_array[1]) % 12;
   }
-  var date = new Date(dateString_array[0], dateString_array[1], dateString_array[2]);
+  console.log(dateString_array);
+  var date = new Date(dateString_array[0], (dateString_array[1] - 1), dateString_array[2]);
   if(date.isDateValid === false) {
     console.error("Date is not valid @ String.prototype.changeDatetoMALFormat");
     return;
   } else {
+    console.log(date);
     return ("0" + date.getMonth().toString()).slice(-2) + ("0" + date.getDate()).slice(-2) + date.getFullYear();
   }
 }
