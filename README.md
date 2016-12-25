@@ -43,7 +43,7 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 ## What's new!?
 ### Release 1.3.4!
 
-More links! Twitter!
+Faster! A LOOOOOT MORE FASTER! VROOOOM! 
 
 #### Features kept from previous version (1.3.3)
 
@@ -58,8 +58,8 @@ More links! Twitter!
 - Waaaaay quicker loading time in the popup (remember how you had to wait a while before pressing add/edit?)
 - Smoother animation when clicking on the add/edit button in the popup
 - Now uses chrome.alerts instead of window.setTimeout in the background to reduce CPU usage
-- Post to Twitter on update!
-- Fixed 2 bugs
+- Post to Twitter on update! (beta)
+- Fixed 6 reported bugs and tons of other unreported ones.
 - Probably more.
 
 #### Removed features from previous version (1.3.3)
