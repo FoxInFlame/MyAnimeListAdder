@@ -41,9 +41,15 @@ $(document).ready(function() {
     inpage_sites.forEach(function(index) {
       if(window.location.href.contains(index)) {
         var location = window.location.href;
-        if(location.contains("myanimelist") && (location.contains("/anime/") || location.contains("/anime.php?id="))) {
-          contentScriptMAL_description();
-          return;
+        if(location.contains("myanimelist")) {
+          if(location.contains("/anime/") || location.contains("/anime.php?id=")) {
+            contentScriptMAL_description();
+            return;
+          }
+          if(location.contains("/animelist/")) {
+            contentScriptMAL_animelist();
+            return;
+          }
         }
         $("head").append("<link rel='stylesheet' href='http://www.foxinflame.tk/QuickMyAnimeList/source/content.css' type='text/css'>");
         loadStatus();
@@ -60,7 +66,7 @@ function loadStatus() {
     url: "http://www.foxinflame.tk/QuickMyAnimeList/source/news.json",
     method: "GET",
     error: function(jqXHR, textStatus, errorThrown) {
-      console.log("Couldn't grab QMAL news: " + textStatus + " : " + errorThrown);
+      console.log("Couldn't grab QMAL news: " + jqXHR + " : " + errorThrown);
     },
     success: function(data) {
       sortStyleStatus(data);
@@ -186,10 +192,38 @@ function contentScriptMAL_description() {
     chrome.runtime.sendMessage({
       subject: "openPanel",
       animeid: animeid,
-      animetitle: $(".page-common #myanimelist .wrapper #contentWrapper .h1 span").html()
-    }, function(response) {
-      console.log(response);
+      animetitle: title.trim()
+    }, function(response) {});
+  });
+}
+
+function contentScriptMAL_animelist() {
+  var more = $("#list_surround div[id^=more]");
+  var style;
+  if(more.length === 0) {
+    more = $("#list-container tbody.list-item");
+    style = "modern";
+  } else {
+    style = "classic";
+  }
+  if(style == "classic") {
+    $(more).each(function() {
+      var moreid = $(this).attr("id").substring(4);
+      $(this).prev().find("tr td:contains('More') small a:first-of-type").after(" - <a href=\"javascript:void(0);\" class=\"openInQMAL\" data-id=\"" + moreid + "\">QMAL</a>");
     });
+  }
+  if(style == "modern") {
+    $(more).each(function() {
+      var moreid = $(this).find("tr.more-info").attr("id").substring(5);
+      $(this).find("tr.list-table-data td.title div.add-edit-more .add").after(" - <span><a href=\"javascript:void(0);\" class=\"openInQMAL\" data-id=\"" + moreid + "\">QMAL</a></span>")
+    });
+  }
+  $(".openInQMAL").on("click", function() {
+    var animeid = $(this).data("id");
+    chrome.runtime.sendMessage({
+      subject: "openPanel",
+      animeid: animeid
+    }, function(response) {});
   });
 }
 
@@ -359,10 +393,8 @@ function contentScriptGoGoAnime() {
           success: function(data) {
             console.log("https://myanimelist.net/api/anime/search.xml?q=" + anime_name);
             var x2js = new X2JS();
-            console.log("The following is the raw data returned from the server:");
-            console.log(data);
             dataJSON = x2js.xml2json(data);
-            console.log("And the following is the data converted to JSON:");
+            console.log("The following is the data converted to JSON:");
             console.log(dataJSON);
             search_result = dataJSON.anime;
             if($.isArray(search_result.entry)) {
@@ -522,10 +554,16 @@ function contentScriptGoGoAnime() {
           animeInformation.updateStatus = anime_update_status;
           chrome.runtime.sendMessage(animeInformation, function(response) {
             update_later = false;
-            $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
-            window.setTimeout(function() {
-              $("#qmal-dialog-loading").fadeOut(300);
-            }, 1000)
+            $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!<br>Tweeting...");
+            chrome.runtime.sendMessage({
+              subject: "twitter-post",
+              body: "I finished watching episode " + animeInformation.episodes + " on " + $("#qmal-update-anime-name").val().split(" : ")[1] + " #QMAL #Anime"
+            }, function(response) {
+              $("#qmal-dialog-loading-span").html("Successfully tweeted!");
+              window.setTimeout(function() {
+                $("#qmal-dialog-loading").fadeOut(300);
+              }, 1000);
+            });
           });
         }
       });
@@ -707,10 +745,8 @@ function contentScriptCrunchyroll() {
           success: function(data) {
             console.log("https://myanimelist.net/api/anime/search.xml?q=" + anime_name);
             var x2js = new X2JS();
-            console.log("The following is the raw data returned from the server:");
-            console.log(data);
             dataJSON = x2js.xml2json(data);
-            console.log("And the following is the data converted to JSON:");
+            console.log("The following is the data converted to JSON:");
             console.log(dataJSON);
             search_result = dataJSON.anime;
             if($.isArray(search_result.entry)) {
@@ -871,9 +907,15 @@ function contentScriptCrunchyroll() {
           chrome.runtime.sendMessage(animeInformation, function(response) {
             update_later = false;
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
-            window.setTimeout(function() {
-              $("#qmal-dialog-loading").fadeOut(300);
-            }, 1000)
+            chrome.runtime.sendMessage({
+              subject: "twitter-post",
+              body: "I finished watching episode " + animeInformation.episodes + " on " + $("#qmal-update-anime-name").val().split(" : ")[1] + " #QMAL #Anime"
+            }, function(response) {
+              $("#qmal-dialog-loading-span").html("Successfully tweeted!");
+              window.setTimeout(function() {
+                $("#qmal-dialog-loading").fadeOut(300);
+              }, 1000);
+            });
           });
         }
       });
@@ -1055,10 +1097,8 @@ function contentScriptKissAnime() {
           success: function(data) {
             console.log("https://myanimelist.net/api/anime/search.xml?q=" + anime_name);
             var x2js = new X2JS();
-            console.log("The following is the raw data returned from the server:");
-            console.log(data);
             dataJSON = x2js.xml2json(data);
-            console.log("And the following is the data converted to JSON:");
+            console.log("The following is the data converted to JSON:");
             console.log(dataJSON);
             search_result = dataJSON.anime;
             if($.isArray(search_result.entry)) {
@@ -1219,9 +1259,15 @@ function contentScriptKissAnime() {
           chrome.runtime.sendMessage(animeInformation, function(response) {
             update_later = false;
             $("#qmal-dialog-loading-span").html("Successfully " + response.answer + "!");
-            window.setTimeout(function() {
-              $("#qmal-dialog-loading").fadeOut(300);
-            }, 1000)
+            chrome.runtime.sendMessage({
+              subject: "twitter-post",
+              body: "I finished watching episode " + animeInformation.episodes + " on " + $("#qmal-update-anime-name").val().split(" : ")[1] + " #QMAL #Anime"
+            }, function(response) {
+              $("#qmal-dialog-loading-span").html("Successfully tweeted!");
+              window.setTimeout(function() {
+                $("#qmal-dialog-loading").fadeOut(300);
+              }, 1000);
+            });
           });
         }
       });

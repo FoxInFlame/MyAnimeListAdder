@@ -1,5 +1,9 @@
 @import url(https://f3a7a1b1655de4833e3bed3b1779c5a9d85839f8.googledrive.com/host/0BxjwQr0BBXs-aDYxM2JlaFM2bnM);
 /*All that anime covers!*/
+::-webkit-scrollbar {
+  display: none;
+}
+
 body {
   font-family: "Roboto", sans-serif;
   font-size: 13px;
@@ -14,6 +18,7 @@ body {
   position: fixed;
   width: 100%;
   top: 0;
+  height: 50px;
 }
 
 .header img {
@@ -32,16 +37,22 @@ body {
   float: right;
 }
 
+.header #openSettings {
+  background: white;
+  float: right;
+  margin-left: 16px;
+}
+
 .animeInformation-loading-bar-wrapper {
   position: fixed !important;
-  top: 73px;
+  top: 43px;
   z-index: 102;
   border-radius: 0px !important;
   display: none !important;
 }
 
 #mainForm_tmp {
-  margin-top: 90px;
+  margin-top: 70px;
 }
 
 fieldset {
@@ -337,7 +348,7 @@ fieldset {
   background: #eaedf5;
   position: fixed;
   z-index: 50;
-  top: 80px;
+  top: 50px;
   left: 0;
 }
 
@@ -404,23 +415,26 @@ fieldset {
   right: 190px;
   top: 100px;
   display: none;
+  z-index: 51; /* Bug Fix: 1 Higher than the image! */
 }
 .animeInformation #animeInformation_myScore {
   position: absolute;
   right: 140px;
   top: 100px;
   display: none;
+  z-index: 51; /* Bug Fix: 1 Higher than the image! */
 }
 .animeInformation #animeInformation_link {
   position: absolute;
   right: 90px;
   top: 100px;
+  z-index: 51; /* Bug Fix: 1 Higher than the image! */
 }
 .animeInformation #animeInformation_addToList {
   position: absolute;
   right: 20px;
   top: 90px;
-  z-index: 70;
+  z-index: 55; /*5 lower than Edit Form*/
   background: #e53935;
   transition: background-color 0.3s linear, background 0.3s linear, box-shadow 0.25s;
 }
@@ -434,7 +448,7 @@ fieldset {
   position: absolute;
   top:87.5px; /*To put it right on top of the button*/
   right:17.5px;
-  z-index:71; /*One above button*/
+  z-index: 65; /*Ten above button*/
   -webkit-animation: rotate360 1.5s infinite linear;
 }
 .animeInformation .animeInformation-edit-preloader-wrapper .spinner-layer {
@@ -453,7 +467,7 @@ fieldset {
   width: 20px;
   top: 95px;
   height: 20px;
-  z-index: 15;
+  z-index: 20;
 }
 .animeInformation #animeInformation_addBackground .preloader-wrapper {
   display: none;
@@ -478,7 +492,7 @@ fieldset {
   z-index: 60; /*Higher than Anime content (50), lower than Title bar (100)*/
 }
 
-#animeEditForm nav{
+#animeEditForm nav {
   position: relative;
   height: 50px;
   line-height: 50px;
@@ -509,15 +523,31 @@ fieldset {
   white-space: nowrap
 }
 
+#animeEditForm #animeEditForm-back {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+}
+
+#animeEditForm #animeEditForm-next {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+}
+
 #animeEditForm #animeEditForm-fieldset1 .row {
   margin-bottom: 0;
 }
 
 #animeEditForm #animeEditForm-fieldset1 {
-  margin-top: 50px;
+  margin-top: 40px;
+  height: 400px;
 }
 #animeEditForm #animeEditForm-fieldset2 {
-  margin-top: 550px;
+  margin-top: 140px;
+  height: 400px;
 }
 
 #animeEditForm #animeEditForm-fieldset2 #animeEditForm-tags {

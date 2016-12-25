@@ -30,7 +30,6 @@ $("#anime_delete_confirm").css("margin", "-" + marginHeightAnimeDelete + "px 0 0
 var marginHeightAnimeFinal = $("#anime_stageFinal_done").height() + ($("#anime_stageFinal_done").height())/2;
 $("#anime_stageFinal_done").css("margin", "-" + marginHeightAnimeFinal + "px 0 0 -225px");
 var marginHeightAnimeDeleteDone = $("#anime_delete_done").height() + ($("#anime_delete_done").height())/2;
-console.log(marginHeightAnimeDeleteDone + ";height:" + $("#anime_delete_done").height() + ";height/2:" + ($("#anime_delete_done").height())/2);
 $("#anime_delete_done").css("margin", "0 0 0 -225px");
 $("#anime_delete_done").css("top", "-300px");
 
@@ -313,6 +312,7 @@ $("#anime_stageFinal_done_another").on("click", function() {
 var animeNamesInList = {},
     animeEnglishNames = {},
     animeSynonyms = {},
+    animePictures = {},
     animeEpisodes = {},
     animeSynopsis = {},
     chosenAnimeInList;
@@ -333,10 +333,8 @@ function select2_init() {
         }
       },
       processResults: function (data, params) {
-        console.log(data);
         var x2js = new X2JS();
         dataXML = x2js.xml2json(data);
-        console.log(dataXML);
         if(Object.prototype.toString.call(dataXML["anime"]["entry"]) !== "[object Array]") {
           // Only one result!
           var array = [];
@@ -363,7 +361,8 @@ function formatAnimeResult(anime) {
   if(anime.loading) return "Searching...";
   
   var animeId = anime.id;
-  animeNamesInList[animeId] = anime.title
+  animeNamesInList[animeId] = anime.title;
+  animePictures[animeId] = anime.image;
   animeEnglishNames[animeId] = anime.english;
   if(animeEnglishNames[animeId] === "" || animeEnglishNames[animeId] === null) {
     animeEnglishNames[animeId] = animeNamesInList[animeId];
@@ -397,11 +396,7 @@ $("#animeName").on("select2:select", function() {
   //Cover Preview
   $("#preview").show();
   animeid = document.getElementById("animeName").value;
-  $(".previewCover").attr("id", "more" + animeid);
-  var coverImageSource = $(".previewCover").css("background-image");
-  coverImageSource = coverImageSource.replace(/[()\"]/g, "");
-  coverImageSource = coverImageSource.slice(3);
-  $("#previewCoverSize").attr("src", coverImageSource);
+  document.getElementById("previewCoverSize").src = animePictures[animeid];
   
   //Hide the Synopsis
   information_synopsis_visibility = 0;

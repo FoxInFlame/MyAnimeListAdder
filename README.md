@@ -1,8 +1,9 @@
+![Banner](http://i.imgur.com/U2piPr4.png)
 # QuickMyAnimeList
-[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QuickMyAnimeList/total.svg?maxAge=2592000)]()
+[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QUickMyAnimeList/total.svg)]() 
 
-[![GitHub forks](https://img.shields.io/github/forks/FoxInFlame/QuickMyAnimeList.svg?style=social&label=Fork&maxAge=2592000)]()
-[![GitHub watchers](https://img.shields.io/github/watchers/FoxInFlame/QuickMyAnimeList.svg?style=social&label=Watch&maxAge=2592000)]() [![Twitter Follow](https://img.shields.io/twitter/follow/FoxInFlame.svg?style=social&label=Follow&maxAge=2592000)]()
+[![GitHub forks](https://img.shields.io/github/forks/FoxInFlame/QuickMyAnimeList.svg?style=flat&label=Forks&maxAge=2592000)]()
+[![GitHub watchers](https://img.shields.io/github/watchers/FoxInFlame/QuickMyAnimeList.svg?style=flat&label=Watch&maxAge=2592000)]() [![Twitter Follow](https://img.shields.io/twitter/follow/FoxInFlame.svg?style=flat&label=Follow on Twitter&maxAge=2592000)]()
 
 QuickMyAnimeList (QMAL) is a handy Chrome extension that allows you to edit, add, or delete an anime in your MyAnimeList list. Of course, there are many more features...? 
 
@@ -25,9 +26,10 @@ Check out the official website for screenshots.
 - ColorPicker : Used in options for selecting Badge Color
 - Bez : To use cubic-beizers within .animate()
 - jQuery : Used for easy DOM selection, AJAX calls, and everything
-- MaterializeCSS : Used in options and popup for layout, buttons, and animations for the MaterializeCSS theme
+- Custom edited MaterializeCSS : Used in options and popup for layout, buttons, and animations for the MaterializeCSS theme
 - RateYo : Used in popup to rate the selected anime easily for both themes
 - Select2 : Used in popup to search and select the anime easily for the MDB theme
+- Codebird : Unofficial Twitter JavaScript library
 - xml2json : Convert XML to JSON easily. Used with like, all of the AJAX requests.
 
 ## Development
@@ -39,30 +41,30 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 
 
 ## What's new!?
-### Release 1.3.3!
+### Release 1.3.4!
 
-Really, not much.
+Faster! A LOOOOOT MORE FASTER! VROOOOM! 
 
-#### Features kept from previous version (1.3.2)
+#### Features kept from previous version (1.3.3)
 
 - Ability to add edit, or delete an anime to your MAL account
 - Login to your MAL account in the options, and verify if the credentials are real or not
-- Choose CSS Theme from Options
+- Choose what to open when icon clicked (popup, panel, website, etc)
 - Awesome icon.
 - In-Page QMAL for gogoanime.io, crunchyroll.com and kissanime.to
 
-#### New features of Version 1.3.3
+#### New features of Version 1.3.4
 
-- A link to open QMAL from a MAL anime page! (Even though it probably won't be useful)
-- Import tags from anime genre (uses FoxInFlame's MAL scraper)
-- Update Interval in Minutes (in the options).
-- Update in-page QMAL later option.
-- Fixed 12 reported bugs.
+- Waaaaay quicker loading time in the popup (remember how you had to wait a while before pressing add/edit?)
+- Smoother animation when clicking on the add/edit button in the popup
+- Now uses chrome.alerts instead of window.setTimeout in the background to reduce CPU usage
+- Post to Twitter on update! (beta)
+- Fixed 6 reported bugs and tons of other unreported ones.
 - Probably more.
 
-#### Removed features from previous version (1.3.2)
+#### Removed features from previous version (1.3.3)
 
-- Update Interval in Seconds (in the options).
+- None.
 
 #### Next up for 1.X, 2.0, and later on.
 

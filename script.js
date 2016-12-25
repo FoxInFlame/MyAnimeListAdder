@@ -3,12 +3,17 @@ var loginUsername;
 var loginPassword;
 
 var popup_action_open,
-    popup_input_rating,
+    popup_theme;
+
+var popup_mcss_show = [];
+
+var popup_input_rating,
     popup_input_rewatching,
     popup_input_tags,
     popup_input_storageType,
-    popup_action_confirm,
-    popup_theme;
+    popup_action_confirm;
+    
+
 
 function insertJS(rootjsLink) {
   $.getScript(rootjsLink).fail(function( jqxhr, settings, exception ) {
@@ -79,7 +84,6 @@ $(document).ready(function() {
         //QuickMAL Popup
         disableCSS("libraries/Bootstrap/bootstrap.min.css");
         disableCSS("styles.css");
-        enableCSS("https://f3a7a1b1655de4833e3bed3b1779c5a9d85839f8.googledrive.com/host/0BxjwQr0BBXs-aDYxM2JlaFM2bnM");
         enableCSS("popups/qmal_popup_MaterializeCSS.css");
         enableCSS("libraries/Google/MaterialIcons.css");
         enableCSS("libraries/MaterializeCSS/materialize.min.css");
