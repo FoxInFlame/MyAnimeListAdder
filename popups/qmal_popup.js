@@ -1,10 +1,4 @@
 var currentStatus = "none";
-console.log(popup_mcss_show);
-console.log(popup_mcss_show.length);
-console.log(popup_mcss_show.length);
-for(var i = 1; popup_mcss_show.length > i; i++) {
-  console.log(popup_mcss_show[i]);
-}
 // [+] =================DOCUMENT READY=================== [+]
 $(document).ready(function() {
   $("#animeNameSearch").focus();
@@ -363,13 +357,11 @@ String.prototype.changeDatetoMALFormat = function() {
   if(parseInt(dateString_array[1]) > 12) {
     dateString_array[1] = parseInt(dateString_array[1]) % 12;
   }
-  console.log(dateString_array);
   var date = new Date(dateString_array[0], (dateString_array[1] - 1), dateString_array[2]);
   if(date.isDateValid === false) {
     console.error("Date is not valid @ String.prototype.changeDatetoMALFormat");
     return;
   } else {
-    console.log(date);
     return ("0" + date.getMonth().toString()).slice(-2) + ("0" + date.getDate()).slice(-2) + date.getFullYear();
   }
 }
@@ -726,7 +718,6 @@ $("#animeEditForm-status").on("change", function() {
 
 // [+] Next Button
 $("#animeEditForm #animeEditForm-next").on("click", function() {
-  console.log($(this).data("action"));
   // [+] Stage 1 -> Stage 2
   if($(this).data("action") == "page2") {
     if((parseInt($("#animeEditForm-episodes").val()) > parseInt($("#animeEditForm-episodes").attr("max")) || parseInt($("#animeEditForm-episodes").val()) < 0) && parseInt($("#animeEditForm-episodes").attr("max")) !== 0) {
@@ -788,7 +779,7 @@ $("#animeEditForm #animeEditForm-back").on("click", function() {
 $("#animeEditForm-fieldset2-tags-autoFill").click(function() {
   var toastID = Materialize.toast("Please wait....");
   $.ajax({
-    url: "http://www.foxinflame.tk/dev/matomari/api/anime/info/" + $(".animeInformation .animeInformation_id").text() + ".json",
+    url: "http://www.matomari.tk/api/0.3/anime/info/" + $(".animeInformation .animeInformation_id").text() + ".json",
     method: "GET",
     success: function(data) {
       function containsObject(obj, list) {

@@ -16,7 +16,6 @@ $(document).ready(function() {
   chrome.runtime.sendMessage({
     subject: "panelInitialized",
   }, function(response) {
-    console.log(response);
     if(response.id) {
       // ID is set! Show only this anime.
       showOneOnly = true;
@@ -48,7 +47,7 @@ function renderShowOneOnly(id, title) {
   $(".animeInformation > nav").hide();
   
   $.ajax({
-    url: "http://www.foxinflame.tk/dev/matomari/api/anime/info/" + id + ".json?timestamp=" + new Date(),
+    url: "http://www.matomari.tk/api/0.3/anime/info/" + id + ".json?timestamp=" + new Date(),
     dataType: "json",
     type: "GET",
     username: loginUsername,
@@ -662,7 +661,6 @@ $("#animeNameSearch").donetyping(function() {
 // [+] Done Typing -> Render Results
 function animeSearch_formatResults(dataJSON) {
   dataAnimes = dataJSON.anime.entry;
-  console.log(dataAnimes);
   var rowcount = 0;
   var html;
   // Make the results empty because we are appending on.
@@ -798,7 +796,6 @@ $("#animeEditForm-status").on("change", function() {
 
 // [+] Next Button
 $("#animeEditForm #animeEditForm-next").on("click", function() {
-  console.log($(this).data("action"));
   // [+] Stage 1 -> Stage 2
   if($(this).data("action") == "page2") {
     if((parseInt($("#animeEditForm-episodes").val()) > parseInt($("#animeEditForm-episodes").attr("max")) || parseInt($("#animeEditForm-episodes").val()) < 0) && parseInt($("#animeEditForm-episodes").attr("max")) !== 0) {
@@ -860,7 +857,7 @@ $("#animeEditForm #animeEditForm-back").on("click", function() {
 $("#animeEditForm-fieldset2-tags-autoFill").click(function() {
   var toastID = Materialize.toast("Please wait....");
   $.ajax({
-    url: "http://www.foxinflame.tk/dev/matomari/api/anime/info/" + $(".animeInformation .animeInformation_id").text() + ".json",
+    url: "http://www.matomari.tk/api/0.3/anime/info/" + $(".animeInformation .animeInformation_id").text() + ".json",
     method: "GET",
     success: function(data) {
       function containsObject(obj, list) {
