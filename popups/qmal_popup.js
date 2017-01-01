@@ -1,10 +1,4 @@
 var currentStatus = "none";
-console.log(popup_mcss_show);
-console.log(popup_mcss_show.length);
-console.log(popup_mcss_show.length);
-for(var i = 1; popup_mcss_show.length > i; i++) {
-  console.log(popup_mcss_show[i]);
-}
 // [+] =================DOCUMENT READY=================== [+]
 $(document).ready(function() {
   $("#animeNameSearch").focus();
@@ -104,40 +98,40 @@ function grid_list_init() {
 
 // [+] ==================DONE TYPING===================== [+]
 ;(function($){
-    $.fn.extend({
-        donetyping: function(callback,timeout){
-            timeout = timeout || 1e3; // 1 second default timeout
-            var timeoutReference,
-                doneTyping = function(el){
-                    if (!timeoutReference) return;
-                    timeoutReference = null;
-                    callback.call(el);
-                };
+  $.fn.extend({
+    donetyping: function(callback,timeout){
+      timeout = timeout || 1e3; // 1 second default timeout
+      var timeoutReference,
+          doneTyping = function(el){
+            if (!timeoutReference) return;
+              timeoutReference = null;
+              callback.call(el);
+            };
             return this.each(function(i,el){
-                var $el = $(el);
-                // Chrome Fix (Use keyup over keypress to detect backspace)
-                // thank you @palerdot
-                $el.is(':input') && $el.on('keyup keypress paste',function(e){
-                    // This catches the backspace button in chrome, but also prevents
-                    // the event from triggering too preemptively. Without this line,
-                    // using tab/shift+tab will make the focused element fire the callback.
-                    if (e.type=='keyup' && e.keyCode!=8) return;
-                    
-                    // Check if timeout has been set. If it has, "reset" the clock and
-                    // start over again.
-                    if (timeoutReference) clearTimeout(timeoutReference);
-                    timeoutReference = setTimeout(function(){
-                        // if we made it here, our timeout has elapsed. Fire the
-                        // callback
-                        doneTyping(el);
-                    }, timeout);
-                }).on('blur',function(){
-                    // If we can, fire the event since we're leaving the field
-                    doneTyping(el);
-                });
-            });
-        }
-    });
+              var $el = $(el);
+              // Chrome Fix (Use keyup over keypress to detect backspace)
+              // thank you @palerdot
+              $el.is(':input') && $el.on('keyup keypress paste',function(e){
+                // This catches the backspace button in chrome, but also prevents
+                // the event from triggering too preemptively. Without this line,
+                // using tab/shift+tab will make the focused element fire the callback.
+                if (e.type=='keyup' && e.keyCode!=8) return;
+                
+                // Check if timeout has been set. If it has, "reset" the clock and
+                // start over again.
+                if (timeoutReference) clearTimeout(timeoutReference);
+                timeoutReference = setTimeout(function(){
+                  // if we made it here, our timeout has elapsed. Fire the
+                  // callback
+                  doneTyping(el);
+                }, timeout);
+              }).on('blur',function(){
+            // If we can, fire the event since we're leaving the field
+          doneTyping(el);
+        });
+      });
+    }
+  });
 })(jQuery);
 
 // left: 37, up: 38, right: 39, down: 40,
@@ -363,13 +357,11 @@ String.prototype.changeDatetoMALFormat = function() {
   if(parseInt(dateString_array[1]) > 12) {
     dateString_array[1] = parseInt(dateString_array[1]) % 12;
   }
-  console.log(dateString_array);
   var date = new Date(dateString_array[0], (dateString_array[1] - 1), dateString_array[2]);
   if(date.isDateValid === false) {
     console.error("Date is not valid @ String.prototype.changeDatetoMALFormat");
     return;
   } else {
-    console.log(date);
     return ("0" + date.getMonth().toString()).slice(-2) + ("0" + date.getDate()).slice(-2) + date.getFullYear();
   }
 }
@@ -726,7 +718,6 @@ $("#animeEditForm-status").on("change", function() {
 
 // [+] Next Button
 $("#animeEditForm #animeEditForm-next").on("click", function() {
-  console.log($(this).data("action"));
   // [+] Stage 1 -> Stage 2
   if($(this).data("action") == "page2") {
     if((parseInt($("#animeEditForm-episodes").val()) > parseInt($("#animeEditForm-episodes").attr("max")) || parseInt($("#animeEditForm-episodes").val()) < 0) && parseInt($("#animeEditForm-episodes").attr("max")) !== 0) {
@@ -754,6 +745,7 @@ $("#animeEditForm #animeEditForm-next").on("click", function() {
 
 // [+] Back BUtton
 $("#animeEditForm #animeEditForm-back").on("click", function() {
+  console.log(formAnimeStatus);
   // [+] Stage 1 -> Close
   if($(this).data("action") == "close") {
     $("#animeEditForm-fieldset1").animate({
@@ -767,9 +759,30 @@ $("#animeEditForm #animeEditForm-back").on("click", function() {
     $(".animeInformation #animeInformation_image-wrapper").animate({
       height: "120px"
     }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
-    return;
     $(this).data("action", "close");
     $("#animeEditForm-next").data("action", "page1");
+    if(formAnimeStatus == "Update") {
+      $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link, .animeInformation>nav").fadeIn(100);
+      switch($("#animeEditForm-status").val()) {
+        case "1":
+          //Watching
+          $("#animeInformation_addToList").attr("data-tooltip", "Watching: Ep " + $("#animeEditForm-episodes").val());
+          break;
+        case "2":
+          $("#animeInformation_addToList").attr("data-tooltip", "Completed");
+          break;
+        case "3":
+          $("#animeInformation_addToList").attr("data-tooltip", "On Hold");
+          break;
+        case "4":
+          $("#animeInformation_addToList").attr("data-tooltip", "Dropped");
+          break;
+        case "6":
+          $("#animeInformation_addToList").attr("data-tooltip", "Planned to Watch");
+          break;
+      }
+      $("#animeInformation_addToList").tooltip({delay: 50});
+    }
     return;
   }
   // [+] Stage 2 -> Stage 1
@@ -788,7 +801,7 @@ $("#animeEditForm #animeEditForm-back").on("click", function() {
 $("#animeEditForm-fieldset2-tags-autoFill").click(function() {
   var toastID = Materialize.toast("Please wait....");
   $.ajax({
-    url: "http://www.foxinflame.tk/dev/matomari/api/anime/info/" + $(".animeInformation .animeInformation_id").text() + ".json",
+    url: "http://www.matomari.tk/api/0.3/anime/info/" + $(".animeInformation .animeInformation_id").text() + ".json",
     method: "GET",
     success: function(data) {
       function containsObject(obj, list) {
