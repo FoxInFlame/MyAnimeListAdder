@@ -41,28 +41,25 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 
 
 ## What's new!?
-### Release 1.3.4!
+### Release 1.3.5!
 
-Faster! A LOOOOOT MORE FASTER! VROOOOM! 
+Essential Bug Fix Update.
 
-#### Features kept from previous version (1.3.3)
+#### Features kept from previous version (1.3.4)
 
 - Ability to add edit, or delete an anime to your MAL account
 - Login to your MAL account in the options, and verify if the credentials are real or not
 - Choose what to open when icon clicked (popup, panel, website, etc)
 - Awesome icon.
 - In-Page QMAL for gogoanime.io, crunchyroll.com and kissanime.to
+- Smooth and quick animations everywhere in the popup.
 
 #### New features of Version 1.3.4
 
-- Waaaaay quicker loading time in the popup (remember how you had to wait a while before pressing add/edit?)
-- Smoother animation when clicking on the add/edit button in the popup
-- Now uses chrome.alerts instead of window.setTimeout in the background to reduce CPU usage
-- Post to Twitter on update! (beta)
-- Fixed 6 reported bugs and tons of other unreported ones.
+- Fixed to use proper www URLs when sending requests
 - Probably more.
 
-#### Removed features from previous version (1.3.3)
+#### Removed features from previous version (1.3.4)
 
 - None.
 
