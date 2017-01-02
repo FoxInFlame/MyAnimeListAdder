@@ -317,7 +317,7 @@ fieldset {
 
 .grid-list-row .col div.grid-list-text-footer {
   height: 48px;
-  background: #2E51A2;
+  background: #2e51a2;
   opacity: 0.8;
   color: #ffffff;
   position: absolute;
@@ -408,7 +408,7 @@ fieldset {
   margin-bottom: 4px;
 }
 .animeInformation #animeInformation_synopsis {
-  font-size: 11px;
+  font-size: 14px;
 }
 .animeInformation #animeInformation_deleteFromList {
   position: absolute;
