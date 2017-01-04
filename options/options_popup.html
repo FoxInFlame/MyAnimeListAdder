@@ -7,31 +7,36 @@
     <link rel="stylesheet" href="../libraries/ColorPicker/css/colorpicker.css" type="text/css">
     <script src="../libraries/jQuery/jquery-3.1.0.min.js"></script>
     <script src="../libraries/MaterializeCSS/materialize.min.js"></script>
-    <style>
-      body {
-        font-size: 15px;
-      }
-    </style>
+    <link href="options.css" rel="stylesheet">
   </head>
   <body>
+    <ul id="slide-out" class="side-nav">
+      <li><div class="userView">
+        <div class="background" style="background-image:url(http://i.imgur.com/UVsUvxa.png);"></div>
+        <a href="options_credentials.html" class="waves-effect"><img class="circle" src="https://myanimelist.cdn-dena.com/images/userimages/5280115.jpg"></a>
+        <a href="options_credentials.html"><span class="white-text name">FoxInFlame</span></a>
+        <span class="white-text status"><span class="watching">36</span> watching &bull; <span class="average_score">7.96</span> average score</span>
+      </div></li>
+      <li><a href="options.html" class="waves-effect"><i class="material-icons">home</i>Home</a></li>
+      <li><a href="options_credentials.html" class="waves-effect"><i class="material-icons">lock</i>MAL Credentials</a></li>
+      <li><a href="options_badge.html" class="waves-effect"><i class="material-icons">fiber_manual_record</i>Icon Badge</a></li>
+      <li class="active"><a href="#!" class="waves-effect"><i class="material-icons">view_list</i>Popup</a></li>
+      <li><a href="options_inpage.html" class="waves-effect"><i class="material-icons">tab</i>In-Page QMAL</a></li>
+      <li><a href="options_twitter.html" class="waves-effect"><i class="material-icons">call_made</i>Twitter Sync</a></li>
+    </ul>
     <div class="navbar-fixed">
       <nav class="indigo darken-1">
         <div class="nav-wrapper">
           <a href="http://www.foxinflame.tk/QuickMyAnimeList" class="brand-logo center"><span class="hide-on-med-and-down">QuickMyAnimeList</span><span class="hide-on-large-only">QMAL</span></a>
           <ul class="left">
-            <li><a href="options.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Home</span><span class="hide-on-large-only"><i class="material-icons">home</i></span></a></li>
-            <li><a href="options_credentials.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Credentials</span><span class="hide-on-large-only"><i class="material-icons">lock</i></span></a></li>
-            <li><a href="options_badge.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Badge</span><span class="hide-on-large-only"><i class="material-icons">fiber_manual_record</i></span></a></li>
-            <li class="active"><a href="#" class="waves-effect waves-light"><span class="hide-on-med-and-down">Popup</span><span class="hide-on-large-only"><i class="material-icons">view_list</i></span></a></li>
-            <li><a href="options_inpage.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">In-page</span><span class="hide-on-large-only"><i class="material-icons">tab</i></span></a></li>
-            <li><a href="options_twitter.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Twitter</span><span class="hide-on-large-only"><i class="material-icons">call_made</i></span></a></li>
+            <li><a href="#" data-activates="slide-out" class="sidenav-toggle show-on-large waves-effect waves-light"><i class="material-icons">menu</i></a></li>
           </ul>
         </div>
       </nav>
     </div>
-    <div class="container">
-      <h4>Popup Window Options</h4>
-      <span>Changes will take place immediately.</span>
+    <div class="container" style="margin-top:32px">
+      <h1>Popup Window</h1>
+      <span>Change what you see when you click on the extension icon.</span>
       <hr><br>
       <span>When icon clicked:</span>
       <div class="input-field" style="width:500px;display:inline-block">
@@ -56,98 +61,28 @@
           </select>
         </div>
       </div>
-      <!--<div id="popup_qmalpopup_mcss_options">
-        <span>Show these in popup / panel: </span>
+      <div id="popup_qmalpopup_mcss_options" style="display:none;margin-top:1rem">
+        <span>Enable / Disable aesthetical features : </span>
         <ul class="collection" style="width: 600px">
-          <li class="collection-item">Anime Title<span class="badge">REQUIRED</span></li>
-          <li class="collection-item">ID on MAL<span class="badge">REQUIRED</span></li>
-          <li class="collection-item">Score on MAL
+          <li class="collection-item">Synopsis Font Size<span class="badge">14px</span></li>
+          <li class="collection-item">Dynamic Coloring in Search (search takes a few seconds longer)
             <div class="switch right" style="display:inline">
               <label>
-                <input id="popup_mcss_show_score" type="checkbox">
+                <input id="popup_mcss_options_dynamic_colors" type="checkbox">
                 <span class="lever"></span>
               </label>
             </div>
           </li>
-          <li class="collection-item">Anime Type
+          <li class="collection-item">Show more details (Genres, ranks, member count, etc)
             <div class="switch right" style="display:inline">
               <label>
-                <input id="popup_mcss_show_type" type="checkbox">
+                <input id="popup_mcss_options_show_details" type="checkbox">
                 <span class="lever"></span>
               </label>
             </div>
-          </li>
-          <li class="collection-item">Total Episodes
-            <div class="switch right" style="display:inline">
-              <label>
-                <input id="popup_mcss_show_episodes" type="checkbox">
-                <span class="lever"></span>
-              </label>
-            </div>
-          </li>
-          <li class="collection-item">Anime Synopsis<span class="badge">REQUIRED</span></li>
-          <li class="collection-item">Use External API
-            <div class="switch right" style="display:inline">
-              <label>
-                <input id="popup_mcss_externalAPI" type="checkbox">
-                <span class="lever"></span>
-              </label>
-            </div>
-          </li>
-          <li id="externalAPI_options" style="display: none">
-            <ul class="collection" style="margin-left:8px;">
-              <li class="collection-item" style="background:#f3f3f3">Rank on MAL
-                <div class="switch right" style="display:inline">
-                  <label>
-                    <input id="popup_mcss_show_rank" type="checkbox">
-                    <span class="lever"></span>
-                  </label>
-                </div>
-              </li>
-              <li class="collection-item" style="background:#f3f3f3">Popularity on MAL
-                <div class="switch right" style="display:inline">
-                  <label>
-                    <input id="popup_mcss_show_popularity" type="checkbox">
-                    <span class="lever"></span>
-                  </label>
-                </div>
-              </li>
-              <li class="collection-item" style="background:#f3f3f3">Anime Source
-                <div class="switch right" style="display:inline">
-                  <label>
-                    <input id="popup_mcss_show_source" type="checkbox">
-                    <span class="lever"></span>
-                  </label>
-                </div>
-              </li>
-              <li class="collection-item" style="background:#f3f3f3">Episode Duration
-                <div class="switch right" style="display:inline">
-                  <label>
-                    <input id="popup_mcss_show_duration" type="checkbox">
-                    <span class="lever"></span>
-                  </label>
-                </div>
-              </li>
-              <li class="collection-item" style="background:#f3f3f3">Total Duration
-                <div class="switch right" style="display:inline">
-                  <label>
-                    <input id="popup_mcss_show_totalduration" type="checkbox">
-                    <span class="lever"></span>
-                  </label>
-                </div>
-              </li>
-              <li class="collection-item" style="background:#f3f3f3">Members on MAL
-                <div class="switch right" style="display:inline">
-                  <label>
-                    <input id="popup_mcss_show_members" type="checkbox">
-                    <span class="lever"></span>
-                  </label>
-                </div>
-              </li>
-            </ul>
           </li>
         </ul>
-      </div>-->
+      </div>
       <div id="popup_qmalpopup_mdb_options" style="display:none">
         <span>Input Fields to display: </span>
         <ul class="collection" style="width:600px">

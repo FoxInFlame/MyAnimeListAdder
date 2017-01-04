@@ -6,34 +6,41 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../libraries/ColorPicker/css/colorpicker.css" type="text/css">
     <script src="../libraries/jQuery/jquery-2.2.3.min.js"></script>
+    <link href="options.css" rel="stylesheet">
     <style>
-      body {
-        font-size: 15px;
-      }
       .colorpicker {
         z-index: 5;
       }
     </style>
   </head>
   <body>
+    <ul id="slide-out" class="side-nav">
+      <li><div class="userView">
+        <div class="background" style="background-image:url(http://i.imgur.com/UVsUvxa.png);"></div>
+        <a href="options_credentials.html" class="waves-effect"><img class="circle" src="https://myanimelist.cdn-dena.com/images/userimages/5280115.jpg"></a>
+        <a href="options_credentials.html"><span class="white-text name">FoxInFlame</span></a>
+        <span class="white-text status"><span class="watching">36</span> watching &bull; <span class="average_score">7.96</span> average score</span>
+      </div></li>
+      <li><a href="options.html" class="waves-effect"><i class="material-icons">home</i>Home</a></li>
+      <li><a href="options_credentials.html" class="waves-effect"><i class="material-icons">lock</i>MAL Credentials</a></li>
+      <li class="active"><a href="#!" class="waves-effect"><i class="material-icons">fiber_manual_record</i>Icon Badge</a></li>
+      <li><a href="options_popup.html" class="waves-effect"><i class="material-icons">view_list</i>Popup</a></li>
+      <li><a href="options_inpage.html" class="waves-effect"><i class="material-icons">tab</i>In-Page QMAL</a></li>
+      <li><a href="options_twitter.html" class="waves-effect"><i class="material-icons">call_made</i>Twitter Sync</a></li>
+    </ul>
     <div class="navbar-fixed">
       <nav class="indigo darken-1">
         <div class="nav-wrapper">
           <a href="http://www.foxinflame.tk/QuickMyAnimeList" class="brand-logo center"><span class="hide-on-med-and-down">QuickMyAnimeList</span><span class="hide-on-large-only">QMAL</span></a>
           <ul class="left">
-            <li><a href="options.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Home</span><span class="hide-on-large-only"><i class="material-icons">home</i></span></a></li>
-            <li><a href="options_credentials.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Credentials</span><span class="hide-on-large-only"><i class="material-icons">lock</i></span></a></li>
-            <li class="active"><a href="#" class="waves-effect waves-light"><span class="hide-on-med-and-down">Badge</span><span class="hide-on-large-only"><i class="material-icons">fiber_manual_record</i></span></a></li>
-            <li><a href="options_popup.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Popup</span><span class="hide-on-large-only"><i class="material-icons">view_list</i></span></a></li>
-            <li><a href="options_inpage.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">In-page</span><span class="hide-on-large-only"><i class="material-icons">tab</i></span></a></li>
-            <li><a href="options_twitter.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Twitter</span><span class="hide-on-large-only"><i class="material-icons">call_made</i></span></a></li>
+            <li><a href="#" data-activates="slide-out" class="sidenav-toggle show-on-large waves-effect waves-light"><i class="material-icons">menu</i></a></li>
           </ul>
         </div>
       </nav>
     </div>
-    <div class="container">
-      <h4>Badge Options</h4>
-      <span>Badges can take up to 30 seconds to update.</span>
+    <div class="container" style="margin-top:32px">
+      <h1>Icon Badge</h1>
+      <span>Set colorful badges for the extension icon. <br>Badges can take up to 30 seconds to update.</span>
       <hr><br>
       <span>Enable Badge:</span>
       <div class="switch" style="display:inline">

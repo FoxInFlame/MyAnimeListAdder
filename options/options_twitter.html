@@ -7,10 +7,8 @@
     <script src="../libraries/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../libraries/MaterializeCSS/materialize.min.js"></script>
     <script src="../libraries/codebird/codebird.js"></script>
+    <link href="options.css" rel="stylesheet">
     <style>
-      body {
-        font-size: 15px;
-      }
       .hidden {
         display: none;
       }
@@ -20,52 +18,61 @@
     </style>
   </head>
   <body>
+    <ul id="slide-out" class="side-nav">
+      <li><div class="userView">
+        <div class="background" style="background-image:url(http://i.imgur.com/UVsUvxa.png);"></div>
+        <a href="options_credentials.html" class="waves-effect"><img class="circle" src="https://myanimelist.cdn-dena.com/images/userimages/5280115.jpg"></a>
+        <a href="options_credentials.html"><span class="white-text name">FoxInFlame</span></a>
+        <span class="white-text status"><span class="watching">36</span> watching &bull; <span class="average_score">7.96</span> average score</span>
+      </div></li>
+      <li><a href="options.html" class="waves-effect"><i class="material-icons">home</i>Home</a></li>
+      <li><a href="options_credentials.html" class="waves-effect"><i class="material-icons">lock</i>MAL Credentials</a></li>
+      <li><a href="options_badge.html" class="waves-effect"><i class="material-icons">fiber_manual_record</i>Icon Badge</a></li>
+      <li><a href="options_popup.html" class="waves-effect"><i class="material-icons">view_list</i>Popup</a></li>
+      <li><a href="options_inpage.html" class="waves-effect"><i class="material-icons">tab</i>In-Page QMAL</a></li>
+      <li class="active"><a href="#!" class="waves-effect"><i class="material-icons">call_made</i>Twitter Sync</a></li>
+    </ul>
     <div class="navbar-fixed">
       <nav class="indigo darken-1">
         <div class="nav-wrapper">
           <a href="http://www.foxinflame.tk/QuickMyAnimeList" class="brand-logo center"><span class="hide-on-med-and-down">QuickMyAnimeList</span><span class="hide-on-large-only">QMAL</span></a>
           <ul class="left">
-            <li><a href="options.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Home</span><span class="hide-on-large-only"><i class="material-icons">home</i></span></a></li>
-            <li><a href="options_credentials.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Credentials</span><span class="hide-on-large-only"><i class="material-icons">lock</i></span></a></li>
-            <li><a href="options_badge.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Badge</span><span class="hide-on-large-only"><i class="material-icons">fiber_manual_record</i></span></a></li>
-            <li><a href="options_popup.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Popup</span><span class="hide-on-large-only"><i class="material-icons">view_list</i></span></a></li>
-            <li><a href="options_inpage.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">In-page</span><span class="hide-on-large-only"><i class="material-icons">tab</i></span></a></li>
-            <li class="active"><a href="#" class="waves-effect waves-light"><span class="hide-on-med-and-down">Twitter</span><span class="hide-on-large-only"><i class="material-icons">call_made</i></span></a></li>
+            <li><a href="#" data-activates="slide-out" class="sidenav-toggle show-on-large waves-effect waves-light"><i class="material-icons">menu</i></a></li>
           </ul>
         </div>
       </nav>
     </div>
-    <div class="container">
-      <h4>Twitter</h4>
-      <span>Link to Twitter to post updates. <br><b>Beta: Not recommended yet if you don't want your account to be considered spam.</b></span>
+    <div class="container" style="margin-top:32px">
+      <h1>Twitter</h1>
+      <span>Link to Twitter to post updates. <br><b>Beta: Not recommended yet if you don't want your Twitter account to be considered a bit of a *ehm* spam.</b></span>
       <hr><br>
-        <div id="authenticated" class="col s6" style="display:none">
-          Logged in as: <span style="font-weight:bold" id="twitter_displayname"></span>
-          <br>
-          QuickMyAnimeList is able to:
-          <ul>
-            <li style="margin-left:2em;list-style-type:disc">Post Twitter Updates when you update your list from the popup</li>
-            <li style="margin-left:2em;list-style-type:disc">Post Twitter Updates when you update your list from In-Page</li>
-          </ul>
-          QuickMyAnimeList is <b>not</b> able to:
-          <ul>
-            <li style="margin-left:2em;list-style-type:disc">View your personal profile and data except your display name</li>
-            <li style="margin-left:2em;list-style-type:disc">View your password</li>
-          </ul>
-          <button style="background: #ed4100" class="btn waves-effect" id="twitter-logout">Log Out</button>
-        </div>
-        <div id="not-authenticated" style="display: none">
-          <button style="background: #00aced" class="btn waves-effect" id="twitter-auth">Authorize</button>
-          <br>
-          <br>
-          <span>After Authorization, paste the Authorization code in the box below:</span><br>
-          <br>
-          <div class="input-field">
-            <input type="text" id="twitter-auth-code" class="validate" placeholder="XXXXXXX" name="twitter-auth-code" style="width:250px">
-            <label for="twitter-auth-code">Twitter Authorization Code</label>
-            <button style="background-color: #00aced" class="disabled btn waves-effect" id="twitter-auth-code-verify">Verify</button>
+          <div id="authenticated" class="col s6" style="display:none">
+            Logged in as: <span style="font-weight:bold" id="twitter_displayname"></span>
+            <br>
+            QuickMyAnimeList is able to:
+            <ul>
+              <li style="margin-left:2em;list-style-type:disc">Post Twitter Updates when you update your list from the popup</li>
+              <li style="margin-left:2em;list-style-type:disc">Post Twitter Updates when you update your list from In-Page</li>
+            </ul>
+            QuickMyAnimeList is <b>not</b> able to:
+            <ul>
+              <li style="margin-left:2em;list-style-type:disc">View your personal profile and data except your display name</li>
+              <li style="margin-left:2em;list-style-type:disc">View your password</li>
+            </ul>
+            <button style="background: #ed4100" class="btn waves-effect" id="twitter-logout">Log Out</button>
           </div>
-        </div>
+          <div id="not-authenticated" style="display: none">
+            <button style="background: #00aced" class="btn waves-effect" id="twitter-auth">Authorize</button>
+            <br>
+            <br>
+            <span>After Authorization, paste the Authorization code in the box below:</span><br>
+            <br>
+            <div class="input-field">
+              <input type="text" id="twitter-auth-code" class="validate" placeholder="XXXXXXX" name="twitter-auth-code" style="width:250px">
+              <label for="twitter-auth-code">Twitter Authorization Code</label>
+              <button style="background-color: #00aced" class="disabled btn waves-effect" id="twitter-auth-code-verify">Verify</button>
+            </div>
+          </div>
       </div>
       <script src="options.js"></script>
     </body>
