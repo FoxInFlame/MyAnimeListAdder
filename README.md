@@ -56,7 +56,11 @@ Essential Bug Fix Update.
 
 #### New features of Version 1.3.4
 
-- Fixed to use proper www URLs when sending requests
+- Now uploaded all news on GitHub so it can use HTTPS
+- Brand new sidebar in Options
+- Configurable aesthetical features in popup
+  - Dynamic coloring
+  - More information about anime
 - Probably more.
 
 #### Removed features from previous version (1.3.4)
