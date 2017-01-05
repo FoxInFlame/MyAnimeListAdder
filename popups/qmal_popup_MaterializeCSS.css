@@ -317,7 +317,7 @@ fieldset {
 
 .grid-list-row .col div.grid-list-text-footer {
   height: 48px;
-  background: #2E51A2;
+  background: #2e51a2;
   opacity: 0.8;
   color: #ffffff;
   position: absolute;
@@ -344,8 +344,7 @@ fieldset {
   display:none;
   opacity: 0;
   width: 100%;
-  height: 100%;
-  background: #eaedf5;
+  min-height: calc(100% - 50px);
   position: fixed;
   z-index: 50;
   top: 50px;
@@ -399,6 +398,8 @@ fieldset {
 .animeInformation #generalInfo .col .card .card-content .card-title {
   font-size: 24px;
   line-height: 24px;
+  padding-bottom: 12px;
+  display: block;
 }
 .animeInformation #generalInfo .col .card .card-content .card-title .animeInformation_title {
   vertical-align: middle;
@@ -408,7 +409,19 @@ fieldset {
   margin-bottom: 4px;
 }
 .animeInformation #animeInformation_synopsis {
-  font-size: 11px;
+  font-size: 14px;
+}
+.animeInformation .moreinfo .moreinfo_label_title {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+.animeInformation .moreinfo .moreinfo_label_content {
+  display: block;
+  font-size: 1.3rem;
+}
+.animeInformation .moreinfo .col {
+  padding-top: 16px;
 }
 .animeInformation #animeInformation_deleteFromList {
   position: absolute;

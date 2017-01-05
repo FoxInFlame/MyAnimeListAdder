@@ -31,6 +31,7 @@ Check out the official website for screenshots.
 - Select2 : Used in popup to search and select the anime easily for the MDB theme
 - Codebird : Unofficial Twitter JavaScript library
 - xml2json : Convert XML to JSON easily. Used with like, all of the AJAX requests.
+- CryptoJS : Encrypting and Decrypting QMALSETTING files.
 
 ## Development
 The Chrome Extension uses JavaScript for everything, including the AJAX Requests, the Show/Hide toggles, the Next/Previous buttons, and a lot more. This Chrome Extension would be nothing without JavaScript. 
@@ -41,40 +42,44 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 
 
 ## What's new!?
-### Release 1.3.4!
+### Release 1.3.5!
 
-Faster! A LOOOOOT MORE FASTER! VROOOOM! 
+Small aesthetic changes!
 
-#### Features kept from previous version (1.3.3)
+#### Features kept from previous version (1.3.4)
 
 - Ability to add edit, or delete an anime to your MAL account
 - Login to your MAL account in the options, and verify if the credentials are real or not
 - Choose what to open when icon clicked (popup, panel, website, etc)
 - Awesome icon.
 - In-Page QMAL for gogoanime.io, crunchyroll.com and kissanime.to
+- Smooth and quick animations everywhere in the popup.
+- A lot more.
 
-#### New features of Version 1.3.4
+#### New features of Version 1.3.5
 
-- Waaaaay quicker loading time in the popup (remember how you had to wait a while before pressing add/edit?)
-- Smoother animation when clicking on the add/edit button in the popup
-- Now uses chrome.alerts instead of window.setTimeout in the background to reduce CPU usage
-- Post to Twitter on update! (beta)
-- Fixed 6 reported bugs and tons of other unreported ones.
+- Now uploaded all news on GitHub so it can use HTTPS.
+- Brand new sidebar in Options.
+- Configurable aesthetical features in popup.
+  - Dynamic coloring.
+  - More information about anime.
+- Export / Import settings so you don't lose them every update.
 - Probably more.
 
-#### Removed features from previous version (1.3.3)
+#### Removed features from previous version (1.3.4)
 
 - None.
 
 #### Next up for 1.X, 2.0, and later on.
 
-- Detailed Options for In-Page QMAL
+- Detailed Options for In-Page QMAL.
 - Link to open QMAL on many other anime pages, such as AniDB, AniList, gogoAnime, etc.
-- Use a better MAL API
-- More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X)
-- Add an option to disable CPU-demanding animations and transitions (1.X)
+- Use a better MAL API.
+- More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc. (1.X)
+- Add an option to disable CPU-demanding animations and transitions. (1.X)
 - Login using Google+, Twitter, or third-party auth.
 - Use more of FoxInFlame's MAL scraper.
+- Encrypt username/password inside extension. (1.X)
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0, 3.0)
 
 #### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()

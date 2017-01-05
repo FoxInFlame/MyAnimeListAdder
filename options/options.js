@@ -8,9 +8,31 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+function reloadSidebar() {
+  chrome.storage.sync.get({
+    user_image_64: "/images/default_user.png",
+    user_username: "",
+    user_password: "",
+    user_verified: false,
+    user_stats: {},
+  }, function(items) {
+    if(!items.user_verified || items.user_username === "" || items.user_password === "") {
+      $(".side-nav .userView .image").attr("src", "/images/default_user.png");
+      $(".side-nav .userView .name").html("You are not logged in");
+      $(".side-nav .userView .status").html("N/A");
+      return;
+    }
+    $(".side-nav .userView .image").attr("src", items.user_image_64);
+    $(".side-nav .userView .name").html(items.user_username);
+    $(".side-nav .userView .status").html("<span class=\"stats_watching\">" + items.user_stats.watching + "</span> watching &bull; <span class=\"  stats_average_score\">" + items.user_stats.average_score + "</span> average score");
+  });
+}
+
 $(document).ready(function() {
   $("select").material_select();
+  $(".sidenav-toggle").sideNav();
   $(".helper").helper();
+  reloadSidebar();
   var filename = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
   if(filename == "options_credentials.html") {
     restore_options_credentials();
@@ -21,7 +43,9 @@ $(document).ready(function() {
   } else if(filename == "options_inpage.html") {
     restore_options_inpage();
   } else if(filename == "options_twitter.html") {
-    twitter();
+    options_twitter();
+  } else if(filename == "options_advanced.html") {
+    options_advanced();
   } else {
     options_main();
   }
@@ -56,58 +80,70 @@ $(document).ajaxError(function(event, jqxhr, settings, exception) {
     var filename = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
     if(filename == "options_credentials.html") {
       var status = document.getElementById("save");
-      status.innerHTML = "Inputted credentials are not valid.";
-      status.disabled = true;
-      status.classList.add("red");
-        chrome.storage.sync.set({
-        verified: false
-      });
-      var verifiedBoxes = document.getElementsByClassName("verified");
-      var verifiedBoxesLength = verifiedBoxes.length;
-      for(var i=0; i < verifiedBoxesLength; i++){
-        verifiedBoxes[i].checked = false;
-      }
-      chrome.extension.getBackgroundPage().updateBadge();
-      setTimeout(function() {
-        status.innerHTML = 'Save<i class="material-icons right">send</i>';
-        status.disabled = false;
-        status.classList.remove("red");
+      Materialize.toast("Inputted credentials are not valid.", 4000);
+      document.getElementById("loggedIn").style.display = "none";
+      chrome.storage.sync.set({
+        user_verified: false
+      }, function() {
+        reloadSidebar();
+        var verifiedBoxes = document.getElementsByClassName("verified");
+        var verifiedBoxesLength = verifiedBoxes.length;
+        for(var i=0; i < verifiedBoxesLength; i++){
+          verifiedBoxes[i].checked = false;
+        }
         chrome.extension.getBackgroundPage().updateBadge();
-      }, 3000);
+        setTimeout(function() {
+          status.innerHTML = 'Save<i class="material-icons right">send</i>';
+          status.disabled = false;
+          status.classList.remove("red");
+          chrome.extension.getBackgroundPage().updateBadge();
+        }, 3000);
+      });
     }
   }
 });
 
+// [+] jQuery Helper Function
 (function($) {
   $.fn.helper = function() {
     return this.each(function() {
-    var help_title = $(this).data("help-title");
-    var help_content = $(this).data("help-content");
-    $(this).css("display", "inline");
-    $(this).append("<i class='material-icons helper_toggle' style='color:#2e51a2;cursor:pointer'>help</i>" +
-    "<div class='row helper_help'>" +
-      "<div class='col s6'>" +
-        "<div class='card blue-grey darken-1'>" +
-          "<div class='card-content white-text'>" +
-            "<span class='card-title'>" + help_title + "</span>" +
-            "<p>" + help_content + "</p>" +
+      var help_title = $(this).data("help-title");
+      var help_content = $(this).data("help-content");
+      $(this).css("display", "inline");
+      $(this).append("<i class='material-icons helper_toggle' style='color:#2e51a2;cursor:pointer'>help</i>" +
+      "<div class='row helper_help'>" +
+        "<div class='col s6'>" +
+          "<div class='card blue-grey darken-1'>" +
+            "<div class='card-content white-text'>" +
+              "<span class='card-title'>" + help_title + "</span>" +
+              "<p>" + help_content + "</p>" +
+            "</div>" +
           "</div>" +
         "</div>" +
-      "</div>" +
-    "</div>");
-    $(".helper_help").hide();
+      "</div>");
+      $(".helper_help").hide();
+      $(".helper_toggle").on("click", function() {
+        $(this).next().animate({
+          height: "toggle",
+          opacity: "toggle"
+        });
+      });
     });
   };
 })(jQuery);
 
 
+// [+] --------------------------------------------------
+// [+] Options Page - Home
+// [+] --------------------------------------------------
+
 function options_main() {
   chrome.storage.sync.get({
     first_time_launch: true,
-    verified: false
+    user_verified: false
   }, function(items) {
     first_time_launch = items.first_time_launch;
-    verified = items.verified;
+    verified = items.user_verified;
     console.log("First Time Launch?:" + first_time_launch);
     if(first_time_launch === true) {
       $("body").css("pointer-events", "none");
@@ -142,7 +178,7 @@ function welcome_message_features() {
 }
 function development_github() {
   $.ajax({
-    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3.4",
+    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3.6",
     success: function(data) {
       $("#github_latest_commit_sha").html(data[0]["sha"].substring(0,10));
       $("#github_latest_commit_link").attr("href", data[0]["html_url"]);
@@ -222,18 +258,112 @@ function timeDifferenceString(current, previous) {
   return toSeconds(current) - toSeconds(previous);
 }
 
+// [+] --------------------------------------------------
+// [+] Options Page - Credentials
+// [+] --------------------------------------------------
+
 function restore_options_credentials() {
   chrome.storage.sync.get({
-    username: "Username",
-    password: "password123",
-    verified: false
+    user_username: "ExampleAccount",
+    user_password: "Password123",
+    user_verified: false,
+    user_image_64: "/images/default_user.jpg",
+    user_stats: {},
   }, function(items) {
-    document.getElementById("username").value = items.username;
-    document.getElementById("password").value = items.password;
     var verifiedBoxes = document.getElementsByClassName("verified");
     var verifiedBoxesLength = verifiedBoxes.length;
     for(var i=0; i < verifiedBoxesLength; i++){
-      verifiedBoxes[i].checked = items.verified;
+      verifiedBoxes[i].checked = items.user_verified;
+    }
+    document.getElementById("username").value = items.user_username;
+    document.getElementById("password").value = items.user_password;
+    if(!items.user_verified) {
+      document.getElementById("loggedIn").style.display = "none";
+    } else {
+      $(".stats_watching").html(items.user_stats.watching);
+      $(".stats_completed").html(items.user_stats.completed);
+      $(".stats_average_score").html(items.user_stats.average_score);
+      $(".stats_watched_episodes").html(items.user_stats.watched_episodes);
+      document.getElementById("loggedIn").style.display = "block";
+      $.ajax({
+        url: "http://www.matomari.tk/api/0.3/user/info/" + items.user_username + ".json",
+        method: "GET",
+        dataType: "json",
+        success: function(data) {
+          if(data.error) {
+            console.log("Error querying to matomari for user image : " + data.error);
+            chrome.storage.sync.set({
+              user_image_64: "/images/default_user.png",
+              user_verified: true
+            }, function() {
+              $(".verified").prop("checked", true);
+              $("#loggedIn img").attr("src", "/images/default_user.png");
+            });
+            return;
+          }
+          var xhr = new XMLHttpRequest();
+          xhr.responseType = "blob";
+          xhr.open("GET", "http://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.image.ID.php?id=" + data.id, true);
+          var imageBase64;
+          xhr.onload = function(e) {
+            var reader = new FileReader();
+            reader.onloadend = function() {
+              imageBase64 = reader.result;
+              chrome.storage.sync.set({
+                user_image_64: imageBase64
+              }, function() {
+                Materialize.toast("Updating info...");
+                $(".verified").prop("checked", true);
+                $("#loggedIn img").attr("src", imageBase64);
+                $.ajax({
+                  url: "http://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.stats.USERNAME.php?username=" + items.user_username,
+                  method: "GET",
+                  dataType: "json",
+                  success: function(data) {
+                    Materialize.toastRemove();
+                    if(data.error) {
+                      console.log("Error querying to matomari for user stats : " + data.error);
+                      chrome.storage.sync.set({
+                        user_stats: {
+                          watching: 0,
+                          completed: 0,
+                          onhold: 0,
+                          dropped: 0,
+                          plantowatch: 0,
+                          total: 0,
+                          rewatched: 0,
+                          watched_episodes: 0,
+                          watched_days: 0,
+                          average_score: 0
+                        }
+                      }, function() {
+                        $("#loggedIn h2").html("N/A");
+                        $(".stats_watching").html("0");
+                        $(".stats_completed").html("0");
+                        $(".stats_average_score").html("0");
+                        $(".stats_watched_episodes").html("0");
+                        reloadSidebar();
+                      });
+                    }
+                    chrome.storage.sync.set({
+                      user_stats: data.anime.stats
+                    }, function() {
+                        $("#loggedIn h2").html(items.user_username);
+                      $(".stats_watching").html(data.anime.stats.watching);
+                      $(".stats_completed").html(data.anime.stats.completed);
+                      $(".stats_average_score").html(data.anime.stats.average_score);
+                      $(".stats_watched_episodes").html(data.anime.stats.watched_episodes);
+                      reloadSidebar();
+                    });
+                  }
+                });
+              });
+            };
+            reader.readAsDataURL(xhr.response);
+          }
+          xhr.send();
+        }
+      });
     }
   });
 }
@@ -241,8 +371,8 @@ function save_options_credentials() {
   var username = document.getElementById("username").value;
   var password = document.getElementById("password").value;
   chrome.storage.sync.set({
-    username: username,
-    password: password
+    user_username: username,
+    user_password: password
   }, function() {
     $.ajax({
       url: "https://myanimelist.net/api/account/verify_credentials.xml",
@@ -250,23 +380,104 @@ function save_options_credentials() {
       dataType: "xml",
       username: username,
       password: password,
+      error: function(jqXHR, textStatus, errorThrown) {
+        status.innerHTML = jqXHR.status;
+        status.disabled = true;
+        setTimeout(function() {
+          status.innerHTML = 'Save<i class="material-icons right">send</i>';
+          status.disabled = false;
+        }, 3000);
+      },
       success: function(data) {
         var status = document.getElementById("save");
-        status.innerHTML = 'Credentials Saved!';
+        Materialize.toast("Successfully logged in! Please wait...");
         status.disabled = true;
-        status.classList.add("green");
-        chrome.storage.sync.set({
-          verified: true
-        });
-        var verifiedBoxes = document.getElementsByClassName("verified");
-        var verifiedBoxesLength = verifiedBoxes.length;
-        for(var i=0; i < verifiedBoxesLength; i++){
-          verifiedBoxes[i].checked = true;
-        }
         chrome.extension.getBackgroundPage().updateBadge();
-        setTimeout(function() {
+        window.setTimeout(function() {
           chrome.extension.getBackgroundPage().updateBadge();
         }, 1000);
+        $.ajax({
+          url: "http://www.matomari.tk/api/0.3/user/info/" + username + ".json",
+          method: "GET",
+          dataType: "json",
+          success: function(data) {
+            Materialize.toastRemove();
+            if(data.error) {
+              console.log("Error querying to matomari for user image : " + data.error);
+              chrome.storage.sync.set({
+                user_image_64: "/images/default_user.png",
+                user_verified: true
+              }, function() {
+                $(".verified").prop("checked", true);
+                $("#loggedIn img").attr("src", "/images/default_user.png");
+              });
+              return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.responseType = "blob";
+            xhr.open("GET", "http://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.image.ID.php?id=" + data.id, true);
+            var imageBase64;
+            xhr.onload = function(e) {
+              var reader = new FileReader();
+              reader.onloadend = function() {
+                imageBase64 = reader.result;
+                chrome.storage.sync.set({
+                  user_image_64: imageBase64,
+                  user_verified: true
+                }, function() {
+                  Materialize.toast("Still loading...");
+                  document.getElementById("loggedIn").style.display = "block";
+                  $(".verified").prop("checked", true);
+                  $("#loggedIn img").attr("src", imageBase64);
+                  $.ajax({
+                    url: "http://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.stats.USERNAME.php?username=" + username,
+                    method: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                      Materialize.toastRemove();
+                      if(data.error) {
+                        console.log("Error querying to matomari for user stats : " + data.error);
+                        chrome.storage.sync.set({
+                          user_stats: {
+                            watching: 0,
+                            completed: 0,
+                            onhold: 0,
+                            dropped: 0,
+                            plantowatch: 0,
+                            total: 0,
+                            rewatched: 0,
+                            watched_episodes: 0,
+                            watched_days: 0,
+                            average_score: 0
+                          }
+                        }, function() {
+                          $("#loggedIn h2").html("N/A");
+                          $(".stats_watching").html("0");
+                          $(".stats_completed").html("0");
+                          $(".stats_average_score").html("0");
+                          $(".stats_watched_episodes").html("0");
+                          reloadSidebar();
+                        });
+                      }
+                      chrome.storage.sync.set({
+                        user_stats: data.anime.stats
+                      }, function() {
+                        $("#loggedIn h2").html(username);
+                        $(".stats_watching").html(data.anime.stats.watching);
+                        $(".stats_completed").html(data.anime.stats.completed);
+                        $(".stats_average_score").html(data.anime.stats.average_score);
+                        $(".stats_watched_episodes").html(data.anime.stats.watched_episodes);
+                        reloadSidebar();
+                      });
+                    }
+                  });
+                });
+              };
+              reader.readAsDataURL(xhr.response);
+            };
+            xhr.send();
+          }
+        });
         setTimeout(function() {
           status.innerHTML = 'Save<i class="material-icons right">send</i>';
           status.disabled = false;
@@ -277,6 +488,10 @@ function save_options_credentials() {
     });
   });
 }
+
+// [+] --------------------------------------------------
+// [+] Options Page - Badge
+// [+] --------------------------------------------------
 
 function hexToRGB(hex) {
     // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
@@ -365,6 +580,10 @@ function save_options_badge() {
   });
 }
 
+// [+] --------------------------------------------------
+// [+] Options Page - Popup
+// [+] --------------------------------------------------
+
 function restore_options_popup() {
   chrome.storage.sync.get({
     popup_action_open: 1,
@@ -373,7 +592,11 @@ function restore_options_popup() {
     popup_input_tags: true,
     popup_input_storageType: false,
     popup_action_confirm: true,
-    popup_theme: 2
+    popup_theme: 2,
+    popup_mcss_options: {
+      dynamic_colors: true,
+      show_details: false
+    }
   }, function(items) {
     document.getElementById("popup_action_open").value = items.popup_action_open;
     document.getElementById("popup_input_rating").checked = items.popup_input_rating;
@@ -382,9 +605,11 @@ function restore_options_popup() {
     document.getElementById("popup_input_storageType").checked = items.popup_input_storageType;
     document.getElementById("popup_action_confirm").checked = items.popup_action_confirm;
     document.getElementById("popup_css_theme").value = items.popup_theme;
+    document.getElementById("popup_mcss_options_dynamic_colors").checked = items.popup_mcss_options.dynamic_colors;
+    document.getElementById("popup_mcss_options_show_details").checked = items.popup_mcss_options.show_details;
     $("#popup_action_open").material_select();
     $("#popup_css_theme").material_select();
-    if(parseInt(items.popup_action_open) == 1) {
+    if(parseInt(items.popup_action_open) == 1) { // Open QMAL in popup
       $("#popup_csstheme_wrapper").show();
       $("#popup_qmalpanel_warning").hide();
       if(items.popup_theme == 1) {
@@ -396,7 +621,8 @@ function restore_options_popup() {
       }
       return;
     }
-    if($("#popup_action_open").val() == 6) {
+    if($("#popup_action_open").val() == 6) { // Open QMAL in panel
+      $("#popup_qmalpopup_mcss_options").show();
       $("#popup_qmalpopup_mdb_options").hide();
       $("#popup_csstheme_wrapper").hide();
       $("#popup_qmalpanel_warning").show();
@@ -410,12 +636,12 @@ function restore_options_popup() {
     chrome.tabs.create({url: "chrome://flags/#enable-panels"});
   });
   $("#popup_action_open, #popup_css_theme").on("change", function() {
-    if($("#popup_action_open").val() == 1) {
+    if($("#popup_action_open").val() == 1) { // Open QMAL in popup
       $("#popup_csstheme_wrapper").slideDown(150);
-      if($("#popup_css_theme").val() == 1) {
+      if($("#popup_css_theme").val() == 1) { // Material Design Bootstrap
         $("#popup_qmalpopup_mcss_options").slideUp(150);
         $("#popup_qmalpopup_mdb_options").slideDown(150);
-      } else if($("#popup_css_theme").val() == 2) {
+      } else if($("#popup_css_theme").val() == 2) { // MaterializeCSS
         $("#popup_qmalpopup_mcss_options").slideDown(150);
         $("#popup_qmalpopup_mdb_options").slideUp(150);
       }
@@ -441,6 +667,10 @@ function save_options_popup() {
   var popup_input_storageType = document.getElementById("popup_input_storageType").checked;
   var popup_action_confirm = document.getElementById("popup_action_confirm").checked;
   var popup_css_theme = document.getElementById("popup_css_theme").value;
+  var popup_mcss_options = {
+    dynamic_colors: document.getElementById("popup_mcss_options_dynamic_colors").checked,
+    show_details: document.getElementById("popup_mcss_options_show_details").checked
+  }
   
   chrome.storage.sync.set({
     popup_action_open: popup_action_open,
@@ -449,7 +679,8 @@ function save_options_popup() {
     popup_input_tags: popup_input_tags,
     popup_input_storageType: popup_input_storageType,
     popup_action_confirm: popup_action_confirm,
-    popup_theme: popup_css_theme
+    popup_theme: popup_css_theme,
+    popup_mcss_options: popup_mcss_options
   }, function() {
     var status = document.getElementById("save");
     status.innerHTML = 'Popup Options Saved.';
@@ -463,6 +694,10 @@ function save_options_popup() {
   })
 }
 
+// [+] --------------------------------------------------
+// [+] Options Page - In Page
+// [+] --------------------------------------------------
+
 function restore_options_inpage() {
 
 }
@@ -470,11 +705,11 @@ function save_options_inpage() {
 
 }
 
-$(".helper").on("click", ".helper_toggle", function() {
-  $(this).next().toggle();
-});
+// [+] --------------------------------------------------
+// [+] Options Page - Twitter
+// [+] --------------------------------------------------
 
-function twitter() {
+function options_twitter() {
   chrome.storage.sync.get({
     "twitter_oauth_token": "",
     "twitter_oauth_token_secret": "",
@@ -570,4 +805,99 @@ function twitter() {
       document.getElementById("authenticated").style.display = "none";
     });
   });
+}
+
+function options_advanced() {
+  $("#advanced_export").on("click", function() {
+    chrome.storage.sync.get({
+      first_time_launch: false,
+      user_verified: false,
+      user_username: "ExampleAccount",
+      user_password: "Password123",
+      user_verified: false,
+      user_image_64: "/images/default_user.jpg",
+      user_stats: {},
+      badge_enable: false,
+      badge_color: "#5be825",
+      badge_interval: "3600",
+      badge_count: "1",
+      popup_action_open: 1,
+      popup_input_rating: true,
+      popup_input_rewatching: true,
+      popup_input_tags: true,
+      popup_input_storageType: false,
+      popup_action_confirm: true,
+      popup_theme: 2,
+      popup_mcss_options: {
+        dynamic_colors: true,
+        show_details: false
+      },
+      twitter_oauth_token: "",
+      twitter_oauth_token_secret: "",
+      twitter_screen_name: ""
+    }, function(storage) {
+      var passphrase = "";
+      if($("#advanced_exportimport_passphrase").val()) {
+        passphrase = $("#advanced_exportimport_passphrase").val();
+      }
+      var storage_export_text = JSON.stringify(storage);
+      var storage_export_encrypted = CryptoJS.AES.encrypt(storage_export_text, passphrase).toString();
+      var storage_export_hmac = CryptoJS.HmacSHA256(storage_export_encrypted, CryptoJS.SHA256(passphrase)).toString();
+      var date = new Date();
+      download("QMALSettings-" + date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "-" + ("0" + date.getHours()).slice(-2) + "." + ("0" + date.getMinutes()).slice(-2) + "." + ("0" + date.getSeconds()).slice(-2) + ".qmalsetting", storage_export_hmac + storage_export_encrypted);
+    });
+  });
+  $("#advanced_import_file").on("change", function() {
+    if(!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+      Materialize.toast("FileReader is not supported on this system.", 4000);
+      return false;
+    }
+    if(!document.getElementById("advanced_import_file").files || !document.getElementById("advanced_import_file").files[0]) {
+      Materialize.toast("Please select a file!", 4000);
+      return false;
+    }
+    var fileType = "qmalsetting";
+    var file = document.getElementById("advanced_import_file").files[0];
+    var extension = file.name.split(".").pop().toLowerCase(),
+        isQMALSettingFile = fileType.indexOf(extension) > -1;  // http://stackoverflow.com/questions/25095863/how-to-detect-file-extension-with-javascript-filereader
+    if(isQMALSettingFile) {
+      var reader = new FileReader();
+      reader.onload = function(data) {
+        var contents = data.target.result;
+        var passphrase = "";
+        if($("#advanced_exportimport_passphrase").val()) {
+          passphrase = $("#advanced_exportimport_passphrase").val();
+        }
+        var storage_import_hmac = contents.substring(0, 64);
+        var storage_import_encrypted = contents.substring(64);
+        if(storage_import_hmac != CryptoJS.HmacSHA256(storage_import_encrypted, CryptoJS.SHA256(passphrase)).toString()) {
+          Materialize.toast("Wrong passphrase for this file.", 4000);
+          return false;
+        }
+        var storage_import_decrypted = {};
+        try {
+          storage_import_decrypted = JSON.parse(CryptoJS.AES.decrypt(storage_import_encrypted, passphrase).toString(CryptoJS.enc.Utf8));
+        } catch(e) {
+          Materialize.toast(e, 4000);
+          return false;
+        }
+        chrome.storage.sync.set(storage_import_decrypted, function() {
+          reloadSidebar();
+          Materialize.toast("Successfully imported settings.", 4000);
+        });
+      }
+      reader.readAsText(file);
+    } else {
+      Materialize.toast("File is not a setting file.", 4000);
+    }
+  });
+  this.download = function(filename, text) {
+    var element = document.createElement("a");
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+    element.setAttribute("download", filename);
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
 }

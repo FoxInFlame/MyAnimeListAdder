@@ -11,7 +11,7 @@
   <body>
     <div id="qmal_popup_mainContentLoad">
       <div class="header z-depth-2">
-        <img src="../MyAnimeList_logoWhite.png">
+        <img src="../images/MyAnimeList_logoWhite.png">
         <button id="openSettings" data-position="bottom" data-tooltip="Options" class="tooltipped right-align btn-floating waves-effect"><i class="material-icons" style="color:#2E51A2">settings</i></button>
         <button id="openWindow" data-position="bottom" data-tooltip="Open list" class="tooltipped right-align btn-floating waves-effect"><i class="material-icons" style="color:#2E51A2">list</i></button>
       </div>
@@ -61,16 +61,51 @@
                     <span class="card-title"><b class="animeInformation_title" style="font-weight:inherit"></b><span class="right" style="font-size: 15px;color:#2e51a2;">#<b class="animeInformation_id" style="font-weight:inherit"></b></span></span>
                     <div class="row">
                       <div class="col s4">
-                        <b>MAL Score:</b> <span class="animeInformation_score"></span>
+                        <b>Type : </b> <span id="animeInformation_type"></span>
                       </div>
                       <div class="col s4">
-                        <b>Type: </b> <span id="animeInformation_type"></span>
+                        <b>Episodes : </b> <span class="animeInformation_episodes"></span>
                       </div>
                       <div class="col s4">
-                        <b>Episodes:</b> <span class="animeInformation_episodes"></span>
+                        <b>Score : </b> <span class="animeInformation_score"></span>
                       </div>
                     </div>
                     <p id="animeInformation_synopsis"></p>
+                  </div>
+                </div>
+                <div class="card moreinfo">
+                  <div class="card-content" style="color:#172851">
+                    <span class="card-title">More Information</span>
+                    <div class="row">
+                      <div class="col s6">
+                        <span class="moreinfo_label_title">Duration</span>
+                        <span class="duration moreinfo_label_content">Loading...</span>
+                      </div>
+                      <div class="col s6">
+                        <span class="moreinfo_label_title">Source</span>
+                        <span class="source moreinfo_label_content">Loading...</span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col s6">
+                        <span class="moreinfo_label_title">Genres</span>
+                        <span class="genres moreinfo_label_content">Loading...</span>
+                      </div>
+                      <div class="col s6">
+                        <span class="moreinfo_label_title">Members</span>
+                        <span class="members moreinfo_label_content">Loading...</span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col s6">
+                        <span class="moreinfo_label_title">Popularity</span>
+                        <span class="popularity moreinfo_label_content">Loading...</span>
+                      </div>
+                      <div class="col s6">
+                        <span class="moreinfo_label_title">Rank</span>
+                        <span class="rank moreinfo_label_content">Loading...</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

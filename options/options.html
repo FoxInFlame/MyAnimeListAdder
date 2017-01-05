@@ -6,45 +6,53 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="../libraries/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../libraries/MaterializeCSS/materialize.min.js"></script>
-    <style>
-      body {
-        font-size:15px;
-      }
-    </style>
+    <link href="options.css" rel="stylesheet">
   </head>
   <body>
+    <ul id="slide-out" class="side-nav">
+      <li><div class="userView">
+        <div class="background" style="background-image:url(http://i.imgur.com/UVsUvxa.png);"></div>
+        <a href="options_credentials.html" class="waves-effect"><img class="image circle" src="https://myanimelist.cdn-dena.com/images/userimages/5280115.jpg"></a>
+        <a href="options_credentials.html"><span class="white-text name">N/A</span></a>
+        <span class="white-text status"><span class="stats_watching">N/A</span> watching &bull; <span class="stats_average_score">N/A</span> average score</span>
+      </div></li>
+      <li class="active"><a href="#!" class="waves-effect"><i class="material-icons">home</i>Home</a></li>
+      <li><a href="options_credentials.html" class="waves-effect"><i class="material-icons">lock</i>MAL Credentials</a></li>
+      <li><a href="options_badge.html" class="waves-effect"><i class="material-icons">fiber_manual_record</i>Icon Badge</a></li>
+      <li><a href="options_popup.html" class="waves-effect"><i class="material-icons">view_list</i>Popup</a></li>
+      <li><a href="options_inpage.html" class="waves-effect"><i class="material-icons">tab</i>In-Page QMAL</a></li>
+      <li><a href="options_twitter.html" class="waves-effect"><i class="material-icons">swap_vert</i>Twitter Sync</a></li>
+      <li><a href="options_advanced.html" class="waves-effect"><i class="material-icons">settings</i>Advanced</a></li>
+    </ul>
     <div class="navbar-fixed">
       <nav class="indigo darken-1">
         <div class="nav-wrapper">
           <a href="http://www.foxinflame.tk/QuickMyAnimeList" class="brand-logo center"><span class="hide-on-med-and-down">QuickMyAnimeList</span><span class="hide-on-large-only">QMAL</span></a>
           <ul class="left">
-            <li class="active"><a href="#" class="waves-effect waves-light"><span class="hide-on-med-and-down">Home</span><span class="hide-on-large-only"><i class="material-icons">home</i></span></a></li>
-            <li><a href="options_credentials.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Credentials</span><span class="hide-on-large-only"><i class="material-icons">lock</i></span></a></li>
-            <li><a href="options_badge.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Badge</span><span class="hide-on-large-only"><i class="material-icons">fiber_manual_record</i></span></a></li>
-            <li><a href="options_popup.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Popup</span><span class="hide-on-large-only"><i class="material-icons">view_list</i></span></a></li>
-            <li><a href="options_inpage.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">In-page</span><span class="hide-on-large-only"><i class="material-icons">tab</i></span></a></li>
-            <li><a href="options_twitter.html" class="waves-effect waves-light"><span class="hide-on-med-and-down">Twitter</span><span class="hide-on-large-only"><i class="material-icons">call_made</i></span></a></li>
+            <li><a href="#" data-activates="slide-out" class="sidenav-toggle show-on-large waves-effect waves-light"><i class="material-icons">menu</i></a></li>
           </ul>
         </div>
       </nav>
     </div>
-    <div class="container" id="main">
+    <div class="container" id="main" style="margin-top:32px">
+      <h1>Home</h1>
+      <hr><br>
       <div class="row">
-        <div class="col s7">
-          <h4>Official Website</h4>
-          <p>Visit <a href="http://www.foxinflame.tk/QuickMyAnimeList">http://www.foxinflame.tk/QuickMyAnimeList</a> for the official website. There you can see an awesome web design layout, but you probably won't find the full features and manuals. That's because I don't have one. On the site, though, you can view the GitHub link, contact information for me, licence information, and the installation method (Except you already installed it so that doesn't matter).</p>
-          <h4>Community</h4>
-          <p>QuickMyAnimeList has a pretty empty subreddit at <a href="https://reddit.com/r/QuickMyAnimeList">/r/QuickMyAnimeList</a>! The subreddit isn't complete in terms of styling, but questions are welcome already!<br>There is also a Gitter chat for QuickMyAnimeList as well, available <a href="https://gitter.im/QuickMyAnimeList/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link">here</a>! Simple general questions on Gitter, complicated ones on Reddit.</p>
+        <div class="col s12 m7">
+          <h2>Official Website</h2> <!--No margin-top required because it's the top item-->
+          <p>Visit <a href="http://www.foxinflame.tk/QuickMyAnimeList">http://www.foxinflame.tk/QuickMyAnimeList</a> for the official website. There you can see an awesome web design layout, but you probably won't find the full features and manuals. That's because I don't have one. On the site, though, you can view the GitHub link, contact information for me, license information, and the installation method (Except you already installed it so that doesn't matter).</p>
+          <h2 style="margin-top:32px">Community</h2>
+          <p>QuickMyAnimeList has a pretty empty subreddit at <a href="https://reddit.com/r/QuickMyAnimeList">/r/QuickMyAnimeList</a>! The subreddit isn't complete in terms of styling, but questions are welcome already!<br>There is also a Gitter chat for QuickMyAnimeList as well, available <a href="https://gitter.im/QuickMyAnimeList/Lobby?utm_source=share-link&amp;utm_medium=link&amp;utm_campaign=share-link">here</a>! Simple general questions on Gitter, complicated ones on Reddit.</p>
           <div id="main_loggedIn" style="display:none">
-            <h4>Logged In Yet?</h4>
-            <p>It seems like you haven't logged into your MyAnimeList account yet. QMAL is like, 100% dependent on MAL, (even the name says it), so you basically HAVE to login to your MAL account to see through all the features and have a fun and easy life. <br>Click on "Credentials" at the navigation bar at the top, and login.</p>
+            <h2 style="margin-top:32px">Logged In Yet?</h2>
+            <p>It seems like you haven't logged into your MyAnimeList account yet. QMAL is like, 100% dependent on MAL, (even the name says it), so you basically HAVE to login to your MAL account to see through all the features and have a fun and easy life. <br>Open the menu by clicking on the hamburger menu on this page, click on Credendentials, and login.</p>
           </div>
-          <h4>Development</h4>
+          <h2 style="margin-top:32px">Development</h2>
           <p>QuickMyAnimeList is steadily (or not) developing. Check out the latest commits on GitHub to see some work-in-progress cool new features for future versions!<br>
-          <a href="#" id="github_latest_commit_link" target="_blank">Latest Commit on Version 1.3.4: <b id="github_latest_commit_date">Fetching...</b> [<span id="github_latest_commit_sha"></span>]</a><br>
-          <a href="#" id="github_master_commit_link" target="_blank">Latest Commit on Main Branch (Version 1.3.3): <b id="github_master_commit_date">Fetching...</b> [<span id="github_master_commit_sha"></span>]</a></p>
+          <a href="#" id="github_latest_commit_link" target="_blank">Latest Commit on Version 1.3.6: <b id="github_latest_commit_date">Fetching...</b> [<span id="github_latest_commit_sha"></span>]</a><br>
+          <a href="#" id="github_master_commit_link" target="_blank">Latest Commit on Main Branch (Version 1.3.5): <b id="github_master_commit_date">Fetching...</b> [<span id="github_master_commit_sha"></span>]</a></p>
         </div>
-        <div class="col s5">
+        <div class="col s12 m5">
           <a class="twitter-timeline" data-width="400" data-height="500" href="https://twitter.com/FoxInFlame">Loading Tweets by FoxInFlame...</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
       </div>
