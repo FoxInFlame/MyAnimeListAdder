@@ -44,7 +44,7 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 ## What's new!?
 ### Release 1.3.5!
 
-A couple of new features + bug fixes.
+Small aesthetic changes!
 
 #### Features kept from previous version (1.3.4)
 
