@@ -31,6 +31,7 @@ Check out the official website for screenshots.
 - Select2 : Used in popup to search and select the anime easily for the MDB theme
 - Codebird : Unofficial Twitter JavaScript library
 - xml2json : Convert XML to JSON easily. Used with like, all of the AJAX requests.
+- CryptoJS : Encrypting and Decrypting QMALSETTING files.
 
 ## Development
 The Chrome Extension uses JavaScript for everything, including the AJAX Requests, the Show/Hide toggles, the Next/Previous buttons, and a lot more. This Chrome Extension would be nothing without JavaScript. 
@@ -56,11 +57,12 @@ Essential Bug Fix Update.
 
 #### New features of Version 1.3.4
 
-- Now uploaded all news on GitHub so it can use HTTPS
-- Brand new sidebar in Options
-- Configurable aesthetical features in popup
-  - Dynamic coloring
-  - More information about anime
+- Now uploaded all news on GitHub so it can use HTTPS.
+- Brand new sidebar in Options.
+- Configurable aesthetical features in popup.
+  - Dynamic coloring.
+  - More information about anime.
+- Export / Import settings so you don't lose them every update.
 - Probably more.
 
 #### Removed features from previous version (1.3.4)
@@ -69,13 +71,14 @@ Essential Bug Fix Update.
 
 #### Next up for 1.X, 2.0, and later on.
 
-- Detailed Options for In-Page QMAL
+- Detailed Options for In-Page QMAL.
 - Link to open QMAL on many other anime pages, such as AniDB, AniList, gogoAnime, etc.
-- Use a better MAL API
-- More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc (1.X)
-- Add an option to disable CPU-demanding animations and transitions (1.X)
+- Use a better MAL API.
+- More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc. (1.X)
+- Add an option to disable CPU-demanding animations and transitions. (1.X)
 - Login using Google+, Twitter, or third-party auth.
 - Use more of FoxInFlame's MAL scraper.
+- Encrypt username/password inside extension. (1.X)
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0, 3.0)
 
 #### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
