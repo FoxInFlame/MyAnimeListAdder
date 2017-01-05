@@ -45,31 +45,24 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 
 
 ## What's new!?
-### Release 1.3.5!
+### Release 1.3.6!
 
-Small aesthetic changes!
+== SMALL DESCRIPTION GOES HERE ==
 
-#### Features kept from previous version (1.3.4)
+#### Features kept from previous version (1.3.5)
 
 - Ability to add edit, or delete an anime to your MAL account
 - Login to your MAL account in the options, and verify if the credentials are real or not
 - Choose what to open when icon clicked (popup, panel, website, etc)
-- Awesome icon.
 - In-Page QMAL for gogoanime.io, crunchyroll.com and kissanime.to
 - Smooth and quick animations everywhere in the popup.
 - A lot more.
 
-#### New features of Version 1.3.5
+#### New features of Version 1.3.6
 
-- Now uploaded all news on GitHub so it can use HTTPS.
-- Brand new sidebar in Options.
-- Configurable aesthetical features in popup.
-  - Dynamic coloring.
-  - More information about anime.
-- Export / Import settings so you don't lose them every update.
 - Probably more.
 
-#### Removed features from previous version (1.3.4)
+#### Removed features from previous version (1.3.5)
 
 - None.
 
