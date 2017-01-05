@@ -16,6 +16,9 @@ I will not put this Chrome Extension on the webstore, simply because I don't wan
 ## Installation
 Check out the official website to see specific instructions to installing Chrome extensions from websites.
 
+## Updating
+Check out the official website to see specific instructions to updating QMAL.
+
 ## Screenshots
 Check out the official website for screenshots.
 
