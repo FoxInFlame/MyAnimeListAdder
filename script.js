@@ -5,7 +5,9 @@ var loginPassword;
 var popup_action_open,
     popup_theme;
 
-var popup_mcss_show = [];
+var popup_mcss_options = {
+  dynamic_colors: true
+};
 
 var popup_input_rating,
     popup_input_rewatching,
@@ -45,20 +47,24 @@ $(document).ready(function() {
   // -- Get the usernames stored on Chrome Settings
   chrome.storage.sync.get({
   // ---- Default credentials when none are specified
-    username: "Username",
-    password: "password123",
-    verified: false,
+    user_username: "Username",
+    user_password: "password123",
+    user_verified: false,
     popup_action_open: 1,
     popup_input_rating: true,
     popup_input_rewatching: true,
     popup_input_tags: true,
     popup_input_storageType: false,
     popup_action_confirm: true,
-    popup_theme: 2
+    popup_theme: 2,
+    popup_mcss_options: {
+      dynamic_colors: true,
+      show_details: false
+    }
   }, function(items) {
-    loginUsername = items.username;
-    loginPassword = items.password;
-    verified = items.verified;
+    loginUsername = items.user_username;
+    loginPassword = items.user_password;
+    verified = items.user_verified;
     popup_action_open = items.popup_action_open;
     popup_input_rating = items.popup_input_rating;
     popup_input_rewatching = items.popup_input_rewatching;
@@ -66,6 +72,7 @@ $(document).ready(function() {
     popup_input_storageType = items.popup_input_storageType;
     popup_action_confirm = items.popup_action_confirm;
     popup_theme = items.popup_theme;
+    popup_mcss_options = items.popup_mcss_options;
     if(verified !== true) {
       $("body").html("You have not verified your credentials. Do so in the options.");
       return false;

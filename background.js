@@ -78,17 +78,17 @@ function twitter_post(status) {
 function getChromeStorage(callback) {
   chrome.storage.sync.get({
     // ---- Default credentials when none are specified
-    username: "Username",
-    password: "password123",
-    verified: false,
+    user_username: "ExampleAccount",
+    user_password: "Password123",
+    user_verified: false,
     badge_enable: false,
     badge_interval: "300",
     badge_color: "#5be825",
     badge_count: "1"
   }, function(items) {
-    loginUsername = items.username;
-    loginPassword = items.password;
-    verified = items.verified;
+    loginUsername = items.user_username;
+    loginPassword = items.user_password;
+    verified = items.user_verified;
     badge_enable = items.badge_enable;
     badge_interval = items.badge_interval;
     badge_color = items.badge_color;
