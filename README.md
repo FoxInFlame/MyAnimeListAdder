@@ -54,8 +54,9 @@ A couple of new features + bug fixes.
 - Awesome icon.
 - In-Page QMAL for gogoanime.io, crunchyroll.com and kissanime.to
 - Smooth and quick animations everywhere in the popup.
+- A lot more.
 
-#### New features of Version 1.3.4
+#### New features of Version 1.3.5
 
 - Now uploaded all news on GitHub so it can use HTTPS.
 - Brand new sidebar in Options.
