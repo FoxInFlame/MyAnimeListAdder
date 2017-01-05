@@ -1,15 +1,10 @@
 // Variables and basic initializations and functions
 var loginUsername;
 var loginPassword;
-
-var popup_action_open,
+    popup_action_open,
     popup_theme;
-
-var popup_mcss_options = {
-  dynamic_colors: true
-};
-
-var popup_input_rating,
+    popup_mcss_options = {};
+    popup_input_rating,
     popup_input_rewatching,
     popup_input_tags,
     popup_input_storageType,
@@ -17,9 +12,9 @@ var popup_input_rating,
     
 
 
-function insertJS(rootjsLink) {
-  $.getScript(rootjsLink).fail(function( jqxhr, settings, exception ) {
-    console.log("$.getScript returned an error with " + rootjsLink + "! Details:");
+function insertJS(jsLink) {
+  $.getScript(jsLink).fail(function(jqxhr, settings, exception) {
+    console.log("$.getScript returned an error with " + jsLink + "! Details:");
     console.log(jqxhr);
     console.log(settings);
     console.log(exception);
