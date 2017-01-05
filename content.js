@@ -20,15 +20,15 @@ $(document).ready(function() {
   console.log("In-page QMAL Initialized!");
   chrome.storage.sync.get({
   // ---- Default credentials when none are specified
-    username: "Username",
-    password: "password123",
-    verified: false,
+    user_username: "ExampleAccount",
+    user_password: "Password123",
+    user_verified: false,
     inpage_sites: ["gogoanime.io", "kissanime.ru", "crunchyroll.com", "myanimelist.net"],
     inpage_enable: true
   }, function(items) {
-    username = items.username;
-    password = items.password;
-    verified = items.verified;
+    username = items.user_username;
+    password = items.user_password;
+    verified = items.user_verified;
     inpage_enable = items.inpage_enable;
     inpage_sites = items.inpage_sites;
     inpage_sites.forEach(function(index) {
