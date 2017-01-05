@@ -1,9 +1,9 @@
 // Variables and basic initializations and functions
-var loginUsername;
-var loginPassword;
+var loginUsername,
+    loginPassword,
     popup_action_open,
-    popup_theme;
-    popup_mcss_options = {};
+    popup_theme,
+    popup_mcss_options = {},
     popup_input_rating,
     popup_input_rewatching,
     popup_input_tags,
@@ -42,8 +42,8 @@ $(document).ready(function() {
   // -- Get the usernames stored on Chrome Settings
   chrome.storage.sync.get({
   // ---- Default credentials when none are specified
-    user_username: "Username",
-    user_password: "password123",
+    user_username: "ExampleAccoun",
+    user_password: "Password123",
     user_verified: false,
     popup_action_open: 1,
     popup_input_rating: true,
