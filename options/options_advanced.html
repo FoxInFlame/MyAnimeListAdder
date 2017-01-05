@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>In-Page QMAL - QuickMyAnimeList Options</title>
+    <title>Import / Export - QuickMyAnimeList Options</title>
     <link rel="stylesheet" href="../libraries/MaterializeCSS/materialize.min.css" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="../libraries/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../libraries/jQuery/jquery-3.1.0.min.js"></script>
+    <script src="../libraries/MaterializeCSS/materialize.min.js"></script>
     <link href="options.css" rel="stylesheet">
   </head>
   <body>
@@ -19,9 +20,9 @@
       <li><a href="options_credentials.html" class="waves-effect"><i class="material-icons">lock</i>MAL Credentials</a></li>
       <li><a href="options_badge.html" class="waves-effect"><i class="material-icons">fiber_manual_record</i>Icon Badge</a></li>
       <li><a href="options_popup.html" class="waves-effect"><i class="material-icons">view_list</i>Popup</a></li>
-      <li class="active"><a href="#!" class="waves-effect"><i class="material-icons">tab</i>In-Page QMAL</a></li>
+      <li><a href="options_inpage.html" class="waves-effect"><i class="material-icons">tab</i>In-Page QMAL</a></li>
       <li><a href="options_twitter.html" class="waves-effect"><i class="material-icons">swap_vert</i>Twitter Sync</a></li>
-      <li><a href="options_advanced.html" class="waves-effect"><i class="material-icons">settings</i>Advanced</a></li>
+      <li class="active"><a href="#!" class="waves-effect"><i class="material-icons">settings</i>Advanced</a></li>
     </ul>
     <div class="navbar-fixed">
       <nav class="indigo darken-1">
@@ -34,13 +35,27 @@
       </nav>
     </div>
     <div class="container" style="margin-top:32px">
-      <h1>In-Page QMAL</h1>
-      <span>Automatically update your anime list on a streaming site.</span>
+      <h1>Advanced Settings</h1>
+      <span>For you people who want to do more</span>
       <hr><br>
-      <span>Currently, you cannot change anything. InPage QMAL works on gogoanime.io, crunchyroll.com and kissanime.to only.<br>
-      Post ideas for things to change, and sites to implement In-Page QMAL on GitHub, or mail them directly to <a href="mailto:burningfoxinflame@gmail.com">me</a>.</span>
+      <div class="row">
+        <div class="col s12 m6">
+          <h2>Import / Export Settings</h2>
+          <p>Use this section to quickly import and export QMAL settings, so that you can use the same settings on different devices.<br><br>Since QMAL is not available in the Chrome Web Store, settings do not get saved when you update QMAL to a newer version. Using this section, you can save your settings locally in your system to import when you update QMAL.</p>
+          <br>
+          <div class="input-field">
+            <label for="advanced_exportimport_passphrase">Encryption Passphrase (optional)</label>
+            <input type="text" id="advanced_exportimport_passphrase">
+          </div>
+          <button style="background: #2e51a2" class="btn waves-effect waves-light" id="advanced_export">Export<i class="material-icons right">file_download</i></button>
+          <button class="btn btn-flat waves-effect" id="advanced_import"><input id="advanced_import_file" type="file">Import<i class="material-icons right">file_upload</i></button>
+        </div>
+      </div>
     </div>
+    
+    <script src="../libraries/CryptoJS/aes.js"></script>
+    <script src="../libraries/CryptoJS/sha256.js"></script>
+    <script src="../libraries/CryptoJS/hmac-sha256.js"></script>
     <script src="options.js"></script>
-    <script src="../libraries/MaterializeCSS/materialize.min.js"></script>
   </body>
 </html>

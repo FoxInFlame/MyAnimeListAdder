@@ -44,6 +44,8 @@ $(document).ready(function() {
     restore_options_inpage();
   } else if(filename == "options_twitter.html") {
     options_twitter();
+  } else if(filename == "options_advanced.html") {
+    options_advanced();
   } else {
     options_main();
   }
@@ -102,7 +104,6 @@ $(document).ajaxError(function(event, jqxhr, settings, exception) {
 });
 
 // [+] jQuery Helper Function
-
 (function($) {
   $.fn.helper = function() {
     return this.each(function() {
@@ -804,4 +805,99 @@ function options_twitter() {
       document.getElementById("authenticated").style.display = "none";
     });
   });
+}
+
+function options_advanced() {
+  $("#advanced_export").on("click", function() {
+    chrome.storage.sync.get({
+      first_time_launch: false,
+      user_verified: false,
+      user_username: "ExampleAccount",
+      user_password: "Password123",
+      user_verified: false,
+      user_image_64: "/images/default_user.jpg",
+      user_stats: {},
+      badge_enable: false,
+      badge_color: "#5be825",
+      badge_interval: "3600",
+      badge_count: "1",
+      popup_action_open: 1,
+      popup_input_rating: true,
+      popup_input_rewatching: true,
+      popup_input_tags: true,
+      popup_input_storageType: false,
+      popup_action_confirm: true,
+      popup_theme: 2,
+      popup_mcss_options: {
+        dynamic_colors: true,
+        show_details: false
+      },
+      twitter_oauth_token: "",
+      twitter_oauth_token_secret: "",
+      twitter_screen_name: ""
+    }, function(storage) {
+      var passphrase = "";
+      if($("#advanced_exportimport_passphrase").val()) {
+        passphrase = $("#advanced_exportimport_passphrase").val();
+      }
+      var storage_export_text = JSON.stringify(storage);
+      var storage_export_encrypted = CryptoJS.AES.encrypt(storage_export_text, passphrase).toString();
+      var storage_export_hmac = CryptoJS.HmacSHA256(storage_export_encrypted, CryptoJS.SHA256(passphrase)).toString();
+      var date = new Date();
+      download("QMALSettings-" + date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "-" + ("0" + date.getHours()).slice(-2) + "." + ("0" + date.getMinutes()).slice(-2) + "." + ("0" + date.getSeconds()).slice(-2) + ".qmalsetting", storage_export_hmac + storage_export_encrypted);
+    });
+  });
+  $("#advanced_import_file").on("change", function() {
+    if(!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+      Materialize.toast("FileReader is not supported on this system.", 4000);
+      return false;
+    }
+    if(!document.getElementById("advanced_import_file").files || !document.getElementById("advanced_import_file").files[0]) {
+      Materialize.toast("Please select a file!", 4000);
+      return false;
+    }
+    var fileType = "qmalsetting";
+    var file = document.getElementById("advanced_import_file").files[0];
+    var extension = file.name.split(".").pop().toLowerCase(),
+        isQMALSettingFile = fileType.indexOf(extension) > -1;  // http://stackoverflow.com/questions/25095863/how-to-detect-file-extension-with-javascript-filereader
+    if(isQMALSettingFile) {
+      var reader = new FileReader();
+      reader.onload = function(data) {
+        var contents = data.target.result;
+        var passphrase = "";
+        if($("#advanced_exportimport_passphrase").val()) {
+          passphrase = $("#advanced_exportimport_passphrase").val();
+        }
+        var storage_import_hmac = contents.substring(0, 64);
+        var storage_import_encrypted = contents.substring(64);
+        if(storage_import_hmac != CryptoJS.HmacSHA256(storage_import_encrypted, CryptoJS.SHA256(passphrase)).toString()) {
+          Materialize.toast("Wrong passphrase for this file.", 4000);
+          return false;
+        }
+        var storage_import_decrypted = {};
+        try {
+          storage_import_decrypted = JSON.parse(CryptoJS.AES.decrypt(storage_import_encrypted, passphrase).toString(CryptoJS.enc.Utf8));
+        } catch(e) {
+          Materialize.toast(e, 4000);
+          return false;
+        }
+        chrome.storage.sync.set(storage_import_decrypted, function() {
+          reloadSidebar();
+          Materialize.toast("Successfully imported settings.", 4000);
+        });
+      }
+      reader.readAsText(file);
+    } else {
+      Materialize.toast("File is not a setting file.", 4000);
+    }
+  });
+  this.download = function(filename, text) {
+    var element = document.createElement("a");
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+    element.setAttribute("download", filename);
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
 }
