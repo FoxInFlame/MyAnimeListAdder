@@ -38,9 +38,9 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 
 function twitter_post(status) {
   chrome.storage.sync.get({
-    "twitter_oauth_token": "",
-    "twitter_oauth_token_secret": "",
-    "twitter_screen_name": ""
+    twitter_oauth_token: "",
+    twitter_oauth_token_secret: "",
+    twitter_screen_name: ""
   }, function(data) {
     if(data.twitter_oauth_token === "" || data.twitter_oauth_token_secret === "") {
       return;
@@ -103,7 +103,7 @@ function updateBadge() {
   getChromeStorage(function() {
     if(verified === false) {
       chrome.browserAction.setIcon({
-        path: "icon_disabled.png"
+        path: "images/icon_disabled.png"
       });
       chrome.browserAction.setBadgeBackgroundColor({
         //color: "#FF0000"
@@ -118,7 +118,7 @@ function updateBadge() {
       return;
     } else {
       chrome.browserAction.setIcon({
-        path: "icon.png"
+        path: "images/icon.png"
       });
     }
   
