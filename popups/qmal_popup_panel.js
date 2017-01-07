@@ -716,7 +716,7 @@ function animeSearch_formatResults(dataJSON) {
       });
       return;
     } else {
-      var dominantColor = paletteColor1 = paletteColor2 = paletteColor3 = paletteColor4 = "46,81,162";
+      var dominantColor = paletteColor1 = paletteColor2 = paletteColor3 = paletteColor4 = "108,133,189";
       html = "<div class='grid-list-row'>" +
         "<div data-title=\"" + dataAnimes.title + "\" data-type=\"" + dataAnimes.type + "\" data-episodes=\"" + dataAnimes.episodes + "\" data-score=\"" + dataAnimes.score + "\" data-url=\"https://myanimelist.net/anime/" + dataAnimes.id + "\" data-id=\"" + dataAnimes.id + "\" data-status=\"" + dataAnimes.status + "\" data-synopsis=\"" + dataAnimes.synopsis.replaceAll(/<(?:.|\n)[^>]*?>/gm, "").replace(/\"/g,'&#34;').replace(/'/g,"&#39;") + "\" data-color-dominant=\"" + dominantColor + "\" data-color-palette1=\"" + paletteColor1 + "\" data-color-palette2=\"" + paletteColor2 + "\" data-color-palette3=\"" + paletteColor3 + "\" data-color-palette4=\"" + paletteColor4 + "\" class=\"col s6\">" +
           "<img class=\"grayscale\" style=\"pointer-events:none\" src='" + dataAnimes.image + "'>" +
@@ -783,7 +783,7 @@ function animeSearch_formatResults(dataJSON) {
       counter -= 1;
       allcount++;
       rowcount++;
-      var dominantColor = paletteColor1 = paletteColor2 = paletteColor3 = paletteColor4 = "46,81,162";
+      var dominantColor = paletteColor1 = paletteColor2 = paletteColor3 = paletteColor4 = "108,133,189";
       if((allcount % 2) == 1) {
         html = "<div class=\"grid-list-row\">";
         html += "<div data-title=\"" + item.title + "\" data-type=\"" + item.type + "\" data-episodes=\"" + item.episodes + "\" data-score=\"" + item.score + "\" data-url=\"https://myanimelist.net/anime/" + item.id + "\" data-id=\"" + item.id + "\" data-status=\"" + item.status + "\" data-synopsis=\"" + item.synopsis.replaceAll(/<(?:.|\n)[^>]*?>/gm, "").replace(/\"/g,'&#34;').replace(/'/g,"&#39;") + "\" data-color-dominant=\"" + dominantColor + "\" data-color-palette1=\"" + paletteColor1 + "\" data-color-palette2=\"" + paletteColor2 + "\" data-color-palette3=\"" + paletteColor3 + "\" data-color-palette4=\"" + paletteColor4 + "\" class=\"col s6\">" +
@@ -1112,6 +1112,4 @@ function submitEditForm() {
     }
     $("#animeInformation_addToList").tooltip({delay: 50});
   }, 50);
-  $("#animeEditForm-back").attr("data-action", "close");
-  $("#animeEditForm-next").attr("data-action", "page1");
 };
