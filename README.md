@@ -13,6 +13,8 @@ Official QuickMyAnimeList website is at http://www.foxinflame.tk/QuickMyAnimeLis
 ## Webstore
 I will not put this Chrome Extension on the webstore, simply because I don't want to pay the initial $5 fee.
 
+Although, I do have a feeling that this might become pretty popular if it was uploaded, due to the low amount of features for the existing apps related to MyAnimeList.
+
 ## Installation
 Check out the official website to see specific instructions to installing Chrome extensions from websites.
 
@@ -41,7 +43,9 @@ The Chrome Extension uses JavaScript for everything, including the AJAX Requests
 
 The MAL API also hepled out a TON in creating this. Well, not helped out, but more like, was neccessary. Becuase without the API, the extension wouldn't have been able to retreive, add, and delete data from your anime list.
 
-Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to look like Google's Material Design. The main CSS library is called MaterializeCSS, however you can configure the extension to use the Material Design Bootstrap Library instead if you want to.
+Another API is used in this Chrome extension. Try guessing. I doubt that you'll get it right, because it's not at all known. It's the matomari API, developed by me myself and I. This API supplied the parts where the official API lacked (detailed information about an anime, etc)  
+
+Not just those two MAL related API, but a lot of other JS/CSS libraries helped me style it to look like Google's Material Design. The main CSS library is called MaterializeCSS, however you can configure the extension to use the Material Design Bootstrap Library instead if you want to.
 
 
 ## What's new!?
@@ -60,6 +64,7 @@ Not just the MAL API, but a lot of other JS/CSS libraries helped me style it to 
 
 #### New features of Version 1.3.6
 
+- Fixed 2 issues.
 - Probably more.
 
 #### Removed features from previous version (1.3.5)
