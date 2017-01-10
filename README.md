@@ -1,4 +1,4 @@
-![Banner](http://i.imgur.com/U2piPr4.png)
+![Banner](https://i.imgur.com/U2piPr4.png)
 # QuickMyAnimeList
 [![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QUickMyAnimeList/total.svg)]() 
 
@@ -7,8 +7,8 @@
 
 QuickMyAnimeList (QMAL) is a handy Chrome extension that allows you to edit, add, or delete an anime in your MyAnimeList list. Of course, there are many more features...? 
 
-## Official Website [![Website](https://img.shields.io/website-up-down-green-red/http/www.foxinflame.tk.svg?maxAge=2592000&label=official website)](http://www.foxinflame.tk/QuickMyAnimeList)
-Official QuickMyAnimeList website is at http://www.foxinflame.tk/QuickMyAnimeList
+## Official Website [![Website](https://img.shields.io/website-up-down-green-red/http/www.foxinflame.tk.svg?maxAge=2592000&label=official website)](//www.foxinflame.tk/QuickMyAnimeList)
+Official QuickMyAnimeList website is at https://www.foxinflame.tk/QuickMyAnimeList
 
 ## Webstore
 I will not put this Chrome Extension on the webstore, simply because I don't want to pay the initial $5 fee.
