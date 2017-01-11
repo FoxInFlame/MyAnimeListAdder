@@ -37,6 +37,7 @@ Check out the official website for screenshots.
 - Codebird : Unofficial Twitter JavaScript library
 - xml2json : Convert XML to JSON easily. Used with like, all of the AJAX requests.
 - CryptoJS : Encrypting and Decrypting QMALSETTING files.
+- ColorThief : To generate dynamic coloring in MaterializeCSS theme popup
 
 ## Development
 The Chrome Extension uses JavaScript for everything, including the AJAX Requests, the Show/Hide toggles, the Next/Previous buttons, and a lot more. This Chrome Extension would be nothing without JavaScript. 
@@ -64,6 +65,7 @@ Not just those two MAL related API, but a lot of other JS/CSS libraries helped m
 
 #### New features of Version 1.3.6
 
+- Faster dynamic coloring (now use library instead of external service).
 - Fixed 2 issues.
 - Probably more.
 
@@ -73,8 +75,8 @@ Not just those two MAL related API, but a lot of other JS/CSS libraries helped m
 
 #### Next up for 1.X, 2.0, and later on.
 
-- Detailed Options for In-Page QMAL.
-- Link to open QMAL on many other anime pages, such as AniDB, AniList, gogoAnime, etc.
+- Detailed Options for In-Page QMAL. (1.X)
+- Link to open QMAL on many other anime pages, such as AniDB, AniList, gogoAnime, etc. (1.X)
 - Use a better MAL API.
 - More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc. (1.X)
 - Add an option to disable CPU-demanding animations and transitions. (1.X)
