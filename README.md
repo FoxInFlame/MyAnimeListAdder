@@ -18,6 +18,8 @@ Although, I do have a feeling that this might become pretty popular if it was up
 ## Installation
 Check out the official website to see specific instructions to installing Chrome extensions from websites.
 
+Requires a fairly strong computer because of all the transitions and AJAX requests.
+
 ## Updating
 Check out the official website to see specific instructions to updating QMAL.
 
@@ -83,6 +85,8 @@ Not just those two MAL related API, but a lot of other JS/CSS libraries helped m
 - Login using Google+, Twitter, or third-party auth.
 - Use more of FoxInFlame's MAL scraper.
 - Encrypt username/password inside extension. (1.X)
+- Bug report / crash report. (1.X, 2.X)
+- Collect anonymous usage information. (2.X)
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0, 3.0)
 
 #### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
