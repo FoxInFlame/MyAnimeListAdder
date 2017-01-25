@@ -42,7 +42,7 @@ $(document).ready(function() {
   // -- Get the usernames stored on Chrome Settings
   chrome.storage.sync.get({
   // ---- Default credentials when none are specified
-    user_username: "ExampleAccoun",
+    user_username: "ExampleAccount",
     user_password: "Password123",
     user_verified: false,
     popup_action_open: 1,
