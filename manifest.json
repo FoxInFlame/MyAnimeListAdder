@@ -1,6 +1,7 @@
 {
   "manifest_version": 2,
   "name": "QuickMyAnimeList",
+  "short_name": "QMAL",
   "author": "FoxInFlame",
   "description": "The dream Chrome Extension for you with a MAL account",
   "version": "1.3.6",

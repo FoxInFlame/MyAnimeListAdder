@@ -16,7 +16,11 @@ var count_total = 0;
 
 var initial = 1;
 
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(function(details) {
+  if(details.reason == "install") {
+    // First install
+    chrome.tabs.create({url: "options/options.html"});
+  }
   getChromeStorage(function() {
     chrome.alarms.create("updateBadge", {
       when: Date.now() + 1000
