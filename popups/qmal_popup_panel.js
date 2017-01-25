@@ -18,6 +18,7 @@ $(document).ready(function() {
   }, function(response) {
     if(response.id) {
       // ID is set! Show only this anime.
+      $("html").css("display", "none");
       showOneOnly = true;
       renderShowOneOnly(response.id, response.title);
     }
@@ -25,9 +26,9 @@ $(document).ready(function() {
   
   chrome.storage.sync.get({
   // ---- Default credentials when none are specified
-    username: "Username",
-    password: "password123",
-    verified: false,
+    user_username: "Username",
+    user_password: "password123",
+    user_verified: false,
     popup_action_open: 1,
     popup_action_confirm: true,
     popup_theme: 2,
@@ -36,9 +37,9 @@ $(document).ready(function() {
       show_details: false
     }
   }, function(items) {
-    loginUsername = items.username;
-    loginPassword = items.password;
-    verified = items.verified;
+    loginUsername = items.user_username;
+    loginPassword = items.user_password;
+    verified = items.user_verified;
     popup_action_open = items.popup_action_open;
     popup_action_confirm = items.popup_action_confirm;
     popup_theme = items.popup_theme;
@@ -55,7 +56,7 @@ function renderShowOneOnly(id, title) {
   $(".animeInformation > nav").hide();
   
   $.ajax({
-    url: "http://www.matomari.tk/api/0.3/anime/info/" + id + ".json?timestamp=" + new Date(),
+    url: "https://www.matomari.tk/api/0.3/anime/info/" + id + ".json?timestamp=" + new Date(),
     dataType: "json",
     type: "GET",
     username: loginUsername,
@@ -79,6 +80,8 @@ function renderShowOneOnly(id, title) {
 }
 
 function showOnlyOne_formatResult(data) {
+  $("html").fadeIn(300);
+  $("html").css("background", "#2e51a2");
   $(".animeInformation #animeInformation_image").attr("src", data.image_url);
   $(".animeInformation .animeInformation_id").text(data.id);
   $(".animeInformation .animeInformation_title").text(data.title);
@@ -90,10 +93,10 @@ function showOnlyOne_formatResult(data) {
   }
   $(".animeInformation #animeInformation_synopsis").text(data.synopsis);
   $(".animeInformation #animeInformation_link").attr("href", "https://myanimelist.net/anime/" + data.id);
-  if(data.members_score === null) {
+  if(data.score === null) {
     $(".animeInformation .animeInformation_score").text("N/A");
   } else {
-    $(".animeInformation .animeInformation_score").text(data.members_score);
+    $(".animeInformation .animeInformation_score").text(data.score);
   }
   $("#animeEditForm-episodes").attr("max", data.episodes);
   checkIfInAnimeList(data.id);
@@ -101,10 +104,10 @@ function showOnlyOne_formatResult(data) {
     normalFill: "#e0e0e0",
     starWidth: "25px",
     numStars: 5,
-    multiColor: {
-      "startColor": "#A22E51",
-      "endColor": "#51A22E"
-    },
+      multiColor: {
+        "startColor": "#a22e51", // Variations from #2e51a2 tri-color palette
+        "endColor": "#51a22e"
+      },
     halfStar: true,
     maxValue: 10
   });
@@ -114,6 +117,10 @@ function showOnlyOne_formatResult(data) {
     truncate: true,
     width: 380
   });
+  $(".animeInformation").css("position", "absolute").css("display", "block").animate({
+    opacity: "1",
+    height: $(document).height() - 50 // 50px for the nav bar
+  }, 300);
 }
 
 // [+] ===================GRID LISTS===================== [+]
@@ -942,7 +949,7 @@ $("#animeEditForm #animeEditForm-back").on("click", function() {
       height: "120px"
     }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
     if(formAnimeStatus == "Update") {
-      $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link, .animeInformation>nav").fadeIn(100);
+      $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link").fadeIn(100);
       switch($("#animeEditForm-status").val()) {
         case "1":
           //Watching

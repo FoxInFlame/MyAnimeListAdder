@@ -1,5 +1,3 @@
-@import url(https://f3a7a1b1655de4833e3bed3b1779c5a9d85839f8.googledrive.com/host/0BxjwQr0BBXs-aDYxM2JlaFM2bnM);
-/*All that anime covers!*/
 ::-webkit-scrollbar {
   display: none;
 }
@@ -318,7 +316,7 @@ fieldset {
 .grid-list-row .col div.grid-list-text-footer {
   height: 48px;
   background: #2e51a2;
-  opacity: 0.8;
+  opacity: 0.85;
   color: #ffffff;
   position: absolute;
   bottom: -48px;
