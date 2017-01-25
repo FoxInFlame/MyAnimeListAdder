@@ -69,6 +69,7 @@ I-don't-even-know-what-changed-except-for-a-few-bugs
 
 #### New features of Version 1.3.6
 
+- Change most URLs to https
 - Faster dynamic coloring (now use library instead of external service).
 - Open panel from in-page, giving more use to panels.
 - Fixed 6 issues.
