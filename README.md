@@ -11,6 +11,8 @@ QuickMyAnimeList (QMAL) is a handy Chrome extension that allows you to edit, add
 Official QuickMyAnimeList website is at https://www.foxinflame.tk/QuickMyAnimeList
 
 ## Webstore
+**It might go on the Web Store, thanks to a very kind friend called Ampharos!**
+
 I will not put this Chrome Extension on the webstore, simply because I don't want to pay the initial $5 fee.
 
 Although, I do have a feeling that this might become pretty popular if it was uploaded, due to the low amount of features for the existing apps related to MyAnimeList.
@@ -18,7 +20,7 @@ Although, I do have a feeling that this might become pretty popular if it was up
 ## Installation
 Check out the official website to see specific instructions to installing Chrome extensions from websites.
 
-Requires a fairly strong computer because of all the transitions and AJAX requests.
+A fairly strong computer might increase the smoothness because of all the transitions and AJAX requests.
 
 ## Updating
 Check out the official website to see specific instructions to updating QMAL.
@@ -54,7 +56,7 @@ Not just those two MAL related API, but a lot of other JS/CSS libraries helped m
 ## What's new!?
 ### Release 1.3.6!
 
-== SMALL DESCRIPTION GOES HERE ==
+I-don't-even-know-what-changed-except-for-a-few-bugs
 
 #### Features kept from previous version (1.3.5)
 
@@ -68,7 +70,8 @@ Not just those two MAL related API, but a lot of other JS/CSS libraries helped m
 #### New features of Version 1.3.6
 
 - Faster dynamic coloring (now use library instead of external service).
-- Fixed 2 issues.
+- Open panel from in-page, giving more use to panels.
+- Fixed 6 issues.
 - Probably more.
 
 #### Removed features from previous version (1.3.5)
