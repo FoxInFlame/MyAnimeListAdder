@@ -19,12 +19,10 @@ function reloadSidebar() {
     if(!items.user_verified || items.user_username === "" || items.user_password === "") {
       $(".side-nav .userView .image").attr("src", "/images/default_user.png");
       $(".side-nav .userView .name").html("You are not logged in");
-      $(".side-nav .userView .status").html("N/A");
       return;
     }
     $(".side-nav .userView .image").attr("src", items.user_image_64);
     $(".side-nav .userView .name").html(items.user_username);
-    $(".side-nav .userView .status").html("<span class=\"stats_watching\">" + items.user_stats.watching + "</span> watching &bull; <span class=\"  stats_average_score\">" + items.user_stats.average_score + "</span> average score");
   });
 }
 
@@ -32,6 +30,7 @@ $(document).ready(function() {
   $("select").material_select();
   $(".sidenav-toggle").sideNav();
   $(".helper").helper();
+  $(".side-nav .userView .status").html("You are on version " + chrome.runtime.getManifest().version);
   reloadSidebar();
   var filename = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
   if(filename == "options_credentials.html") {
@@ -75,33 +74,7 @@ if($("#save").length > 0) {
     }
   });
 }
-$(document).ajaxError(function(event, jqxhr, settings, exception) {
-  if (jqxhr.status== 401) {
-    var filename = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
-    if(filename == "options_credentials.html") {
-      var status = document.getElementById("save");
-      Materialize.toast("Inputted credentials are not valid.", 4000);
-      document.getElementById("loggedIn").style.display = "none";
-      chrome.storage.sync.set({
-        user_verified: false
-      }, function() {
-        reloadSidebar();
-        var verifiedBoxes = document.getElementsByClassName("verified");
-        var verifiedBoxesLength = verifiedBoxes.length;
-        for(var i=0; i < verifiedBoxesLength; i++){
-          verifiedBoxes[i].checked = false;
-        }
-        chrome.extension.getBackgroundPage().updateBadge();
-        setTimeout(function() {
-          status.innerHTML = 'Save<i class="material-icons right">send</i>';
-          status.disabled = false;
-          status.classList.remove("red");
-          chrome.extension.getBackgroundPage().updateBadge();
-        }, 3000);
-      });
-    }
-  }
-});
+
 
 // [+] jQuery Helper Function
 (function($) {
@@ -178,7 +151,7 @@ function welcome_message_features() {
 }
 function development_github() {
   $.ajax({
-    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3.6",
+    url: "https://api.github.com/repos/FoxInFlame/QuickMyAnimeList/commits?sha=Version-1.3.7",
     success: function(data) {
       $("#github_latest_commit_sha").html(data[0]["sha"].substring(0,10));
       $("#github_latest_commit_link").attr("href", data[0]["html_url"]);
@@ -267,8 +240,7 @@ function restore_options_credentials() {
     user_username: "ExampleAccount",
     user_password: "Password123",
     user_verified: false,
-    user_image_64: "/images/default_user.jpg",
-    user_stats: {},
+    user_image_64: "/images/default_user.jpg"
   }, function(items) {
     var verifiedBoxes = document.getElementsByClassName("verified");
     var verifiedBoxesLength = verifiedBoxes.length;
@@ -280,13 +252,9 @@ function restore_options_credentials() {
     if(!items.user_verified) {
       document.getElementById("loggedIn").style.display = "none";
     } else {
-      $(".stats_watching").html(items.user_stats.watching);
-      $(".stats_completed").html(items.user_stats.completed);
-      $(".stats_average_score").html(items.user_stats.average_score);
-      $(".stats_watched_episodes").html(items.user_stats.watched_episodes);
       document.getElementById("loggedIn").style.display = "block";
       $.ajax({
-        url: "http://www.matomari.tk/api/0.3/user/info/" + items.user_username + ".json",
+        url: "https://www.matomari.tk/api/0.3/user/info/" + items.user_username + ".json",
         method: "GET",
         dataType: "json",
         success: function(data) {
@@ -303,7 +271,7 @@ function restore_options_credentials() {
           }
           var xhr = new XMLHttpRequest();
           xhr.responseType = "blob";
-          xhr.open("GET", "http://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.image.ID.php?id=" + data.id, true);
+          xhr.open("GET", "https://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.image.ID.php?id=" + data.id, true);
           var imageBase64;
           xhr.onload = function(e) {
             var reader = new FileReader();
@@ -312,51 +280,10 @@ function restore_options_credentials() {
               chrome.storage.sync.set({
                 user_image_64: imageBase64
               }, function() {
-                Materialize.toast("Updating info...");
                 $(".verified").prop("checked", true);
                 $("#loggedIn img").attr("src", imageBase64);
-                $.ajax({
-                  url: "http://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.stats.USERNAME.php?username=" + items.user_username,
-                  method: "GET",
-                  dataType: "json",
-                  success: function(data) {
-                    Materialize.toastRemove();
-                    if(data.error) {
-                      console.log("Error querying to matomari for user stats : " + data.error);
-                      chrome.storage.sync.set({
-                        user_stats: {
-                          watching: 0,
-                          completed: 0,
-                          onhold: 0,
-                          dropped: 0,
-                          plantowatch: 0,
-                          total: 0,
-                          rewatched: 0,
-                          watched_episodes: 0,
-                          watched_days: 0,
-                          average_score: 0
-                        }
-                      }, function() {
-                        $("#loggedIn h2").html("N/A");
-                        $(".stats_watching").html("0");
-                        $(".stats_completed").html("0");
-                        $(".stats_average_score").html("0");
-                        $(".stats_watched_episodes").html("0");
-                        reloadSidebar();
-                      });
-                    }
-                    chrome.storage.sync.set({
-                      user_stats: data.anime.stats
-                    }, function() {
-                        $("#loggedIn h2").html(items.user_username);
-                      $(".stats_watching").html(data.anime.stats.watching);
-                      $(".stats_completed").html(data.anime.stats.completed);
-                      $(".stats_average_score").html(data.anime.stats.average_score);
-                      $(".stats_watched_episodes").html(data.anime.stats.watched_episodes);
-                      reloadSidebar();
-                    });
-                  }
-                });
+                $("#loggedIn h2").html(items.user_username);
+                reloadSidebar();
               });
             };
             reader.readAsDataURL(xhr.response);
@@ -370,122 +297,91 @@ function restore_options_credentials() {
 function save_options_credentials() {
   var username = document.getElementById("username").value;
   var password = document.getElementById("password").value;
-  chrome.storage.sync.set({
-    user_username: username,
-    user_password: password
-  }, function() {
-    $.ajax({
-      url: "https://myanimelist.net/api/account/verify_credentials.xml",
-      type: "GET",
-      dataType: "xml",
-      username: username,
-      password: password,
-      error: function(jqXHR, textStatus, errorThrown) {
-        status.innerHTML = jqXHR.status;
-        status.disabled = true;
-        setTimeout(function() {
-          status.innerHTML = 'Save<i class="material-icons right">send</i>';
-          status.disabled = false;
-        }, 3000);
-      },
-      success: function(data) {
-        var status = document.getElementById("save");
-        Materialize.toast("Successfully logged in! Please wait...");
-        status.disabled = true;
-        chrome.extension.getBackgroundPage().updateBadge();
-        window.setTimeout(function() {
+  var status = document.getElementById("save");
+  $.ajax({
+    url: "https://myanimelist.net/api/account/verify_credentials.xml",
+    type: "GET",
+    dataType: "xml",
+    username: username,
+    password: password,
+    error: function(jqXHR, textStatus, errorThrown) {
+      var status = document.getElementById("save");
+      if(jqXHR.status == 401) {
+        status.innerHTML = "Invalid Credentials.";
+        status.style.pointerEvents = "none";
+        console.log("Inputted credentials are not valid.");
+        document.getElementById("loggedIn").style.display = "none";
+        chrome.storage.sync.set({
+          user_verified: false
+        }, function() {
+          reloadSidebar();
+          var verifiedBoxes = document.getElementsByClassName("verified");
+          var verifiedBoxesLength = verifiedBoxes.length;
+          for(var i=0; i < verifiedBoxesLength; i++){
+            verifiedBoxes[i].checked = false;
+          }
           chrome.extension.getBackgroundPage().updateBadge();
-        }, 1000);
-        $.ajax({
-          url: "http://www.matomari.tk/api/0.3/user/info/" + username + ".json",
-          method: "GET",
-          dataType: "json",
-          success: function(data) {
-            Materialize.toastRemove();
-            if(data.error) {
-              console.log("Error querying to matomari for user image : " + data.error);
+          setTimeout(function() {
+            status.innerHTML = 'Save<i class="material-icons right">send</i>';
+            status.style.pointerEvents = "auto";
+            chrome.extension.getBackgroundPage().updateBadge();
+          }, 3000);
+        });
+      }
+    },
+    success: function(data) {
+      status.style.pointerEvents = "none";
+      Materialize.toast("Successfully logged in! Please wait...");
+      $.ajax({
+        url: "https://www.matomari.tk/api/0.3/user/info/" + username + ".json",
+        method: "GET",
+        dataType: "json",
+        success: function(data) {
+          Materialize.toastRemove();
+          if(data.error) {
+            console.log("Error querying to matomari for user info : " + data.error);
+            chrome.storage.sync.set({
+              user_image_64: "/images/default_user.png",
+              user_verified: true
+            }, function() {
+              $(".verified").prop("checked", true);
+              $("#loggedIn img").attr("src", "/images/default_user.png");
+            });
+            return;
+          }
+          var xhr = new XMLHttpRequest();
+          xhr.responseType = "blob";
+          xhr.open("GET", "https://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.image.ID.php?id=" + data.id, true);
+          var imageBase64;
+          xhr.onload = function(e) {
+            var reader = new FileReader();
+            reader.onloadend = function() {
+              imageBase64 = reader.result;
               chrome.storage.sync.set({
-                user_image_64: "/images/default_user.png",
+                user_username: data.username,
+                user_password: password,
+                user_image_64: imageBase64,
                 user_verified: true
               }, function() {
+                chrome.extension.getBackgroundPage().updateBadge();
+                document.getElementById("loggedIn").style.display = "block";
                 $(".verified").prop("checked", true);
-                $("#loggedIn img").attr("src", "/images/default_user.png");
+                $("#loggedIn img").attr("src", imageBase64);
+                $("#loggedIn h2").html(username);
+                reloadSidebar();
               });
-              return;
-            }
-            var xhr = new XMLHttpRequest();
-            xhr.responseType = "blob";
-            xhr.open("GET", "http://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.image.ID.php?id=" + data.id, true);
-            var imageBase64;
-            xhr.onload = function(e) {
-              var reader = new FileReader();
-              reader.onloadend = function() {
-                imageBase64 = reader.result;
-                chrome.storage.sync.set({
-                  user_image_64: imageBase64,
-                  user_verified: true
-                }, function() {
-                  Materialize.toast("Still loading...");
-                  document.getElementById("loggedIn").style.display = "block";
-                  $(".verified").prop("checked", true);
-                  $("#loggedIn img").attr("src", imageBase64);
-                  $.ajax({
-                    url: "http://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.stats.USERNAME.php?username=" + username,
-                    method: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                      Materialize.toastRemove();
-                      if(data.error) {
-                        console.log("Error querying to matomari for user stats : " + data.error);
-                        chrome.storage.sync.set({
-                          user_stats: {
-                            watching: 0,
-                            completed: 0,
-                            onhold: 0,
-                            dropped: 0,
-                            plantowatch: 0,
-                            total: 0,
-                            rewatched: 0,
-                            watched_episodes: 0,
-                            watched_days: 0,
-                            average_score: 0
-                          }
-                        }, function() {
-                          $("#loggedIn h2").html("N/A");
-                          $(".stats_watching").html("0");
-                          $(".stats_completed").html("0");
-                          $(".stats_average_score").html("0");
-                          $(".stats_watched_episodes").html("0");
-                          reloadSidebar();
-                        });
-                      }
-                      chrome.storage.sync.set({
-                        user_stats: data.anime.stats
-                      }, function() {
-                        $("#loggedIn h2").html(username);
-                        $(".stats_watching").html(data.anime.stats.watching);
-                        $(".stats_completed").html(data.anime.stats.completed);
-                        $(".stats_average_score").html(data.anime.stats.average_score);
-                        $(".stats_watched_episodes").html(data.anime.stats.watched_episodes);
-                        reloadSidebar();
-                      });
-                    }
-                  });
-                });
-              };
-              reader.readAsDataURL(xhr.response);
             };
-            xhr.send();
-          }
-        });
-        setTimeout(function() {
-          status.innerHTML = 'Save<i class="material-icons right">send</i>';
-          status.disabled = false;
-          status.classList.remove("green");
-          chrome.extension.getBackgroundPage().updateBadge();
-        }, 3000);
-      }
-    });
+            reader.readAsDataURL(xhr.response);
+          };
+          xhr.send();
+        }
+      });
+      setTimeout(function() {
+        status.innerHTML = 'Save<i class="material-icons right">send</i>';
+        status.style.pointerEvents = "auto";
+        chrome.extension.getBackgroundPage().updateBadge();
+    }, 3000);
+    }
   });
 }
 
@@ -807,6 +703,10 @@ function options_twitter() {
   });
 }
 
+// [+] --------------------------------------------------
+// [+] Options Page - Advanced Options
+// [+] --------------------------------------------------
+
 function options_advanced() {
   $("#advanced_export").on("click", function() {
     chrome.storage.sync.get({
@@ -858,6 +758,7 @@ function options_advanced() {
     }
     var fileType = "qmalsetting";
     var file = document.getElementById("advanced_import_file").files[0];
+    document.getElementById("advanced_import_file").value = null;
     var extension = file.name.split(".").pop().toLowerCase(),
         isQMALSettingFile = fileType.indexOf(extension) > -1;  // http://stackoverflow.com/questions/25095863/how-to-detect-file-extension-with-javascript-filereader
     if(isQMALSettingFile) {

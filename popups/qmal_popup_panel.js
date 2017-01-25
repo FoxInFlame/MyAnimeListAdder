@@ -18,6 +18,7 @@ $(document).ready(function() {
   }, function(response) {
     if(response.id) {
       // ID is set! Show only this anime.
+      $("html").css("display", "none");
       showOneOnly = true;
       renderShowOneOnly(response.id, response.title);
     }
@@ -25,9 +26,9 @@ $(document).ready(function() {
   
   chrome.storage.sync.get({
   // ---- Default credentials when none are specified
-    username: "Username",
-    password: "password123",
-    verified: false,
+    user_username: "Username",
+    user_password: "password123",
+    user_verified: false,
     popup_action_open: 1,
     popup_action_confirm: true,
     popup_theme: 2,
@@ -36,9 +37,9 @@ $(document).ready(function() {
       show_details: false
     }
   }, function(items) {
-    loginUsername = items.username;
-    loginPassword = items.password;
-    verified = items.verified;
+    loginUsername = items.user_username;
+    loginPassword = items.user_password;
+    verified = items.user_verified;
     popup_action_open = items.popup_action_open;
     popup_action_confirm = items.popup_action_confirm;
     popup_theme = items.popup_theme;
@@ -55,7 +56,7 @@ function renderShowOneOnly(id, title) {
   $(".animeInformation > nav").hide();
   
   $.ajax({
-    url: "http://www.matomari.tk/api/0.3/anime/info/" + id + ".json?timestamp=" + new Date(),
+    url: "https://www.matomari.tk/api/0.3/anime/info/" + id + ".json?timestamp=" + new Date(),
     dataType: "json",
     type: "GET",
     username: loginUsername,
@@ -79,6 +80,8 @@ function renderShowOneOnly(id, title) {
 }
 
 function showOnlyOne_formatResult(data) {
+  $("html").fadeIn(300);
+  $("html").css("background", "#2e51a2");
   $(".animeInformation #animeInformation_image").attr("src", data.image_url);
   $(".animeInformation .animeInformation_id").text(data.id);
   $(".animeInformation .animeInformation_title").text(data.title);
@@ -90,10 +93,10 @@ function showOnlyOne_formatResult(data) {
   }
   $(".animeInformation #animeInformation_synopsis").text(data.synopsis);
   $(".animeInformation #animeInformation_link").attr("href", "https://myanimelist.net/anime/" + data.id);
-  if(data.members_score === null) {
+  if(data.score === null) {
     $(".animeInformation .animeInformation_score").text("N/A");
   } else {
-    $(".animeInformation .animeInformation_score").text(data.members_score);
+    $(".animeInformation .animeInformation_score").text(data.score);
   }
   $("#animeEditForm-episodes").attr("max", data.episodes);
   checkIfInAnimeList(data.id);
@@ -101,10 +104,10 @@ function showOnlyOne_formatResult(data) {
     normalFill: "#e0e0e0",
     starWidth: "25px",
     numStars: 5,
-    multiColor: {
-      "startColor": "#A22E51",
-      "endColor": "#51A22E"
-    },
+      multiColor: {
+        "startColor": "#a22e51", // Variations from #2e51a2 tri-color palette
+        "endColor": "#51a22e"
+      },
     halfStar: true,
     maxValue: 10
   });
@@ -114,6 +117,10 @@ function showOnlyOne_formatResult(data) {
     truncate: true,
     width: 380
   });
+  $(".animeInformation").css("position", "absolute").css("display", "block").animate({
+    opacity: "1",
+    height: $(document).height() - 50 // 50px for the nav bar
+  }, 300);
 }
 
 // [+] ===================GRID LISTS===================== [+]
@@ -689,34 +696,36 @@ function animeSearch_formatResults(dataJSON) {
   // Only one result?
   if(Object.prototype.toString.call(dataAnimes) !== "[object Array]") {
     if(popup_mcss_options.dynamic_colors === true) {
-      $.ajax({
-        url: "http://www.foxinflame.tk/dev/dominantColor/getColors.php?palette=4&url=" + dataAnimes.image,
-        method: "GET",
-        success: function(data) {
-          // Making it easier to insert later on
-          var dominantColor = data.dominant.join(); // instead of adding one by one with comma
-          var paletteColor1 = data.palette[0].join();
-          var paletteColor2 = data.palette[1].join();
-          var paletteColor3 = data.palette[2].join();
-          var paletteColor4 = data.palette[3].join();
-          html = "<div class='grid-list-row'>" +
-            "<div data-title=\"" + dataAnimes.title + "\" data-type=\"" + dataAnimes.type + "\" data-episodes=\"" + dataAnimes.episodes + "\" data-score=\"" + dataAnimes.score + "\" data-url=\"https://myanimelist.net/anime/" + dataAnimes.id + "\" data-id=\"" + dataAnimes.id + "\" data-status=\"" + dataAnimes.status + "\" data-synopsis=\"" + dataAnimes.synopsis.replaceAll(/<(?:.|\n)[^>]*?>/gm, "").replace(/\"/g,'&#34;').replace(/'/g,"&#39;") + "\" data-color-dominant=\"" + dominantColor + "\" data-color-palette1=\"" + paletteColor1 + "\" data-color-palette2=\"" + paletteColor2 + "\" data-color-palette3=\"" + paletteColor3 + "\" data-color-palette4=\"" + paletteColor4 + "\" class=\"col s6\">" +
-              "<img class=\"grayscale\" style=\"pointer-events:none\" src='" + dataAnimes.image + "'>" +
-              "<div class=\"grid-list-text-footer\" style=\"background:rgb(" + dominantColor + ")\">" +
-                "<span class=\"grid-list-text-footer-title\">" + dataAnimes.title + "</span>" +
-              "</div>" +
+      var image = $("<img>", {
+        "class": "grayscale",
+        "style": "pointer-events:none;display:none",
+        "src": dataAnimes.image
+      });
+      image.on("load", function() {
+        var colorThief = new ColorThief();
+        var palette = colorThief.getPalette(image[0], 4);
+        var dominantColor = colorThief.getColor(image[0]).join(); // instead of adding one by one with comma
+        var paletteColor1 = palette[0].join();
+        var paletteColor2 = palette[1].join();
+        var paletteColor3 = palette[2].join();
+        var paletteColor4 = palette[3].join();
+        html = "<div class='grid-list-row'>" +
+          "<div data-title=\"" + dataAnimes.title + "\" data-type=\"" + dataAnimes.type + "\" data-episodes=\"" + dataAnimes.episodes + "\" data-score=\"" + dataAnimes.score + "\" data-url=\"https://myanimelist.net/anime/" + dataAnimes.id + "\" data-id=\"" + dataAnimes.id + "\" data-status=\"" + dataAnimes.status + "\" data-synopsis=\"" + dataAnimes.synopsis.replaceAll(/<(?:.|\n)[^>]*?>/gm, "").replace(/\"/g,'&#34;').replace(/'/g,"&#39;") + "\" data-color-dominant=\"" + dominantColor + "\" data-color-palette1=\"" + paletteColor1 + "\" data-color-palette2=\"" + paletteColor2 + "\" data-color-palette3=\"" + paletteColor3 + "\" data-color-palette4=\"" + paletteColor4 + "\" class=\"col s6\">" +
+            "<img class=\"grayscale\" style=\"pointer-events:none\" src='" + dataAnimes.image + "'>" +
+            "<div class=\"grid-list-text-footer\" style=\"background:rgb(" + dominantColor + ")\">" +
+              "<span class=\"grid-list-text-footer-title\">" + dataAnimes.title + "</span>" +
             "</div>" +
-          "</div>";
-          $("#animeNameSearch_results").append(html);
-          $("#animeNameSearch_status").text("1 Result.");
-          grid_list_init();
-          $("#animeNameSearch_results img").css("pointer-events", "auto").removeClass("grayscale");
-          $(".animeInformation-loading-bar-wrapper")[0].style.setProperty("display", "none", "important");
-        }
+          "</div>" +
+        "</div>";
+        $("#animeNameSearch_results").append(html);
+        $("#animeNameSearch_status").text("1 Result.");
+        grid_list_init();
+        $("#animeNameSearch_results img").css("pointer-events", "auto").removeClass("grayscale");
+        $(".animeInformation-loading-bar-wrapper")[0].style.setProperty("display", "none", "important");
       });
       return;
     } else {
-      var dominantColor = paletteColor1 = paletteColor2 = paletteColor3 = paletteColor4 = "234,237,245";
+      var dominantColor = paletteColor1 = paletteColor2 = paletteColor3 = paletteColor4 = "108,133,189";
       html = "<div class='grid-list-row'>" +
         "<div data-title=\"" + dataAnimes.title + "\" data-type=\"" + dataAnimes.type + "\" data-episodes=\"" + dataAnimes.episodes + "\" data-score=\"" + dataAnimes.score + "\" data-url=\"https://myanimelist.net/anime/" + dataAnimes.id + "\" data-id=\"" + dataAnimes.id + "\" data-status=\"" + dataAnimes.status + "\" data-synopsis=\"" + dataAnimes.synopsis.replaceAll(/<(?:.|\n)[^>]*?>/gm, "").replace(/\"/g,'&#34;').replace(/'/g,"&#39;") + "\" data-color-dominant=\"" + dominantColor + "\" data-color-palette1=\"" + paletteColor1 + "\" data-color-palette2=\"" + paletteColor2 + "\" data-color-palette3=\"" + paletteColor3 + "\" data-color-palette4=\"" + paletteColor4 + "\" class=\"col s6\">" +
           "<img class=\"grayscale\" style=\"pointer-events:none\" src='" + dataAnimes.image + "'>" +
@@ -740,50 +749,52 @@ function animeSearch_formatResults(dataJSON) {
   function displayListItem(item, index) {
     // Add to an HTML string instead of appending because Appending closes tags automatically and making two columns with that is impossible.
     if(popup_mcss_options.dynamic_colors === true) {
-      $.ajax({
-        // Query to my server to get the dominant colors and the color palette, because using pure JS is hard af.
-        url: "http://www.foxinflame.tk/dev/dominantColor/getColors.php?palette=4&url=" + item.image,
-        method: "GET",
-        success: function(data) {
-          counter -= 1;
-          allcount++;
-          rowcount++;
-          // Making it easier to insert later on
-          var dominantColor = data.dominant.join(); // instead of adding one by one with comma
-          var paletteColor1 = data.palette[0].join();
-          var paletteColor2 = data.palette[1].join();
-          var paletteColor3 = data.palette[2].join();
-          var paletteColor4 = data.palette[3].join();
-          if((allcount % 2) == 1) {
-            html = "<div class=\"grid-list-row\">";
-            html += "<div data-title=\"" + item.title + "\" data-type=\"" + item.type + "\" data-episodes=\"" + item.episodes + "\" data-score=\"" + item.score + "\" data-url=\"https://myanimelist.net/anime/" + item.id + "\" data-id=\"" + item.id + "\" data-status=\"" + item.status + "\" data-synopsis=\"" + item.synopsis.replaceAll(/<(?:.|\n)[^>]*?>/gm, "").replace(/\"/g,'&#34;').replace(/'/g,"&#39;") + "\" data-color-dominant=\"" + dominantColor + "\" data-color-palette1=\"" + paletteColor1 + "\" data-color-palette2=\"" + paletteColor2 + "\" data-color-palette3=\"" + paletteColor3 + "\" data-color-palette4=\"" + paletteColor4 + "\" class=\"col s6\">" +
-              "<img class=\"grayscale\" style=\"pointer-events:none\" src=\"" + item.image + "\">" +
-              "<div class=\"grid-list-text-footer\" style=\"background:rgb(" + dominantColor + ")\">" +
-                "<span class=\"grid-list-text-footer-title\">" + item.title + "</span>" +
-              "</div>" +
-            "</div>";
-          } else {
-            html += "<div data-title=\"" + item.title + "\" data-type=\"" + item.type + "\" data-episodes=\"" + item.episodes + "\" data-score=\"" + item.score + "\" data-url=\"https://myanimelist.net/anime/" + item.id + "\" data-id=\"" + item.id + "\" data-status=\"" + item.status + "\" data-synopsis=\"" + item.synopsis.replaceAll(/<(?:.|\n)[^>]*?>/gm, "").replace(/\"/g,'&#34;').replace(/'/g,"&#39;") + "\" data-color-dominant=\"" + dominantColor + "\" data-color-palette1=\"" + paletteColor1 + "\" data-color-palette2=\"" + paletteColor2 + "\" data-color-palette3=\"" + paletteColor3 + "\" data-color-palette4=\"" + paletteColor4 + "\" class=\"col s6\">" +
-              "<img class=\"grayscale\" style=\"pointer-events:none\" src=\"" + item.image + "\">" +
-              "<div class=\"grid-list-text-footer\" style=\"background:rgb(" + dominantColor + ")\">" +
-                "<span class=\"grid-list-text-footer-title\">" + item.title + "</span>" +
-              "</div>" +
-            "</div>";
-            html += "</div>";
-            // If we use html() here instead of append() then it won't work because the rows need to pile on with the same search.
-            $("#animeNameSearch_results").append(html);
-           rowcount = 0;
-          }
-          if(counter === 0) {
-            complete();
-          }
+      var image = $("<img>", {
+        "class": "grayscale",
+        "style": "pointer-events:none;display:none",
+        "src": item.image
+      });
+      image.on("load", function() {
+        var colorThief = new ColorThief();
+        var palette = colorThief.getPalette(image[0], 4);
+        var dominantColor = colorThief.getColor(image[0]).join(); // instead of adding one by one with comma
+        var paletteColor1 = palette[0].join();
+        var paletteColor2 = palette[1].join();
+        var paletteColor3 = palette[2].join();
+        var paletteColor4 = palette[3].join();
+        counter -= 1;
+        allcount++;
+        rowcount++;
+        if((allcount % 2) == 1) {
+          html = "<div class=\"grid-list-row\">";
+          html += "<div data-title=\"" + item.title + "\" data-type=\"" + item.type + "\" data-episodes=\"" + item.episodes + "\" data-score=\"" + item.score + "\" data-url=\"https://myanimelist.net/anime/" + item.id + "\" data-id=\"" + item.id + "\" data-status=\"" + item.status + "\" data-synopsis=\"" + item.synopsis.replaceAll(/<(?:.|\n)[^>]*?>/gm, "").replace(/\"/g,'&#34;').replace(/'/g,"&#39;") + "\" data-color-dominant=\"" + dominantColor + "\" data-color-palette1=\"" + paletteColor1 + "\" data-color-palette2=\"" + paletteColor2 + "\" data-color-palette3=\"" + paletteColor3 + "\" data-color-palette4=\"" + paletteColor4 + "\" class=\"col s6\">" +
+            "<img class=\"grayscale\" style=\"pointer-events:none\" src=\"" + item.image + "\">" +
+            "<div class=\"grid-list-text-footer\" style=\"background:rgb(" + dominantColor + ")\">" +
+              "<span class=\"grid-list-text-footer-title\">" + item.title + "</span>" +
+            "</div>" +
+          "</div>";
+        } else {
+          html += "<div data-title=\"" + item.title + "\" data-type=\"" + item.type + "\" data-episodes=\"" + item.episodes + "\" data-score=\"" + item.score + "\" data-url=\"https://myanimelist.net/anime/" + item.id + "\" data-id=\"" + item.id + "\" data-status=\"" + item.status + "\" data-synopsis=\"" + item.synopsis.replaceAll(/<(?:.|\n)[^>]*?>/gm, "").replace(/\"/g,'&#34;').replace(/'/g,"&#39;") + "\" data-color-dominant=\"" + dominantColor + "\" data-color-palette1=\"" + paletteColor1 + "\" data-color-palette2=\"" + paletteColor2 + "\" data-color-palette3=\"" + paletteColor3 + "\" data-color-palette4=\"" + paletteColor4 + "\" class=\"col s6\">" +
+            "<img class=\"grayscale\" style=\"pointer-events:none\" src=\"" + item.image + "\">" +
+            "<div class=\"grid-list-text-footer\" style=\"background:rgb(" + dominantColor + ")\">" +
+              "<span class=\"grid-list-text-footer-title\">" + item.title + "</span>" +
+            "</div>" +
+          "</div>";
+          html += "</div>";
+          // If we use html() here instead of append() then it won't work because the rows need to pile on with the same search.
+          $("#animeNameSearch_results").append(html);
+         rowcount = 0;
+        }
+        if(counter === 0) {
+          complete();
         }
       });
+      return;
     } else {
       counter -= 1;
       allcount++;
       rowcount++;
-      var dominantColor = paletteColor1 = paletteColor2 = paletteColor3 = paletteColor4 = "234,237,245";
+      var dominantColor = paletteColor1 = paletteColor2 = paletteColor3 = paletteColor4 = "108,133,189";
       if((allcount % 2) == 1) {
         html = "<div class=\"grid-list-row\">";
         html += "<div data-title=\"" + item.title + "\" data-type=\"" + item.type + "\" data-episodes=\"" + item.episodes + "\" data-score=\"" + item.score + "\" data-url=\"https://myanimelist.net/anime/" + item.id + "\" data-id=\"" + item.id + "\" data-status=\"" + item.status + "\" data-synopsis=\"" + item.synopsis.replaceAll(/<(?:.|\n)[^>]*?>/gm, "").replace(/\"/g,'&#34;').replace(/'/g,"&#39;") + "\" data-color-dominant=\"" + dominantColor + "\" data-color-palette1=\"" + paletteColor1 + "\" data-color-palette2=\"" + paletteColor2 + "\" data-color-palette3=\"" + paletteColor3 + "\" data-color-palette4=\"" + paletteColor4 + "\" class=\"col s6\">" +
@@ -938,7 +949,7 @@ $("#animeEditForm #animeEditForm-back").on("click", function() {
       height: "120px"
     }, {duration: 250, queue: false}, $.bez([0.4, 0, 0.2, 1]));
     if(formAnimeStatus == "Update") {
-      $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link, .animeInformation>nav").fadeIn(100);
+      $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link").fadeIn(100);
       switch($("#animeEditForm-status").val()) {
         case "1":
           //Watching
@@ -1112,6 +1123,4 @@ function submitEditForm() {
     }
     $("#animeInformation_addToList").tooltip({delay: 50});
   }, 50);
-  $("#animeEditForm-back").attr("data-action", "close");
-  $("#animeEditForm-next").attr("data-action", "page1");
 };

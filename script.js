@@ -42,7 +42,7 @@ $(document).ready(function() {
   // -- Get the usernames stored on Chrome Settings
   chrome.storage.sync.get({
   // ---- Default credentials when none are specified
-    user_username: "ExampleAccoun",
+    user_username: "ExampleAccount",
     user_password: "Password123",
     user_verified: false,
     popup_action_open: 1,
@@ -94,6 +94,7 @@ $(document).ready(function() {
         $("#qmal_popup_mainContent").load("popups/qmal_popup.html #qmal_popup_mainContentLoad");
         insertJS("libraries/Bez/jquery.bez.min.js");
         insertJS("libraries/QuickFit/jquery.quickfit.js");
+        insertJS("libraries/ColorThief/color-thief.min.js");
         insertJS("popups/qmal_popup.js");
       }
     } else if(popup_action_open == 2) {
