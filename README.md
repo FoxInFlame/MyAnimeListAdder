@@ -11,11 +11,9 @@ QuickMyAnimeList (QMAL) is a handy Chrome extension that allows you to edit, add
 Official QuickMyAnimeList website is at https://www.foxinflame.tk/QuickMyAnimeList
 
 ## Webstore
-**It might go on the Web Store, thanks to a very kind friend called Ampharos!**
 
-I will not put this Chrome Extension on the webstore, simply because I don't want to pay the initial $5 fee.
-
-Although, I do have a feeling that this might become pretty popular if it was uploaded, due to the low amount of features for the existing apps related to MyAnimeList.
+**IT IS NOW ON THE CHROME WEBSTORE!!**
+Hundreds and thousands of thanks to Ampharos 2.0, who created the Web Store account!
 
 ## Installation
 Check out the official website to see specific instructions to installing Chrome extensions from websites.
