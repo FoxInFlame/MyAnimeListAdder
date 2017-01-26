@@ -1,8 +1,8 @@
 ![Banner](https://i.imgur.com/U2piPr4.png)
 # QuickMyAnimeList
-[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QuickMyAnimeList/total.svg)]() 
+[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://badges.gitter.im/QuickMyAnimeList/Lobby.svg)](https://gitter.im/QuickMyAnimeList/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=3600)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=3600)](https://github.com/FoxInFlame/QuickMyAnimeList/releases) [![Github All Releases](https://img.shields.io/github/downloads/FoxInFlame/QuickMyAnimeList/total.svg?maxAge=3600)]() 
 
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/d/hbaegdehoobdkpfffdjmecohehhegaoo.svg)]() [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/hbaegdehoobdkpfffdjmecohehhegaoo.svg)]() [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/hbaegdehoobdkpfffdjmecohehhegaoo.svg)]() [![Chrome Web Store](https://img.shields.io/chrome-web-store/rating-count/hbaegdehoobdkpfffdjmecohehhegaoo.svg)]()
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/d/hbaegdehoobdkpfffdjmecohehhegaoo.svg?maxAge=3600)]() [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/hbaegdehoobdkpfffdjmecohehhegaoo.svg?maxAge=3600)]() [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/hbaegdehoobdkpfffdjmecohehhegaoo.svg?maxAge=3600)]() [![Chrome Web Store](https://img.shields.io/chrome-web-store/rating-count/hbaegdehoobdkpfffdjmecohehhegaoo.svg?maxAge=3600)]()
 
 QuickMyAnimeList (QMAL) is a handy Chrome extension that allows you to edit, add, or delete an anime in your MyAnimeList list. Of course, there are many more features...? 
 
@@ -88,7 +88,7 @@ Not just those two MAL related API, but a lot of other JS/CSS libraries helped m
 - Collect anonymous usage information. (2.X)
 - Probably more. You know what, let me rephrase. There will 100% be more stuff. (1.X, 2.0, 3.0)
 
-#### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=2592000)]()
+#### Bugs / Problems / Suggestions / Support [![GitHub issues](https://img.shields.io/github/issues-raw/FoxInFlame/QuickMyAnimeList.svg?maxAge=3600)]() [![GitHub pull requests](https://img.shields.io/github/issues-pr/FoxInFlame/QuickMyAnimeList.svg?maxAge=3600)]()
 
 Everything is filed under Issues.
 
