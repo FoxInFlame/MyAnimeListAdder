@@ -10,15 +10,16 @@ QuickMyAnimeList (QMAL) is a handy Chrome extension that allows you to edit, add
 ## Official Website [![Website](https://img.shields.io/website-up-down-green-red/http/www.foxinflame.tk.svg?maxAge=2592000&label=official website)](https://www.foxinflame.tk/QuickMyAnimeList)
 Official QuickMyAnimeList website is at https://www.foxinflame.tk/QuickMyAnimeList
 
-## Webstore
-
-**IT IS NOW ON THE CHROME WEBSTORE!!**
-Hundreds and thousands of thanks to Ampharos 2.0, who created the Web Store account!
-
 ## Installation
-Check out the official website to see specific instructions to installing Chrome extensions from websites.
-
 A fairly strong computer might increase the smoothness because of all the transitions and AJAX requests.
+
+### Webstore
+You can install this extension from the Chrome Web Store. This is the recommended method, and is a lot easier. [Link to QMAL in the Store](https://chrome.google.com/webstore/detail/quickmyanimelist/hbaegdehoobdkpfffdjmecohehhegaoo).
+
+Hundreds and thousands of thanks to Ampharos 2.0, who created the Web Store account (it costs $5 to create one)!
+
+### Manual Installation
+Check out the official website to see specific instructions to installing Chrome extensions from websites.
 
 ## Updating
 Check out the official website to see specific instructions to updating QMAL.
@@ -54,23 +55,20 @@ Not just those two MAL related API, but a lot of other JS/CSS libraries helped m
 ## What's new!?
 ### Release 1.3.6!
 
-I-don't-even-know-what-changed-except-for-a-few-bugs
+== SHORT DESCRIPTION GOES HERE ==
 
 #### Features kept from previous version (1.3.5)
 
 - Ability to add edit, or delete an anime to your MAL account
 - Login to your MAL account in the options, and verify if the credentials are real or not
-- Choose what to open when icon clicked (popup, panel, website, etc)
+- Tons of configurable options
 - In-Page QMAL for gogoanime.io, crunchyroll.com and kissanime.to
 - Smooth and quick animations everywhere in the popup.
-- A lot more.
+- A lot more than you can imagine.
 
 #### New features of Version 1.3.6
 
-- Change most URLs to https
-- Faster dynamic coloring (now use library instead of external service).
-- Open panel from in-page, giving more use to panels.
-- Fixed 6 issues.
+- Fix 0 issues.
 - Probably more.
 
 #### Removed features from previous version (1.3.5)
@@ -85,7 +83,7 @@ I-don't-even-know-what-changed-except-for-a-few-bugs
 - More input fields in popup for chosen anime, such as start/end date, rewatched episodes, etc. (1.X)
 - Add an option to disable CPU-demanding animations and transitions. (1.X)
 - Login using Google+, Twitter, or third-party auth.
-- Use more of FoxInFlame's MAL scraper.
+- Use more of matomari API.
 - Encrypt username/password inside extension. (1.X)
 - Bug report / crash report. (1.X, 2.X)
 - Collect anonymous usage information. (2.X)
