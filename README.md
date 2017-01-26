@@ -52,11 +52,11 @@ Not just those two MAL related API, but a lot of other JS/CSS libraries helped m
 
 
 ## What's new!?
-### Release 1.3.6!
+### Release 1.3.7!
 
 == SHORT DESCRIPTION GOES HERE ==
 
-#### Features kept from previous version (1.3.5)
+#### Features kept from previous version (1.3.6)
 
 - Ability to add edit, or delete an anime to your MAL account
 - Login to your MAL account in the options, and verify if the credentials are real or not
@@ -65,12 +65,12 @@ Not just those two MAL related API, but a lot of other JS/CSS libraries helped m
 - Smooth and quick animations everywhere in the popup.
 - A lot more than you can imagine.
 
-#### New features of Version 1.3.6
+#### New features of Version 1.3.7
 
 - Fix 0 issues.
 - Probably more.
 
-#### Removed features from previous version (1.3.5)
+#### Removed features from previous version (1.3.6)
 
 - None.
 
