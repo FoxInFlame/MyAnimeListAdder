@@ -505,79 +505,85 @@ function checkIfInAnimeList(animeID) {
     dataTpe: "xml",
     async: true,
     success: function(data) {
-      $("anime", data).each(function(){
-        var watchedEpisodes;
-        var totalEpisodes;
-        if($("series_animedb_id", this).text() == animeID) {
-          //It's in the list! And it's in this "each" module
-          formAnimeStatus = "Update";
-          var my_status = $("my_status", this).text();
-          if(my_status == "1") {
-            //Watching
-            $("#animeInformation_addToList").attr("data-tooltip", "Watching: Ep " + $("my_watched_episodes", this).text());
-            currentStatus = "watching";
-          } else if (my_status == "2") {
-            //Completed
-            $("#animeInformation_addToList").attr("data-tooltip", "Completed");
-            currentStatus = "completed";
-          } else if (my_status == "3") {
-            //On Hold
-            $("#animeInformation_addToList").attr("data-tooltip", "On Hold");
-            currentStatus = "onhold";
-          } else if (my_status == "4") {
-            //Dropped
-            $("#animeInformation_addToList").attr("data-tooltip", "Dropped");
-            currentStatus = "dropped";
-          } else if (my_status == "6") {
-            //Plan to watch
-            $("#animeInformation_addToList").attr("data-tooltip", "Planned to Watch");
-            currentStatus = "ptw";
-          }
-          $("#animeInformation_addToList").tooltip({delay: 50});
-          var my_episodes = $("my_watched_episodes", this).text();
-          var my_rating = $("my_score", this).text();
-          var my_startDate = $("my_start_date", this).text();
-          var my_finishDate = $("my_finish_date", this).text();
-          var my_tags = $("my_tags", this).text();
-          $("#animeEditForm-status").val(my_status).material_select();
-          $("#animeEditForm-episodes").val(my_episodes);
-          $("#animeEditForm-rating").rateYo("option", "rating", my_rating);
-          $(".animeInformation #animeInformation_myScore").attr("data-tooltip", "My Score: " + my_rating).tooltip({delay:50});
-          if(my_startDate == "0000-00-00") {
-            $("#animeEditForm-startDate").val("");
+      if($("anime", data).length == 0) {
+        // That super rare case when the user doesn't even have a list and has literally no anime inside his/her account
+        // I happend to stumble across this case when experimenting with my beta account.
+        formAnimeStatus = "Add";
+      } else {
+        $("anime", data).each(function(){
+          var watchedEpisodes;
+          var totalEpisodes;
+          if($("series_animedb_id", this).text() == animeID) {
+            //It's in the list! And it's in this "each" module
+            formAnimeStatus = "Update";
+            var my_status = $("my_status", this).text();
+            if(my_status == "1") {
+              //Watching
+              $("#animeInformation_addToList").attr("data-tooltip", "Watching: Ep " + $("my_watched_episodes", this).text());
+              currentStatus = "watching";
+            } else if (my_status == "2") {
+              //Completed
+              $("#animeInformation_addToList").attr("data-tooltip", "Completed");
+              currentStatus = "completed";
+            } else if (my_status == "3") {
+              //On Hold
+              $("#animeInformation_addToList").attr("data-tooltip", "On Hold");
+              currentStatus = "onhold";
+            } else if (my_status == "4") {
+              //Dropped
+              $("#animeInformation_addToList").attr("data-tooltip", "Dropped");
+              currentStatus = "dropped";
+            } else if (my_status == "6") {
+              //Plan to watch
+              $("#animeInformation_addToList").attr("data-tooltip", "Planned to Watch");
+              currentStatus = "ptw";
+            }
+            $("#animeInformation_addToList").tooltip({delay: 50});
+            var my_episodes = $("my_watched_episodes", this).text();
+            var my_rating = $("my_score", this).text();
+            var my_startDate = $("my_start_date", this).text();
+            var my_finishDate = $("my_finish_date", this).text();
+            var my_tags = $("my_tags", this).text();
+            $("#animeEditForm-status").val(my_status).material_select();
+            $("#animeEditForm-episodes").val(my_episodes);
+            $("#animeEditForm-rating").rateYo("option", "rating", my_rating);
+            $(".animeInformation #animeInformation_myScore").attr("data-tooltip", "My Score: " + my_rating).tooltip({delay:50});
+            if(my_startDate == "0000-00-00") {
+              $("#animeEditForm-startDate").val("");
+            } else {
+              $("#animeEditForm-startDate").val(my_startDate.replaceAll("-", "/"));
+            }
+            if(my_finishDate == "0000-00-00") {
+              $("#animeEditForm-finishDate").val("");
+            } else {
+              $("#animeEditForm-finishDate").val(my_finishDate.replaceAll("-", "/"));
+            }
+            tagListArray = my_tags.split(",");
+            var data = new Object({data:[]});
+            if(tagListArray.length == 1 && tagListArray[0] == "") {
+              // No Tags set
+              data.data = "";
+            } else {
+              var index;
+              for(index = 0; index < tagListArray.length; index++) {
+                data.data.push({
+                  tag: tagListArray[index]
+                });
+              };
+            }
+            data.placeholder = "+ Tags";
+            data.secondaryPlaceholder = "Enter tags.";
+            tags = data;
+            $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").css("background", "#2e8ba2");
+            $("#animeEditForm nav .nav-wrapper span i").text("edit");
+            $(".animeInformation #animeInformation_myScore").show();
+            $(".animeInformation #animeInformation_deleteFromList").show();
+            $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "none", "important");
+            return false;
           } else {
-            $("#animeEditForm-startDate").val(my_startDate.replaceAll("-", "/"));
+            //It could be in the list, but not in this particular "each"
+            formAnimeStatus = "Add";
           }
-          if(my_finishDate == "0000-00-00") {
-            $("#animeEditForm-finishDate").val("");
-          } else {
-            $("#animeEditForm-finishDate").val(my_finishDate.replaceAll("-", "/"));
-          }
-          tagListArray = my_tags.split(",");
-          var data = new Object({data:[]});
-          if(tagListArray.length == 1 && tagListArray[0] == "") {
-            // No Tags set
-            data.data = "";
-          } else {
-            var index;
-            for(index = 0; index < tagListArray.length; index++) {
-              data.data.push({
-                tag: tagListArray[index]
-              });
-            };
-          }
-          data.placeholder = "+ Tags";
-          data.secondaryPlaceholder = "Enter tags.";
-          tags = data;
-          $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").css("background", "#2e8ba2");
-          $("#animeEditForm nav .nav-wrapper span i").text("edit");
-          $(".animeInformation #animeInformation_myScore").show();
-          $(".animeInformation #animeInformation_deleteFromList").show();
-          $(".animeInformation-edit-preloader-wrapper")[0].style.setProperty("display", "none", "important");
-          return false;
-        } else {
-          //It could be in the list, but not in this particular "each"
-          formAnimeStatus = "Add";
         }
       });
       if(formAnimeStatus == "Add") {
