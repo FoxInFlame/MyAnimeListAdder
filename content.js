@@ -370,7 +370,7 @@ function contentScriptGoGoAnime() {
         $("#qmal-update-anime-name").val(anime_name);
         $("#qmal-update-anime-episodes").val(anime_episode);
         $.ajax({
-          url: "http://www.matomari.tk/api/0.3/anime/search/" + anime_name + ".json",
+          url: "https://www.matomari.tk/api/0.3/anime/search/" + anime_name + ".json",
           async: false,
           dataType: "json",
           type: "GET",
@@ -605,7 +605,7 @@ function contentScriptCrunchyroll() {
     });
     return;
   }
-  if(window.location.href.contains("crunchyroll.com") && !$("#showmedia #main_content #showmedia_video #showmedia_video_box")[0]) {
+  if(window.location.href.contains("crunchyroll.com") && typeof onCrunchyrollPlayerReady == "function") {//!$("#showmedia #main_content #showmedia_video #showmedia_video_box")[0]) {
     console.info("[QMAL@Crunchyroll] QMAL has detected that even though there is 'episode' in the URL, this is not an actual episode website.");
     return;
   }
@@ -634,7 +634,7 @@ function contentScriptCrunchyroll() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog qmal-dialog-crunchyroll' id='qmal-dialog-updateadd'>"+
+      "<div class='qmal-dialog qmal-dialog-gogoanime' id='qmal-dialog-updateadd'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -721,13 +721,13 @@ function contentScriptCrunchyroll() {
         $("#qmal-update-anime-name").val(anime_name);
         $("#qmal-update-anime-episodes").val(anime_episode);
         $.ajax({
-          url: "http://www.matomari.tk/api/0.3/anime/search/" + anime_name + ".json",
+          url: "https://www.matomari.tk/api/0.3/anime/search/" + anime_name + ".json",
           async: false,
           dataType: "json",
           type: "GET",
           cache: true,
           error: function(jqXHR, textStatus, errorThrown) {
-            console.warn("[QMAL@GoGoAnime] AJAX Aborted:");
+            console.warn("[QMAL@Crunchyroll] AJAX Aborted:");
             console.info(jqXHR);
             console.info("                 Error Status: " + textStatus);
             console.info("                 Error HTML: " + errorThrown);
@@ -985,7 +985,7 @@ function contentScriptKissAnime() {
         "</div>" +
         "<div class='overlay'></div>" +
       "</div>" +
-      "<div class='qmal-dialog qmal-dialog-kissanime' id='qmal-dialog-updateadd'>"+
+      "<div class='qmal-dialog qmal-dialog-gogoanime' id='qmal-dialog-updateadd'>"+
         "<div class='wrapperInside'>" +
           "<div class='dialogContainer'>" +
             "<div class='dialogContent'>" +
@@ -1079,13 +1079,13 @@ function contentScriptKissAnime() {
         $("#qmal-update-anime-name").val(anime_name);
         $("#qmal-update-anime-episodes").val(anime_episode);
         $.ajax({
-          url: "http://www.matomari.tk/api/0.3/anime/search/" + anime_name + ".json",
+          url: "https://www.matomari.tk/api/0.3/anime/search/" + anime_name + ".json",
           async: false,
           dataType: "json",
           type: "GET",
           cache: true,
           error: function(jqXHR, textStatus, errorThrown) {
-            console.warn("[QMAL@GoGoAnime] AJAX Aborted:");
+            console.warn("[QMAL@KissAnime] AJAX Aborted:");
             console.info(jqXHR);
             console.info("                 Error Status: " + textStatus);
             console.info("                 Error HTML: " + errorThrown);
