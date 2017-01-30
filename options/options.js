@@ -274,19 +274,30 @@ function restore_options_credentials() {
           xhr.open("GET", "https://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.image.ID.php?id=" + data.id, true);
           var imageBase64;
           xhr.onload = function(e) {
-            var reader = new FileReader();
-            reader.onloadend = function() {
-              imageBase64 = reader.result;
+            if(xhr.status == 400) {
               chrome.storage.sync.set({
-                user_image_64: imageBase64
+                user_image_64: "/images/default_user.png"
               }, function() {
                 $(".verified").prop("checked", true);
                 $("#loggedIn img").attr("src", imageBase64);
                 $("#loggedIn h2").html(items.user_username);
                 reloadSidebar();
               });
-            };
-            reader.readAsDataURL(xhr.response);
+            } else {
+              var reader = new FileReader();
+              reader.onloadend = function() {
+                imageBase64 = reader.result;
+                chrome.storage.sync.set({
+                  user_image_64: imageBase64
+                }, function() {
+                  $(".verified").prop("checked", true);
+                  $("#loggedIn img").attr("src", imageBase64);
+                  $("#loggedIn h2").html(items.user_username);
+                  reloadSidebar();
+                });
+              };
+              reader.readAsDataURL(xhr.response);
+            }
           }
           xhr.send();
         }
@@ -336,11 +347,17 @@ function save_options_credentials() {
         url: "https://www.matomari.tk/api/0.3/user/info/" + username + ".json",
         method: "GET",
         dataType: "json",
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log("Error querying to matomari for user info : ");
+          console.log(jqXHR);
+        },
         success: function(data) {
           Materialize.toastRemove();
           if(data.error) {
             console.log("Error querying to matomari for user info : " + data.error);
             chrome.storage.sync.set({
+              user_username: username,
+              user_password: password,
               user_image_64: "/images/default_user.png",
               user_verified: true
             }, function() {
@@ -354,25 +371,35 @@ function save_options_credentials() {
           xhr.open("GET", "https://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.image.ID.php?id=" + data.id, true);
           var imageBase64;
           xhr.onload = function(e) {
-            var reader = new FileReader();
-            reader.onloadend = function() {
-              imageBase64 = reader.result;
+            if(xhr.status == 400) {
               chrome.storage.sync.set({
                 user_username: data.username,
                 user_password: password,
-                user_image_64: imageBase64,
-                user_verified: true
+                user_image_64: "/images/default_user.png"
               }, function() {
-                chrome.extension.getBackgroundPage().updateBadge();
-                document.getElementById("loggedIn").style.display = "block";
                 $(".verified").prop("checked", true);
                 $("#loggedIn img").attr("src", imageBase64);
                 $("#loggedIn h2").html(username);
                 reloadSidebar();
               });
-            };
-            reader.readAsDataURL(xhr.response);
-          };
+            } else {
+              var reader = new FileReader();
+              reader.onloadend = function() {
+                imageBase64 = reader.result;
+                chrome.storage.sync.set({
+                  user_username: data.username,
+                  user_password: password,
+                  user_image_64: imageBase64
+                }, function() {
+                  $(".verified").prop("checked", true);
+                  $("#loggedIn img").attr("src", imageBase64);
+                  $("#loggedIn h2").html(username);
+                  reloadSidebar();
+                });
+              };
+              reader.readAsDataURL(xhr.response);
+            }
+          }
           xhr.send();
         }
       });
