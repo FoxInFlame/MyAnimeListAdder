@@ -442,16 +442,16 @@ String.prototype.changeDatetoMALFormat = function() {
   if(this == "") {
     return;
   }
-  dateString_array = this.split("/");
+  var dateString_array = this.split("/");
   if(parseInt(dateString_array[1]) > 12) {
     dateString_array[1] = parseInt(dateString_array[1]) % 12;
   }
-  date = new Date(dateString_array[0], (dateString_array[1] - 1), dateString_array[2]);
+  var date = new Date(dateString_array[0], (dateString_array[1] - 1), dateString_array[2]);
   if(date.isDateValid === false) {
     console.error("Date is not valid @ String.prototype.changeDatetoMALFormat");
     return;
   } else {
-    return ("0" + date.getMonth().toString()).slice(-2) + ("0" + date.getDate()).slice(-2) + date.getFullYear();
+    return ("0" + (date.getMonth() + 1).toString()).slice(-2) + ("0" + date.getDate()).slice(-2) + date.getFullYear();
   }
 }
 
