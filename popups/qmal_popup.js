@@ -73,7 +73,7 @@ function grid_list_init() {
       $(".animeInformation .animeInformation_score").text(selected_score);
     }
     $("#animeEditForm-episodes").attr("max", selected_episodes);
-    $(".animeInformation #animeInformation_synopsis").text(selected_synopsis);
+    $(".animeInformation #animeInformation_synopsis").html(selected_synopsis); // use .html() instead of .text() to render <br/> correctly
     $(".animeInformation #animeInformation_link").attr("href", selected_url);
     checkIfInAnimeList(selected_id);
     $(".rateYo-rating").rateYo({
