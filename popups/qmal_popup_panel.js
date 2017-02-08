@@ -18,7 +18,8 @@ $(document).ready(function() {
   }, function(response) {
     if(response.id) {
       // ID is set! Show only this anime.
-      $("html").css("display", "none");
+      $("#qmal_popup_mainContentLoad").css("display", "none");
+      $("html").append("<div id=\"paneOneOnlyLoader\">Loading...</div>");
       showOneOnly = true;
       renderShowOneOnly(response.id, response.title);
     }
@@ -75,13 +76,14 @@ function renderShowOneOnly(id, title) {
       }
       showOnlyOne_formatResult(data);
     },
-    cache: false
+    cache: true
   });
 }
 
 function showOnlyOne_formatResult(data) {
-  $("html").fadeIn(300);
+  $("#qmal_popup_mainContentLoad").fadeIn(300);
   $("html").css("background", "#2e51a2");
+  $("#paneOneOnlyLoader").remove();
   $(".animeInformation #animeInformation_image").attr("src", data.image_url);
   $(".animeInformation .animeInformation_id").text(data.id);
   $(".animeInformation .animeInformation_title").text(data.title);
@@ -91,7 +93,7 @@ function showOnlyOne_formatResult(data) {
   } else {
      $(".animeInformation .animeInformation_episodes").text(data.episodes);
   }
-  $(".animeInformation #animeInformation_synopsis").text(data.synopsis);
+  $(".animeInformation #animeInformation_synopsis").html(data.synopsis);
   $(".animeInformation #animeInformation_link").attr("href", "https://myanimelist.net/anime/" + data.id);
   if(data.score === null) {
     $(".animeInformation .animeInformation_score").text("N/A");
@@ -180,7 +182,7 @@ function grid_list_init() {
       $(".animeInformation .animeInformation_score").text(selected_score);
     }
     $("#animeEditForm-episodes").attr("max", selected_episodes);
-    $(".animeInformation #animeInformation_synopsis").text(selected_synopsis);
+    $(".animeInformation #animeInformation_synopsis").html(selected_synopsis);
     $(".animeInformation #animeInformation_link").attr("href", selected_url);
     checkIfInAnimeList(selected_id);
     $(".rateYo-rating").rateYo({
@@ -1107,7 +1109,6 @@ function submitEditForm() {
     marginTop: "40px"
   });
   $("#addAnimeContainer").fadeOut(400);
-  $("#animeInformation_link, .animeInformation>nav").fadeIn(100);
   $("#animeEditForm #animeEditForm-back").attr("data-action", "close").fadeOut(100);
   $("#animeEditForm #animeEditForm-next").attr("data-action", "page2").css("background", "#2e51a2").html("<i class=\"material-icons\">arrow_forward</i>").fadeOut(100);
   $(".animeInformation #animeInformation_image-wrapper").animate({
