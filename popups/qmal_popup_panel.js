@@ -442,16 +442,16 @@ String.prototype.changeDatetoMALFormat = function() {
   if(this == "") {
     return;
   }
-  var dateString_array = this.split("/");
+  dateString_array = this.split("/");
   if(parseInt(dateString_array[1]) > 12) {
     dateString_array[1] = parseInt(dateString_array[1]) % 12;
   }
-  var date = new Date(dateString_array[0], (dateString_array[1] - 1), dateString_array[2]);
+  date = new Date(dateString_array[0], (dateString_array[1] - 1), dateString_array[2]);
   if(date.isDateValid === false) {
     console.error("Date is not valid @ String.prototype.changeDatetoMALFormat");
     return;
   } else {
-    return ("0" + (date.getMonth() + 1).toString()).slice(-2) + ("0" + date.getDate()).slice(-2) + date.getFullYear();
+    return ("0" + date.getMonth().toString()).slice(-2) + ("0" + date.getDate()).slice(-2) + date.getFullYear();
   }
 }
 
@@ -584,8 +584,8 @@ function checkIfInAnimeList(animeID) {
             //It could be in the list, but not in this particular "each"
             formAnimeStatus = "Add";
           }
-        }
-      });
+        });
+      };
       if(formAnimeStatus == "Add") {
         currentStatus = "none";
         $("#animeEditForm-tags div.chip").remove();
@@ -1097,7 +1097,10 @@ function submitEditForm() {
   
   $("#animeInformation_addToList").html("<i class=\"material-icons\">edit</i>").css("background", "#2e8ba2");
   $("#animeEditForm nav .nav-wrapper span i").text("edit");
-  $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link, .animeInformation>nav").fadeIn(100);
+  $("#animeInformation_deleteFromList, #animeInformation_myScore, #animeInformation_link").fadeIn(100);
+  if(!showOneOnly) {
+    $(".animeInformation>nav").fadeIn(100);
+  }
   $(".animeInformation #animeInformation_myScore").attr("data-tooltip", "My Score: " + rating).tooltip({delay:50});
   formAnimeStatus = "Update";
   $("#animeEditForm-fieldset1").animate({
