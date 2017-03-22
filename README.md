@@ -1,12 +1,12 @@
 ![Banner](https://i.imgur.com/U2piPr4.png)
 # QuickMyAnimeList
-[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://img.shields.io/gitter/room/nwjs/nw.js.svg?maxAge=3600)]() [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=3600)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=3600&label=github release)](https://github.com/FoxInFlame/QuickMyAnimeList/releases)
+[![Join the chat at https://gitter.im/QuickMyAnimeList/Lobby](https://img.shields.io/gitter/room/nwjs/nw.js.svg?maxAge=3600)]() [![license](https://img.shields.io/github/license/FoxInFlame/QuickMyAnimeList.svg?maxAge=3600)]() [![GitHub release](https://img.shields.io/github/release/FoxInFlame/QuickMyAnimeList.svg?maxAge=3600&label=github%20release)](https://github.com/FoxInFlame/QuickMyAnimeList/releases)
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/d/hbaegdehoobdkpfffdjmecohehhegaoo.svg?maxAge=3600)](https://chrome.google.com/webstore/detail/quickmyanimelist/hbaegdehoobdkpfffdjmecohehhegaoo) [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/hbaegdehoobdkpfffdjmecohehhegaoo.svg?maxAge=3600)](https://chrome.google.com/webstore/detail/quickmyanimelist/hbaegdehoobdkpfffdjmecohehhegaoo) [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/hbaegdehoobdkpfffdjmecohehhegaoo.svg?maxAge=3600)](https://chrome.google.com/webstore/detail/quickmyanimelist/hbaegdehoobdkpfffdjmecohehhegaoo) [![Chrome Web Store](https://img.shields.io/chrome-web-store/rating-count/hbaegdehoobdkpfffdjmecohehhegaoo.svg?maxAge=3600)](https://chrome.google.com/webstore/detail/quickmyanimelist/hbaegdehoobdkpfffdjmecohehhegaoo)
 
 QuickMyAnimeList (QMAL) is a handy Chrome extension that allows you to edit, add, or delete an anime in your MyAnimeList list. Of course, there are many more features...? 
 
-## Official Website [![Website](https://img.shields.io/website-up-down-green-red/http/www.foxinflame.tk.svg?maxAge=2592000&label=official website)](https://www.foxinflame.tk/QuickMyAnimeList)
+## Official Website [![Website](https://img.shields.io/website-up-down-green-red/http/www.foxinflame.tk.svg?maxAge=2592000&label=official%20website)](https://www.foxinflame.tk/QuickMyAnimeList)
 Official QuickMyAnimeList website is at https://www.foxinflame.tk/QuickMyAnimeList
 
 ## Installation
@@ -54,7 +54,7 @@ Not just those two MAL related API, but a lot of other JS/CSS libraries helped m
 ## What's new!?
 ### Release 1.3.7!
 
-== SHORT DESCRIPTION GOES HERE ==
+An improved In-Page QMAL!
 
 #### Features kept from previous version (1.3.6)
 
@@ -67,6 +67,8 @@ Not just those two MAL related API, but a lot of other JS/CSS libraries helped m
 
 #### New features of Version 1.3.7
 
+- Sleek redesign of In-Page QMAL that looks amazing. Like really, amazing.
+- "Remind Later" in In-Page QMAL now shows the dialog again 2 minutes before the end of the video, instead of an alert before you leave the page.
 - Fix 0 issues.
 - Probably more.
 
