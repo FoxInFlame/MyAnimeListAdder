@@ -4,7 +4,7 @@
   "short_name": "QMAL",
   "author": "FoxInFlame",
   "description": "The dream Chrome Extension for you with a MAL account",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3DdRgz7VC7qkNiPELTPTXJLPpCewwJ1zT0sanM++hs1SAuBcnWNFqfREp1sw5CBt1auSkYL8xGxg+iozOI9Q5hRw/14brCo2Q+KwDS8FMMnQVtO1W4ekzzkOtRJyDnGNkBWGN0Ku38k4w1GT4TX+0SqEU7l3Lv2qk5aVHtikh7MyQ/ZhB4iALv8bXw/tYMrfHGsRa7Go0lfqzyCX01CARsDw025OWU+s1UJ4YDLs5hI2I37CsIqiEDfbnQTU3FU/qskNmuc5AAU3zRNyTjxOIbRiSVwBSbrWvtRKN9UsrvKNJkOOndSic0qb0CR7EFbVJ+4AFBDTOzqf5Q12YGG5cQIDAQAB",
   "offline_enabled": true,
   "update_url": "http://www.foxinflame.tk/QuickMyAnimeList/source/updates.xml",
@@ -22,8 +22,8 @@
     "alarms",
     "*://*.gogoanime.io/*",
     "*://*.crunchyroll.com/*",
-    "http://www.foxinflame.tk/QuickMyAnimeList/*",
-    "http://www.matomari.tk/*",
+    "*://www.foxinflame.tk/QuickMyAnimeList/*",
+    "*://www.matomari.tk/*",
     "*://*.kissanime.to/*",
     "*://*.kissanime.ru/*",
     "*://*.myanimelist.net/*",
@@ -48,10 +48,28 @@
     "matches": [
       "*://*.gogoanime.io/*",
       "*://*.crunchyroll.com/*",
-      "http://www.foxinflame.tk/QuickMyAnimeList/*",
+      "*://www.foxinflame.tk/QuickMyAnimeList/*",
       "*://*.kissanime.to/*",
       "*://*.kissanime.ru/*",
       "*://*.myanimelist.net/*"
+    ],
+    "exclude_matches": [
+      "*://*.gogoanime.io/*.html",
+      "*://*.gogoanime.io/category/*",
+      "*://*.gogoanime.io/",
+      "https://myanimelist.net/mangalist/*",
+      "https://myanimelist.net/forums/*"
+    ]
+  }, {
+    "run_at": "document_end",
+    "all_frames": true,
+    "js": [
+      "libraries/jQuery/jquery-2.2.3.min.js",
+      "xml2json.min.js",
+      "content_iframe.js"
+    ],
+    "matches": [
+      "*://*.openload.co/embed/*"
     ],
     "exclude_matches": [
       "*://*.gogoanime.io/*.html",

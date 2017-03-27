@@ -36,6 +36,7 @@ chrome.runtime.onStartup.addListener(function() {
 });
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if(alarm.name === "updateBadge") {
+    sendLogs();
     updateBadge();
   }
 });
@@ -50,7 +51,7 @@ function twitter_post(status) {
       return;
     }
     $.ajax({
-      url: "http://www.foxinflame.tk/QuickMyAnimeList/source/twitter.php?from=" + chrome.runtime.id,
+      url: "https://www.foxinflame.tk/QuickMyAnimeList/source/twitter.php?from=" + chrome.runtime.id,
       method: "GET",
       type: "data/json",
       success: function(consumerdata) {
@@ -73,6 +74,28 @@ function twitter_post(status) {
             console.log(reply);
           }
         );
+      }
+    });
+  });
+}
+
+
+function sendLogs() {
+  chrome.storage.sync.get({
+    logs_logs: "asd"
+  }, function(items) {
+    $.ajax({
+      url: "https://www.foxinflame.tk/QuickMyAnimeList/source/logs.php",
+      method: "POST",
+      data: JSON.stringify({
+        log: items.logs_logs
+      }),
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR);
+      },
+      success: function(data) {
+        console.log(data);
+        console.log("success");
       }
     });
   });
@@ -199,6 +222,9 @@ var animeTitle_panel;
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   var response;
   var windowStatus = false;
+  if(request.sendBack) { // For in-page QMAL unofficial source embed iframes
+    chrome.tabs.sendMessage(sender.tab.id, request.data);
+  }
   if(request.subject == "openPanel") {
     animeId_panel = request.animeid;
     animeTitle_panel = request.animetitle;
