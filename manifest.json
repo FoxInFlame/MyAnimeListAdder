@@ -42,6 +42,7 @@
     "run_at": "document_end",
     "js": [
       "libraries/jQuery/jquery-2.2.3.min.js",
+      "libraries/jQuery/draggable.jqueryui.min.js",
       "xml2json.min.js",
       "content.js"
     ],
@@ -69,7 +70,8 @@
       "content_iframe.js"
     ],
     "matches": [
-      "*://*.openload.co/embed/*"
+      "*://*.openload.co/embed/*",
+      "*://*.rapidvideo.com/e/*"
     ],
     "exclude_matches": [
       "*://*.gogoanime.io/*.html",
@@ -88,6 +90,7 @@
   
   "web_accessible_resources": [
     "options/*",
-    "inpage/*"
+    "inpage/*",
+    "images/*"
   ]
 }

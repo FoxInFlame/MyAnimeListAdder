@@ -41,7 +41,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
   }
 });
 
-function twitter_post(status) {
+function twitter_post(status, callback) {
   chrome.storage.sync.get({
     twitter_oauth_token: "",
     twitter_oauth_token_secret: "",
@@ -63,15 +63,15 @@ function twitter_post(status) {
         codebird.__call(
           "statuses_update",
           {
-            "status": status
+            "status": "Hi there, this is an automated test tweet."
           },
           function(reply) {
-            console.log("A tweet was posted to " + reply.user.screen_name);
+            callback(reply);
+          /*console.log("A tweet was posted to " + reply.user.screen_name);
             console.log(reply.text);
             if(reply.truncated) {
               console.log("It was truncated.");
-            }
-            console.log(reply);
+            }*/
           }
         );
       }
@@ -245,7 +245,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     animeTitle_panel = "";
   }
   if(request.subject == "twitter-post") {
-    twitter_post(request.body);
+    twitter_post(request.body, function(data) {
+      console.log(data);
+      sendResponse(data);
+    });
   }
   if(request.updateStatus == "add") {
     response = addAnimeInList({
