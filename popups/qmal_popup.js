@@ -343,7 +343,7 @@ String.prototype.changeDatetoMALFormat = function() {
     console.error("Date is not valid @ String.prototype.changeDatetoMALFormat");
     return;
   } else {
-    return ("0" + date.getMonth().toString()).slice(-2) + ("0" + date.getDate()).slice(-2) + date.getFullYear();
+    return ("0" + (date.getMonth() + 1).toString()).slice(-2) + ("0" + date.getDate()).slice(-2) + date.getFullYear();
   }
 }
 
@@ -377,7 +377,7 @@ var formAnimeStatus;
 function checkIfInAnimeList(animeID) {
   if(popup_mcss_options.show_details === true) {
     $.ajax({
-      url: "http://www.matomari.tk/api/0.4/methods/anime.info.ID.php?id=" + animeID,
+      url: "https://www.matomari.tk/api/0.4/methods/anime.info.ID.php?id=" + animeID,
       method: "GET",
       dataType: "json",
       error: function(jqXHR, textStatus) {
@@ -888,7 +888,7 @@ $("#animeEditForm #animeEditForm-back").on("click", function() {
 $("#animeEditForm-fieldset2-tags-autoFill").click(function() {
   var toastID = Materialize.toast("Please wait....");
   $.ajax({
-    url: "http://www.matomari.tk/api/0.3/anime/info/" + $(".animeInformation .animeInformation_id").text() + ".json",
+    url: "https://www.matomari.tk/api/0.3/anime/info/" + $(".animeInformation .animeInformation_id").text() + ".json",
     method: "GET",
     success: function(data) {
       function containsObject(obj, list) {

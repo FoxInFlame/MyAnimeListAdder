@@ -1,6 +1,4 @@
 if(!window.isTop) {
-  console.log(document.getElementsByClassName("jwplayer"));
-  console.log(document.getElementsByClassName("jwplayer").length);
   if(window.location.href.indexOf("openload.co") !== -1) { // Only if this iframe is OpenLoad (VideoJS)
     console.log("[QMAL] Detected OpenLoad. Initialising script.");
     window.setInterval(checkVideoTimeVideoJS, 10000);

@@ -1,20 +1,19 @@
-var number = 0;
-var loginUsername;
-var loginPassword;
-var verified;
-var badge_interval;
-var badge_color;
-var badge_count;
-var badge_text;
+let loginUsername,
+    loginPassword,
+    verified,
+    badge_interval,
+    badge_color,
+    badge_count,
+    badge_text;
 
-var count_watching = 0;
-var count_completed = 0;
-var count_onhold = 0;
-var count_dropped = 0;
-var count_planned = 0;
-var count_total = 0;
+let count_watching = 0,
+    count_completed = 0,
+    count_onhold = 0,
+    count_dropped = 0,
+    count_planned = 0,
+    count_total = 0;
 
-var initial = 1;
+let initial = 1;
 
 chrome.runtime.onInstalled.addListener(function(details) {
   if(details.reason == "install") {
@@ -217,8 +216,8 @@ function updateBadge() {
   });
 }
 
-var animeId_panel;
-var animeTitle_panel;
+let animeId_panel,
+    animeTitle_panel;
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   var response;
   var windowStatus = false;
@@ -250,8 +249,24 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       sendResponse(data);
     });
   }
+  if(request.subject == "listupdate") {
+    updateAnimeInList(request.info, function(verb) {
+      sendResponse({
+        answer: verb
+      });
+    });
+    return true;
+  }
+  if(request.subject == "sendMessage") {
+    sendPrivateMessage(request.message, function(response) {
+      sendResponse({
+        message: response
+      });
+    });
+    return true;
+  }
   if(request.updateStatus == "add") {
-    response = addAnimeInList({
+    response = v03_addAnimeInList({
       id: request.id,
       episodes: request.episodes,
       status: "1",
@@ -260,7 +275,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     });
   }
   if(request.updateStatus == "update") {
-    response = updateAnimeInList({
+    response = v03_updateAnimeInList({
       id: request.id,
       episodes: request.episodes,
       status: request.status,
@@ -273,8 +288,47 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   });
 });
 
+function sendPrivateMessage(details, callback) {
+  $.ajax({
+    url: "https://www.matomari.tk/api/0.4/methods/user.message.php",
+    type: "POST",
+    data: JSON.stringify(details),
+    username: loginUsername,
+    password: loginPassword,
+    contentType: "json",
+    success: function(data) {
+      callback(data.message);
+    },
+    error: function(xhr) {
+      callback(JSON.parse(xhr.responseText));
+    }
+  });
+}
+function updateAnimeInList(details, callback) {
+  $.ajax({
+    url: "https://www.matomari.tk/api/0.4/methods/user.list.anime.ID.2.php?id=" + details.id,
+    type: "POST",
+    data: JSON.stringify(details),
+    username: loginUsername,
+    password: loginPassword,
+    contentType: "json",
+    success: function(data, textStatus, xhr) {
+      if(xhr.status == 200) {
+        console.log("[DONE] Anime ID " + details.id + " has been updated on " + loginUsername + "'s list!");
+        callback("updated");
+      } else if(xhr.status == 201) {
+        console.log("[DONE] Anime ID " + details.id + " has been added on " + loginUsername + "'s list!");
+        callback("added");
+      }
+    },
+    error: function(xhr, textStatus, thrownError) {
+      callback(JSON.parse(xhr.responseText));
+    }
+  });
+}
+
 // ---- Update anime function
-function updateAnimeInList(details) {
+function v03_updateAnimeInList(details) {
   
   var editXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
   "<entry>" +
@@ -315,7 +369,7 @@ function updateAnimeInList(details) {
 }
 
 // ---- Add anime function
-function addAnimeInList(details) {
+function v03_addAnimeInList(details) {
   
   var addXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
   "<entry>" +

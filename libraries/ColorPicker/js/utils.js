@@ -248,5 +248,5 @@ if (!$.easing.easeout) {
 		return -delta * ((n=n/duration-1)*n*n*n - 1) + firstNum;
 	};
 }
-
+	
 })(jQuery);

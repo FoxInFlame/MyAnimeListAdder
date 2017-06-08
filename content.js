@@ -53,7 +53,7 @@ $(document).ready(function() {
     user_username: "ExampleAccount",
     user_password: "Password123",
     user_verified: false,
-    inpage_sites: ["gogoanime.io", "kissanime.ru", "crunchyroll.com", "myanimelist.net"],
+    inpage_sites: ["gogoanime.io", "kissanime.ru", "9anime.to", "crunchyroll.com", "myanimelist.net"],
     inpage_showseriesrating: true,
     inpage_showepisoderating: true,
     inpage_showseriescomment: true,
@@ -82,9 +82,10 @@ $(document).ready(function() {
         }
         $("head").append("<link rel='stylesheet' href='//www.foxinflame.tk/QuickMyAnimeList/source/content.css' type='text/css'>");
         loadStatus();
-        if(location.contains("gogoanime.io")) contentScriptGoGoAnime();
-        if(location.contains("crunchyroll.com")) contentScriptCrunchyroll();
-        if(location.contains("kissanime")) contentScriptKissAnime();
+        if(location.contains("gogoanime.io")) contentScriptAnimeSite();
+        if(location.contains("9anime.to")) contentScriptAnimeSite();
+        if(location.contains("crunchyroll.com")) contentScriptAnimeSite();
+        if(location.contains("kissanime")) contentScriptAnimeSite();
       }
     });
   });
@@ -302,7 +303,7 @@ var QMALdialog = function(option, value, status, time, extra) {
   if(option instanceof jQuery) {
     if(!value && !status && !time && !extra) {
       // If first parameter is a jQuery object, return if that is visible.
-      return option.is(":visible");
+      return option.is(":visible") && !option.hasClass("qmal-dialog-min");
     } else {
       if(option.find(".qmal-dialog-text").length == 0) throw new Error("Element must be a QMAL dialog element!");
       // Edit the existing dialog
@@ -412,7 +413,7 @@ var QMALdialog = function(option, value, status, time, extra) {
   } else if(option == "minimise" || option == "maximise") {
     const floatingbutton = value.find(".qmal-dialog-floatingbutton");
     if(floatingbutton.length === 0) return;
-    let visible = value.hasClass("qmal-dialog-min");
+    let visible = !value.hasClass("qmal-dialog-min");
     if(option == "minimise") {
       value.find(".qmal-dialog-floatingbutton i.material-icons").html("navigate_before");
       value.addClass("qmal-dialog-min");
@@ -513,9 +514,9 @@ var QMALdialog = function(option, value, status, time, extra) {
 var initialiseFloatingButtonEvents = function(dialog) {
   const floatingbutton = dialog.find(".qmal-dialog-floatingbutton");
   if(floatingbutton.length === 0) return;
-  let visible = true;
+  let visible = !dialog.hasClass("qmal-dialog-min");
   floatingbutton.on("click", function() {
-    if(visible) {
+    if(!dialog.hasClass("qmal-dialog-min")) {
       visible = false;
       QMALdialog("minimise", dialog);
     } else {
@@ -556,124 +557,138 @@ function lookUpPersonalDetails(id, callback) {
   })
 }
 
-function contentScriptKissAnime() {
+function contentScriptAnimeSite() {
   $("body").append("<div id='qmal-dialogs'></div>");
-  if((!window.location.href.contains("/Episode") && !window.location.href.contains("/Movie") && !window.location.href.contains("/OVA")) ||  !window.location.href.contains("kissanime.ru")) {
-    // Check if it's anime main page
-    var splitLocation = window.location.href.split("/");
-    if(splitLocation.length == 5 || (splitLocation.length == 6 && splitLocation[5] == "") && splitLocation[4] == "Anime") {
-      // Detect anime and display information in your list regarding that:
-      var detecting = QMALdialog("dialog", "Detecting... [$$] Detecting anime from page DOM...", "loading");
-      var anime_name = $("#container .bigBarContainer .barContent .bigChar").text().replace(" (Sub)", "").replace(" (Dub)", "");
-      if(anime_name == "") {
-        QMALdialog(detecting, "Error [$$] QMAL could not detect the anime from the page.", "warning", 7500);
-        return;
-      } else {
-        QMALdialog(detecting, "Searching... [$$] Detected " + anime_name + ". Searching...", "loading");
+  if(window.location.href.contains("kissanime.ru")) {
+    if(!window.location.href.contains("/Episode") && !window.location.href.contains("/Movie") && !window.location.href.contains("/OVA")) {
+      // Check if it's anime main page
+      var splitLocation = window.location.href.split("/");
+      if(splitLocation.length == 5 || (splitLocation.length == 6 && splitLocation[5] == "") && splitLocation[4] == "Anime") {
+        // Detect anime and display information in your list regarding that:
+        var detecting = QMALdialog("dialog", "Detecting... [$$] Detecting anime from page DOM...", "loading");
+        var anime_name = $("#container .bigBarContainer .barContent .bigChar").text().replace(" (Sub)", "").replace(" (Dub)", "");
+        if(anime_name == "") {
+          QMALdialog(detecting, "Error [$$] QMAL could not detect the anime from the page.", "warning", 7500);
+          return;
+        } else {
+          QMALdialog(detecting, "Searching... [$$] Detected " + anime_name + ". Searching...", "loading");
+        }
+        animeInfoPage(detecting, anime_name);
       }
-      var search_result_data;
-      $.ajax({
-        url: "https://www.matomari.tk/api/0.3/anime/search/" + encodeURIComponent(anime_name) + ".json", // Properly encode because having "?" in name will be mistaken as a parameter
-        async: true,
-        dataType: "json",
-        type: "GET",
-        cache: true,
-        error: function(jqXHR, textStatus, errorThrown) {
-          QMALdialog("hide", detecting, function() {
-            QMALdialog("dialog", "AJAX Error (" + jqXHR.status + ") [$$] Check the console for more information.", "critical");
-          });
-          console.error("[QMAL@KissAnime] AJAX Aborted:", jqXHR);
-          console.info("Error Status: " + textStatus);
-          console.info("Error HTML: " + errorThrown);
-        },
-        success: function(data) {
-          QMALdialog("hide", detecting); // Hide "searching..." dialog
-          if(data.error) {
-            QMALdialog("dialog", "AJAX Error (200) [$$] " + data.error);
-            return;
-          } else if(data.results.length == 0) {
-            // 0 results
-            QMALdialog("dialog", "Search yielded no matching results, unfortunately.", "warning", "7500");
-            return;
-          }
-          search_result_data = data;
-        }
-      }).done(function() {
-        // Done only fires if successful
-        var select_box = "";
-        console.log(search_result_data);
-        for(var i = 0; i < search_result_data.results.length; i++) {
-          select_box += "<option value=" + search_result_data.results[i].id + ">" + search_result_data.results[i].title + "</option>";
-        }
-        select_box = "<div class='qmal-dialog-select-wrapper'><select id='qmal-dialog-choose-select'>" + select_box + "</select></div>";
-        var is_in_list = false;
-        // Only one result
-        lookUpPersonalDetails(search_result_data.results[0].id, function(details) {
-          console.log(details);
-          if(!details) {
-            // Not in list
-            QMALdialog("dialog", "qmal-dialog-choose {$$} " + select_box + "<br>This anime is not in your list. <a href=''>Add it now</a>.", "info");
-          } else {
-            var verb = "are watching this anime";
-            switch(details.status) {
-              case 1:
-                verb = "are watching this anime";
-                break;
-              case 2:
-                verb = "have completed this anime";
-                break;
-              case 3:
-                verb = "have this anime on hold";
-                break;
-              case 4:
-                verb = "have dropped this anime";
-                break;
-              case 6:
-                verb = "are planning to watch this anime";
-                break;
-              default:
-              verb = "are watching it";
-            }
-            if(details.score == "") details.score = "0";
-            var choose_dialog = QMALdialog("dialog", "qmal-dialog-choose {$$} " + select_box + "<br><div id='qmal-dialog-choose-info'></div>", "info");
-            $('#qmal-dialog-choose-info').html("You <b>" + verb + "</b>. You have watched <span style='color:#ffb63c'><b>" + details.episodes + "</b> episodes</span>, and have rated it <span style='color:#ffb63c'>" + details.score + "</span>/10 so far.");
-            $('#qmal-dialog-choose-select').on('change', function() {
-              QMALdialog($('#qmal-dialog-choose'), null, "loading");
-              lookUpPersonalDetails(this.value, function(otherdetails) {
-                QMALdialog($('#qmal-dialog-choose'), null, "info");
-                if(!otherdetails) {
-                  $('#qmal-dialog-choose-info').html("This anime is not in your list. <a href=''>Add it now</a>.");
-                } else {
-                  verb = "are watching this anime";
-                  switch(otherdetails.status) {
-                    case 1:
-                      verb = "are watching this anime";
-                      break;
-                    case 2:
-                      verb = "have completed this anime";
-                      break;
-                    case 3:
-                      verb = "have this anime on hold";
-                      break;
-                    case 4:
-                      verb = "have dropped this anime";
-                      break;
-                    case 6:
-                      verb = "are planning to watch this anime";
-                      break;
-                    default:
-                    verb = "are watching it";
-                  }
-                  if(otherdetails.score == "") otherdetails.score = "0";
-                  $('#qmal-dialog-choose-info').html("You <b>" + verb + "</b>. You have watched <span style='color:#ffb63c'><b>" + otherdetails.episodes + "</b> episodes</span>, and have rated it <span style='color:#ffb63c'>" + otherdetails.score + "</span>/10 so far.");
-                }
-              })
-              return false;
-            });
-          }
-        });
-      });
     }
+  } else if(window.location.href.contains("9anime.to")) {
+    /*
+    if(!window.location.href.contains("/watch/")) {
+      // Check if it's anime main page (except there should be nothing like that for 9anime)
+    }*/
+    $(document).ajaxComplete(function() {
+      alert("loaded");
+    });
+    animeInfoPage(null, null);
+  }
+  function animeInfoPage(detecting, anime_name) {
+    var search_result_data;
+    $.ajax({
+      url: "https://www.matomari.tk/api/0.3/anime/search/" + encodeURIComponent(anime_name) + ".json", // Properly encode because having "?" in name will be mistaken as a parameter
+      async: true,
+      dataType: "json",
+      type: "GET",
+      cache: true,
+      error: function(jqXHR, textStatus, errorThrown) {
+        QMALdialog("hide", detecting, function() {
+          QMALdialog("dialog", "AJAX Error (" + jqXHR.status + ") [$$] Check the console for more information.", "critical");
+        });
+        console.error("[QMAL@KissAnime] AJAX Aborted:", jqXHR);
+        console.info("Error Status: " + textStatus);
+        console.info("Error HTML: " + errorThrown);
+      },
+      success: function(data) {
+        QMALdialog("hide", detecting); // Hide "searching..." dialog
+        if(data.error) {
+          QMALdialog("dialog", "AJAX Error (200) [$$] " + data.error);
+          return;
+        } else if(data.results.length == 0) {
+          // 0 results
+          QMALdialog("dialog", "Search yielded no matching results, unfortunately.", "warning", "7500");
+          return;
+        }
+        search_result_data = data;
+      }
+    }).done(function() {
+      // Done only fires if successful
+      var select_box = "";
+      console.log(search_result_data);
+      for(var i = 0; i < search_result_data.results.length; i++) {
+        select_box += "<option value=" + search_result_data.results[i].id + ">" + search_result_data.results[i].title + "</option>";
+      }
+      select_box = "<div class='qmal-dialog-select-wrapper'><select id='qmal-dialog-choose-select'>" + select_box + "</select></div>";
+      var is_in_list = false;
+      // Only one result
+      lookUpPersonalDetails(search_result_data.results[0].id, function(details) {
+        console.log(details);
+        if(!details) {
+          // Not in list
+          QMALdialog("dialog", "qmal-dialog-choose {$$} " + select_box + "<br>This anime is not in your list. <a href=''>Add it now</a>.", "info");
+        } else {
+          var verb = "are watching this anime";
+          switch(details.status) {
+            case 1:
+              verb = "are watching this anime";
+              break;
+            case 2:
+              verb = "have completed this anime";
+              break;
+            case 3:
+              verb = "have this anime on hold";
+              break;
+            case 4:
+              verb = "have dropped this anime";
+              break;
+            case 6:
+              verb = "are planning to watch this anime";
+              break;
+            default:
+            verb = "are watching it";
+          }
+          if(details.score == "") details.score = "0";
+          var choose_dialog = QMALdialog("dialog", "qmal-dialog-choose {$$} " + select_box + "<br><div id='qmal-dialog-choose-info'></div>", "info");
+          $('#qmal-dialog-choose-info').html("You <b>" + verb + "</b>. You have watched <span style='color:#ffb63c'><b>" + details.episodes + "</b> episodes</span>, and have rated it <span style='color:#ffb63c'>" + details.score + "</span>/10 so far.");
+          $('#qmal-dialog-choose-select').on('change', function() {
+            QMALdialog($('#qmal-dialog-choose'), null, "loading");
+            lookUpPersonalDetails(this.value, function(otherdetails) {
+              QMALdialog($('#qmal-dialog-choose'), null, "info");
+              if(!otherdetails) {
+                $('#qmal-dialog-choose-info').html("This anime is not in your list. <a href=''>Add it now</a>.");
+              } else {
+                verb = "are watching this anime";
+                switch(otherdetails.status) {
+                  case 1:
+                    verb = "are watching this anime";
+                    break;
+                  case 2:
+                    verb = "have completed this anime";
+                    break;
+                  case 3:
+                    verb = "have this anime on hold";
+                    break;
+                  case 4:
+                    verb = "have dropped this anime";
+                    break;
+                  case 6:
+                    verb = "are planning to watch this anime";
+                    break;
+                  default:
+                  verb = "are watching it";
+                }
+                if(otherdetails.score == "") otherdetails.score = "0";
+                $('#qmal-dialog-choose-info').html("You <b>" + verb + "</b>. You have watched <span style='color:#ffb63c'><b>" + otherdetails.episodes + "</b> episodes</span>, and have rated it <span style='color:#ffb63c'>" + otherdetails.score + "</span>/10 so far.");
+              }
+            })
+            return false;
+          });
+        }
+      });
+    });
     return;
   }
   if(verified === false) {
@@ -719,13 +734,14 @@ function contentScriptKissAnime() {
         if(!originalvisibility) $("#qmal-dialog-updateadd").hide();
       }
     }
+    
     let optional_dom_seriesrating = "",
         optional_dom_episoderating = "",
         optional_dom_seriescomment = "";
     if(QMAL_settings.showSeriesRating) {
       optional_dom_seriesrating = '<div class="qmal-dialog-input-number qmal-dialog-input-fixwidth">' +
                                     '<span class="qmal-dialog-input-number-label" title="Series Rating"><i class="material-icons">star_border</i></span>' +
-                                    '<input class="qmal-dialog-input-number-box" style="width:20px" type="number" min="0" id="qmal-update-anime-series-rating">' +
+                                    '<input class="qmal-dialog-input-number-box" style="width:20px" type="number" min="0" value="0" id="qmal-update-anime-series-rating">' +
                                     '<span class="qmal-dialog-input-number-label">/ 10</span>' +
                                   '</div>';
     }
@@ -828,9 +844,9 @@ function contentScriptKissAnime() {
     initialiseFloatingButtonEvents($("#qmal-dialog-main"));
     initialiseFloatingButtonEvents($("#qmal-dialog-updateadd"));
     // Try and get Anime Name
-    var URL_anime;
-    var anime_name;
-    var anime_episode;
+    var URL_anime,
+        anime_name,
+        anime_episode;
     if(window.location.href.contains("kissanime")) {
       // Detect the anime and the episode
       var anime_name_element;
@@ -848,8 +864,12 @@ function contentScriptKissAnime() {
       } else if(window.location.href.contains("/OVA")) {
         anime_episode = "1";
       }
-      var detecting = QMALdialog("dialog", "qmal-dialog-loading-detected {$$} QMAL has detected that you are watching " + anime_name + "! Searching...", "loading");
       
+      var detecting = QMALdialog("dialog", "qmal-dialog-loading-detected {$$} QMAL has detected that you are watching " + anime_name + "! Searching...", "loading");
+      animeEpisodePage(detecting, anime_name);
+    }
+    
+    function animeEpisodePage(detecting, anime_name) {
       var search_result_data;
       var chosen_search_result;
       // Get correct anime and total count from API.
@@ -911,6 +931,8 @@ function contentScriptKissAnime() {
           }
         });
         
+        console.log(chosen_search_result);
+        
         function lookUpPersonalDetails_AnimeEpisode(id, callback) {
           lookUpPersonalDetails(id, function(data) {
             if(data) {
@@ -949,13 +971,15 @@ function contentScriptKissAnime() {
                 // Already set to watching
                 $("#qmal-detected-action-verb").text("");
               }
-              $("#qmal-update-anime-series-rating").val(data.score);
+              data.score ? $("#qmal-update-anime-series-rating").val(data.score) : $("#qmal-update-anime-series-rating").val("0");
               $("#qmal-update-anime-comment").html(data.comments);
             } else {
               $("#qmal-detected-original-episode").text("");
               $("#qmal-detected-action-verb").text("add this anime to your list and"); // Default value :)
-              $("#qmal-update-anime-series-rating").val("");
-              $("#qmal-update-anime-comment").html("");
+              $('#qmal-update-anime-rewatching-enable').prop("checked", false);
+              $("#qmal-update-anime-series-rating").val("0"); // Default as well
+              $("#qmal-update-anime-comment").html(""); // Also default
+              $("#qmal-update-anime-episodes").val("1"); // Default
             }
             initExpandTextarea();
             $("#qmal-update-anime-name").val(chosen_search_result.title);
@@ -965,229 +989,249 @@ function contentScriptKissAnime() {
           });
         }
       });
-    }
+      console.log(chosen_search_result);
     
-    $("#qmal-update-anime-name-warning").hide();
-    $("#qmal-update-anime-episodes-warning").hide();
-    $("#qmal-update-anime-episodes-isCompleted").hide();
-    update_later = false;
-    $("#qmal-update-later").on("click", function() {
-      update_later = true; // Immediately and not in callback because user might try to close before dialog fades away
-      QMALdialog("hide", $("#qmal-dialog-main"));
-    });
-    $("#qmal-update-yes").on("click", function(event) {
-      // Number error checker function
-      function checkEpisodeNumber(int) {
-        console.log(parseInt(int) % 1);
-        if(isNaN(int)) {
-          // is not NUMBER
-          $("#qmal-update-anime-setcompleted").hide();
-          $("#qmal-update-anime-episodes ~ .qmal-dialog-input-error").html("Please enter a number. Not alphabets or symbols!").slideDown();
-          return false;
-        } else if(parseInt(int) % 1 != 0) {
-          $("#qmal-update-anime-setcompleted").hide();
-          $("#qmal-update-anime-episodes ~ .qmal-dialog-input-error").html("Please enter whole numbers and not decimals.").slideDown();
-          return false;
-        } else if(parseInt(int) < 0) {
-          $("#qmal-update-anime-setcompleted").hide();
-          $("#qmal-update-anime-episodes ~ .qmal-dialog-input-error").html("Anything lower than 0 shall not be permitted to enter!").slideDown();
-          return false;
-        } else if(!chosen_search_result.episodes) {
-          return true;
-        } else if(parseInt(int) > chosen_search_result.episodes) {
-          // Is bigger than total episode count
-          $("#qmal-update-anime-setcompleted").show();
-          $("#qmal-update-anime-episodes ~ .qmal-dialog-input-error").html("The number of episodes for this anime should be higher than " + chosen_search_result.episodes.toString() + ".").slideDown();
-          return false;
-        } else if(parseInt(int) == chosen_search_result.episodes) {
-          // Set as completed?
-          $("#qmal-update-anime-setcompleted").show();
-          $("#qmal-update-anime-episodes ~ .qmal-dialog-input-error").slideUp().html("");
-          return true;
-        } else {
-          $("#qmal-update-anime-setcompleted").hide();
-          $("#qmal-update-anime-episodes ~ .qmal-dialog-input-error").slideUp().html("");
-          return true;
-        }
-      }
-      
-      function checkRating(int) {
-        if(isNaN(int)) {
-          // is not NUMBER
-          $("#qmal-update-anime-episodes-warning").show().html("Please enter a number. Not alphabets or symbols!");
-          return false;
-        } else if(parseInt(int) < 0 || parseInt(int) > 10) {
-          $("#qmal-update-anime-episodes-warning").show().html("Thou score shalt be bittween 0 and 10, kind sir.");
-          return false;
-        } else if((int.toString().split('.')[1] || []).length > 2) {
-          $("#qmal-update-anime-episodes-warning").show().html("The score should only have two maximum decimal places.");
-          return false;
-        } else {
-          $("#qmal-update-anime-episodes-warning").hide().html("");
-          return true;
-        }
-      }
-      
-      checkEpisodeNumber($("#qmal-update-anime-episodes").val());
-      
-      $("#qmal-update-anime-name").html($("#qmal-detected-anime-name :selected").html());
-      $("#qmal-update-anime-episodes").inputNumberButtons({
-        limitFunction: checkEpisodeNumber
+      $("#qmal-update-anime-name-warning").hide();
+      $("#qmal-update-anime-episodes-warning").hide();
+      $("#qmal-update-anime-episodes-isCompleted").hide();
+      update_later = false;
+      $("#qmal-update-later").on("click", function() {
+        update_later = true; // Immediately and not in callback because user might try to close before dialog fades away
+        QMALdialog("minimise", $("#qmal-dialog-main"));
       });
+      $("#qmal-update-yes").on("click", function(event) {
+        // Number error checker function
+        function checkEpisodeNumber(int) {
+          console.log(parseInt(int) % 1);
+          if(isNaN(int)) {
+            // is not NUMBER
+            $("#qmal-update-anime-setcompleted").hide();
+            $("#qmal-update-anime-episodes ~ .qmal-dialog-input-error").html("Please enter a number. Not alphabets or symbols!").slideDown();
+            return false;
+          } else if(parseInt(int) % 1 != 0) {
+            $("#qmal-update-anime-setcompleted").hide();
+            $("#qmal-update-anime-episodes ~ .qmal-dialog-input-error").html("Please enter whole numbers and not decimals.").slideDown();
+            return false;
+          } else if(parseInt(int) < 0) {
+            $("#qmal-update-anime-setcompleted").hide();
+            $("#qmal-update-anime-episodes ~ .qmal-dialog-input-error").html("Anything lower than 0 shall not be permitted to enter!").slideDown();
+            return false;
+          } else if(!chosen_search_result.episodes) {
+            $("#qmal-update-anime-setcompleted").hide();
+            return true;
+          } else if(parseInt(int) > chosen_search_result.episodes) {
+            // Is bigger than total episode count
+            $("#qmal-update-anime-setcompleted").show();
+            $("#qmal-update-anime-episodes ~ .qmal-dialog-input-error").html("The number of episodes for this anime should be higher than " + chosen_search_result.episodes.toString() + ".").slideDown();
+            return false;
+          } else if(parseInt(int) == chosen_search_result.episodes) {
+            // Set as completed?
+            $("#qmal-update-anime-setcompleted").show();
+            $("#qmal-update-anime-episodes ~ .qmal-dialog-input-error").slideUp().html("");
+            return true;
+          } else {
+            $("#qmal-update-anime-setcompleted").hide();
+            $("#qmal-update-anime-episodes ~ .qmal-dialog-input-error").slideUp().html("");
+            return true;
+          }
+        }
+        
+        function checkRating(int) {
+          if(isNaN(int)) {
+            // is not NUMBER
+            $("#qmal-update-anime-episodes-warning").show().html("Please enter a number. Not alphabets or symbols!");
+            return false;
+          } else if(parseInt(int) < 0 || parseInt(int) > 10) {
+            $("#qmal-update-anime-episodes-warning").show().html("Thou score shalt be bittween 0 and 10, kind sir.");
+            return false;
+          } else if((int.toString().split('.')[1] || []).length > 2) {
+            $("#qmal-update-anime-episodes-warning").show().html("The score should only have two maximum decimal places.");
+            return false;
+          } else {
+            $("#qmal-update-anime-episodes-warning").hide().html("");
+            return true;
+          }
+        }
+        
+        checkEpisodeNumber($("#qmal-update-anime-episodes").val());
+        
+        $("#qmal-update-anime-name").html($("#qmal-detected-anime-name :selected").html());
+        $("#qmal-update-anime-episodes").inputNumberButtons({
+          limitFunction: checkEpisodeNumber
+        });
+        
+        QMALdialog("hide", $("#qmal-dialog-main"), function() {
+          QMALdialog("show", $("#qmal-dialog-updateadd"));
+        });
+        var error = 0;
+        
+        // Cancel click on second popup
+        $("#qmal-update-cancel").on("click", function() {
+          QMALdialog("hide", $("#qmal-dialog-updateadd"), function() {
+            QMALdialog("show", $("#qmal-dialog-main"));
+          });
+          return false;
+        });
       
-      QMALdialog("hide", $("#qmal-dialog-main"), function() {
-        QMALdialog("show", $("#qmal-dialog-updateadd"));
-      });
-      var error = 0;
-      
-      // Cancel click on second popup
-      $("#qmal-update-cancel").on("click", function() {
-        QMALdialog("hide", $("#qmal-dialog-updateadd"), function() {
-          QMALdialog("show", $("#qmal-dialog-main"));
+        $("#qmal-update-anime-episodes").on("input", function(e) {
+          checkEpisodeNumber(this.value);
         });
         return false;
+      }); // on yes click end
+      $("#qmal-update-no").on("click", function() {
+        $("#qmal-dialog-main").fadeOut(300);
+        update_later = false;
+        return false;
       });
-    
-      $("#qmal-update-anime-episodes").on("input", function(e) {
-        checkEpisodeNumber(this.value);
+      $(".qmal-dialog input[type=text]").on("focus", function() {
+        $(this).next().addClass("active");
       });
-      return false;
-    }); // on yes click end
-    $("#qmal-update-no").on("click", function() {
-      $("#qmal-dialog-main").fadeOut(300);
-      update_later = false;
-      return false;
-    });
-    $(".qmal-dialog input[type=text]").on("focus", function() {
-      $(this).next().addClass("active");
-    });
-    $(".qmal-dialog input[type=text]").on("focusout", function() {
-      if(this.value === "" && !$(this).attr("placeholder")) {
-        $(this).next().removeClass("active");
-      }
-    });
-    
-    $("#qmal-update-update").on("click", function() {
-      var updating_dialog;
-      QMALdialog("hide", $("#qmal-dialog-updateadd"), function() {
-        updating_dialog = QMALdialog("dialog", "qmal-dialog-loading {$$} Add/Update Information [$$] Sending information to MyAnimeList...", "loading");
-      });
-      var anime_update_status;
-      var animeUpdateChosenID = $("#qmal-detected-anime-name").val();
-      var animeUpdateChosenEpisodes = $("#qmal-update-anime-episodes").val();
-      var animeInformation = {
-        id: animeUpdateChosenID,
-        episodes: animeUpdateChosenEpisodes
-      }
-      if(animeUpdateChosenEpisodes == search_result_chosen_anime_episode) {
-        // It's the last episode! Oh my god! Need to set it as completed now! mmddyyyy
-        animeInformation.finishDate = getFormattedDate(new Date());
-        animeInformation.status = "2";
-      } else if(animeUpdateChosenEpisodes == "1") {
-        // It's the first episode! Set the start date! mmddyyyy
-        animeInformation.startDate = getFormattedDate(new Date());
-        animeInformation.status = "1";
-      }
-      $.ajax({
-        url: "https://www.matomari.tk/api/0.4/methods/user.list.anime.ID.php?id=" + animeUpdateChosenID,
-        username: username,
-        password: password,
-        type: "GET",
-        dataTpe: "json",
-        error: function(jqXHR, textStatus, errorThrown) {
-          if(jqXHR.status == 404) {
-            // Doesn't exist in list
-            anime_update_status = "add";
-          } else {
-            var errorMessage = "";
-            if(jqXHR.responseJSON.message) {
-              errorMessage = jqXHR.responseJSON.message;
-            }
-            QMALdialog("dialog", "AJAX Error (" + jqXHR.status + ") [$$] " + errorMessage + "\nCheck the console for more information.", "critical");
-            console.warn("[QMAL@KissAnime] AJAX Aborted:");
-            console.info(jqXHR);
-            console.info("                 Error Status: " + textStatus);
-            console.info("                 Error HTML: " + errorThrown);
-            throw new Error();
-          }
-        },
-        success: function(data) {
-          // Does exist in list
-            anime_update_status = "update";
+      $(".qmal-dialog input[type=text]").on("focusout", function() {
+        if(this.value === "" && !$(this).attr("placeholder")) {
+          $(this).next().removeClass("active");
         }
-      }).done(function() {
-        animeInformation.updateStatus = anime_update_status;
-        console.log(animeInformation);
-        chrome.runtime.sendMessage(animeInformation, function(response) {
-          update_later = false;
-          QMALdialog(updating_dialog, "Information has now successfully been " + response.answer.toLowerCase() + "!", "success");
+      });
+    
+      $("#qmal-update-update").on("click", function() {
+        var updating_dialog;
+        QMALdialog("hide", $("#qmal-dialog-updateadd"), function() {
+          updating_dialog = QMALdialog("dialog", "qmal-dialog-loading {$$} Add/Update Information [$$] Sending information to MyAnimeList...", "loading");
+          const animeUpdateChosenID = chosen_search_result.id,
+                animeUpdateEpisodes = $("#qmal-update-anime-episodes").val(),
+                animeUpdateRating = $("#qmal-update-anime-series-rating").val(),
+                animeUpdateComments = $("#qmal-update-anime-comment").val(),
+                animeUpdateRewatching = $("#qmal-update-anime-rewatching-enable").is(":checked"),
+                animeUpdateSetCompleted = parseInt(animeUpdateEpisodes) == chosen_search_result.episodes && $("#qmal-update-anime-setcompleted-enable").is(":checked");
+          let animeInformation = {
+            status: "watching",
+            id: animeUpdateChosenID,
+            episodes: animeUpdateEpisodes,
+            score: animeUpdateRating,
+            comments: animeUpdateComments
+          }
+          console.log(animeUpdateRewatching);
+          console.log(animeInformation);
+          if(animeUpdateRewatching && !animeUpdateSetCompleted) {
+            // Rewatching but not done rewatching yet
+            animeInformation.status = "completed";
+            animeInformation.rewatching = true;
+          } else if(animeUpdateRewatching && animeUpdateSetCompleted) {
+            // Just finished rewatching
+            animeInformation.rewatching = false;
+            animeInformation.rewatch_times = 30;
+          }
+          console.log(animeInformation);
+          if(animeUpdateSetCompleted) {
+            animeInformation.status = "completed";
+            animeInformation.finishDate = getFormattedDate(new Date());
+          } // Don't tie with next one with else because a movie can be compelted and episode 1 at same time
+          if(animeUpdateEpisodes == "1") {
+            animeInformation.startDate = getFormattedDate(new Date());
+          }
           chrome.runtime.sendMessage({
-            subject: "twitter-post",
-            body: "I finished watching episode " + animeInformation.episodes + " on " + $("#qmal-update-anime-name :selected").html() + " #QMAL #Anime"
+            subject: "listupdate",
+            info: animeInformation
           }, function(response) {
-            if(response.tweeted) {
-              QMALdialog("dialog", "Your tweet has been posted!", "success", 4000);
+            if(response.answer.message) {
+              QMALdialog(updating_dialog, "Error when changing anime list [$$] " + response.answer.message.toLowerCase() + "<br>Notifying FoxInFlame...", "critical");
+              chrome.runtime.sendMessage({
+                subject: "sendmessage",
+                message: {
+                  to: "FoxInFlame",
+                  subject: "QMAL Error",
+                  message: "QMAL encountered an error when adding/changing an anime from in-page QMAL: " + response.answer.message.toLowerCase()
+                }
+              }, function(response_message) {
+                if(response_message.message.message) {
+                  QMALdialog(updating_dialog, "Error when sending PM [$$] " + response_message.message.message.toLowerCase(), "critical");
+                  return;
+                }
+                QMALdialog(updating_dialog, "Private Message Sent [$$] A new private message with the error log has been sent to FoxInFlame from your account.", "info");
+              });
+              return;
             }
-            window.setTimeout(function() {
-              QMALdialog("hide", updating_dialog);
-            }, 4000);
+            update_later = false;
+            QMALdialog(updating_dialog, "Information has now successfully been " + response.answer.toLowerCase() + "!", "success");
+            chrome.runtime.sendMessage({
+              subject: "twitter-post",
+              body: "I finished watching episode " + animeInformation.episodes + " on " + $("#qmal-update-anime-name :selected").html() + " #QMAL #Anime"
+            }, function(response) {
+              if(response.tweeted) {
+                QMALdialog("dialog", "Your tweet has been posted!", "success", 4000);
+              }
+              window.setTimeout(function() {
+                QMALdialog("hide", updating_dialog);
+              }, 4000);
+            });
           });
         });
       });
-    });
     
-    if($(".video-js#my_video_1").length !== 0) { // If VideoJS was detected (KissAnime player and KissAnime Beta player)
-      console.log("Detected KissAnime Player.");
-      window.setInterval(checkVideoTime, 10000);
-    } else if($("iframe[src*='openload.co']").length !== 0) { // If OpenLoad was detected (OpenLoad player)
-      console.log("Detected OpenLoad.");
-      isTop = true;
-      chrome.runtime.onMessage.addListener(function(details, sender, sendResponse) {
-        if(details == "dialog_show") {
-          if(update_later === true && !QMALdialog($("#qmal-dialog-main")) && !QMALdialog($("#qmal-dialog-updateadd")) && !QMALdialog($("#qmal-dialog-loading"))) {
-            $("#qmal-update-later").hide();
-            $("#qmal-detected-verb").text("nearing the end of"); // Change the verb from watching to 'nearing the end of'
-            QMALdialog("show", $("#qmal-dialog-main"));
+      if($(".video-js#my_video_1").length !== 0) { // If VideoJS was detected (KissAnime player and KissAnime Beta player)
+        console.log("Detected KissAnime Player.");
+        window.setInterval(checkVideoTime, 10000);
+      } else if($("iframe[src*='openload.co']").length !== 0) { // If OpenLoad was detected (OpenLoad player)
+        console.log("Detected OpenLoad.");
+        isTop = true;
+        chrome.runtime.onMessage.addListener(function(details, sender, sendResponse) {
+          if(details == "dialog_show") {
+            if(update_later === true && !QMALdialog($("#qmal-dialog-main")) && !QMALdialog($("#qmal-dialog-updateadd")) && !QMALdialog($("#qmal-dialog-loading"))) {
+              $("#qmal-update-later").hide();
+              $("#qmal-detected-verb").text("nearing the end of"); // Change the verb from watching to 'nearing the end of'
+              QMALdialog("maximise", $("#qmal-dialog-main"));
+            }
+          };
+        });
+      } else if($("iframe[src*='rapidvideo.com']").length !== 0) { // If RapidVideo was detected (RapidVideo player)
+        console.log("Detected RapidVideo.");
+        isTop = true;
+        chrome.runtime.onMessage.addListener(function(details, sender, sendResponse) {
+          if(details == "dialog_show") {
+            if(update_later === true && !QMALdialog($("#qmal-dialog-main")) && !QMALdialog($("#qmal-dialog-updateadd")) && !QMALdialog($("#qmal-dialog-loading"))) {
+              $("#qmal-update-later").hide();
+              $("#qmal-detected-verb").text("nearing the end of"); // Change the verb from watching to 'nearing the end of'
+              QMALdialog("maximise", $("#qmal-dialog-main"));
+            }
           }
-        };
-      });
-    } else if($("iframe[src*='rapidvideo.com']").length !== 0) { // If RapidVideo was detected (RapidVideo player)
-      console.log("Detected RapidVideo.");
-      isTop = true;
-      chrome.runtime.onMessage.addListener(function(details, sender, sendResponse) {
-        if(details == "dialog_show") {
-          if(update_later === true && !QMALdialog($("#qmal-dialog-main")) && !QMALdialog($("#qmal-dialog-updateadd")) && !QMALdialog($("#qmal-dialog-loading"))) {
-            $("#qmal-update-later").hide();
-            $("#qmal-detected-verb").text("nearing the end of"); // Change the verb from watching to 'nearing the end of'
-            QMALdialog("show", $("#qmal-dialog-main"));
+        })
+      } else { // If nothing was detected, use the legacy version.
+        window.onbeforeunload = function(e) {
+          if(update_later === true) {
+            QMALdialog("maximise", $("#qmal-dialog-main"));
+            e.returnValue = "You haven't updated MAL yet...";
+            return "You haven't updated MAL yet...";
           }
         }
-      })
-    } else { // If nothing was detected, use the legacy version.
-      window.onbeforeunload = function(e) {
-        if(update_later === true) {
-          $("#qmal-dialog-main").fadeIn(300);
-          e.returnValue = "You haven't updated MAL yet...";
-          return "You haven't updated MAL yet...";
+        return;
+      }
+    
+      // Handle events
+      let s = document.createElement("script");
+      s.src = chrome.extension.getURL("injectscript.js");
+      (document.head||document.documentElement).appendChild(s);
+      s.onload = function() {
+        s.remove();
+      };
+      
+      document.addEventListener("QMAL_extensionConnected", function(e) {
+        console.log("Conencted", e.detail);
+      });
+      
+    
+      // Run this function every 10 seconds, if it's the default KissAnime player
+      function checkVideoTime() {
+        var time = $(".vjs-remaining-time-display").contents().filter(function() {
+          return this.nodeType == 3;
+        })[0].nodeValue;
+        time = parseInt(time.split("-")[1].replaceAll(":", "")); // So 16:12 becomes 1612, 16:10 becomes 1610, 15:59 becomes 1559.
+        if(time < 200  && time > 0 && update_later === true && !QMALdialog($("#qmal-dialog-main")) && !QMALdialog($("#qmal-dialog-updateadd")) && !QMALdialog($("#qmal-dialog-loading"))) { // 2 minutes until end of video
+          // It also checks if the time is 0, which is what happens before the video loads. Of course, the end of the video will also be skipped, but by then time<200 would've detected it.
+          $("#qmal-update-later").hide(); // Hide, no more postponing!
+          $("#qmal-detected-verb").text("nearing the end of"); // Change the verb from watching to 'nearing the end of'
+          QMALdialog("maximise", $("#qmal-dialog-main"));
         }
       }
       return;
     }
-    
-    
-    // Run this function every 10 seconds, if it's the default KissAnime player
-    function checkVideoTime() {
-      var time = $(".vjs-remaining-time-display").contents().filter(function() {
-        return this.nodeType == 3;
-      })[0].nodeValue;
-      time = parseInt(time.split("-")[1].replaceAll(":", "")); // So 16:12 becomes 1612, 16:10 becomes 1610, 15:59 becomes 1559.
-      if(time < 200  && time > 0 && update_later === true && !QMALdialog($("#qmal-dialog-main")) && !QMALdialog($("#qmal-dialog-updateadd")) && !QMALdialog($("#qmal-dialog-loading"))) { // 2 minutes until end of video
-        // It also checks if the time is 0, which is what happens before the video loads. Of course, the end of the video will also be skipped, but by then time<200 would've detected it.
-        $("#qmal-update-later").hide(); // Hide, no more postponing!
-        $("#qmal-detected-verb").text("nearing the end of"); // Change the verb from watching to 'nearing the end of'
-        QMALdialog("show", $("#qmal-dialog-main"));
-      }
-    }
-    return;
   }
 }

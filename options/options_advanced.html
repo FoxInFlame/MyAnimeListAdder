@@ -41,14 +41,14 @@
       <div class="row">
         <div class="col s12 m6">
           <h2>Import / Export Settings</h2>
-          <p>Use this section to quickly import and export QMAL settings, so that you can use the same settings on different devices.<br><br>Since QMAL is not available in the Chrome Web Store, settings do not get saved when you update QMAL to a newer version. Using this section, you can save your settings locally in your system to import when you update QMAL.</p>
+          <p>Use this section to quickly import and export QMAL settings, so that you can use the same settings on different devices.<br><br>Since QMAL is not available in the Chrome Web Store, settings do not get saved when you update QMAL to a newer version. Using this section, you can save your settings locally in your system to import when you update QMAL.<br><br>Encrypting your settings with a passphrase is probably a good idea, because your MAL username and password also gets exported, and can easily be opened and seen by anyone who has access to the setting file. By encrypting it with a passphrase that only you know, you can safely import it from another device without anyone knowing your credentials on the way.</p>
           <br>
           <div class="input-field">
             <label for="advanced_exportimport_passphrase">Encryption Passphrase (optional)</label>
             <input type="text" id="advanced_exportimport_passphrase">
           </div>
           <button style="background: #2e51a2" class="btn waves-effect waves-light" id="advanced_export">Export<i class="material-icons right">file_download</i></button>
-          <button class="btn btn-flat waves-effect" id="advanced_import"><input id="advanced_import_file" type="file">Import<i class="material-icons right">file_upload</i></button>
+          <button class="btn btn-flat waves-effect" id="advanced_import"><input id="advanced_import_file" accept=".qmalsetting" type="file">Import<i class="material-icons right">file_upload</i></button>
         </div>
       </div>
     </div>

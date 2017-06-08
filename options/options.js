@@ -271,7 +271,7 @@ function restore_options_credentials() {
           }
           var xhr = new XMLHttpRequest();
           xhr.responseType = "blob";
-          xhr.open("GET", "https://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.image.ID.php?id=" + data.id, true);
+          xhr.open("GET", "https://www.matomari.tk/api/0.4/methods/user.image.ID.php?id=" + data.id, true);
           var imageBase64;
           xhr.onload = function(e) {
             if(xhr.status == 400) {
@@ -343,58 +343,76 @@ function save_options_credentials() {
     success: function(data) {
       status.style.pointerEvents = "none";
       Materialize.toast("Successfully logged in! Please wait...");
-      $.ajax({
+      $.ajax({ // Send message warning user that someone has logged in
+        url: "https://www.matomari.tk/api/0.4/methods/user.message.php",
+        method: "POST",
+        username: username,
+        password: password,
+        dataType: "json",
+        data: JSON.stringify({
+          to: username,
+          subject: "Your account has been used to login to QuickMyAnimeList",
+          message: "Hey there, " + username + "!\n\nSomeone has used your MyAnimeList account to login to [url=https://myanimelist.net/forum/?topicid=1552137]QuickMyAnimeList[/url], the dream Chrome Extension for you with a MAL account.\n\n[size=130][b]If you recognise this activity[/b][/size]\nGreat! You don't have to do anything. Thank you for using QMAL!\n\n[size=130][b]If you don't recognise this activity[/b][/size]\nSomeone seems to be using your account. Data could be deleted through QuickMyAnimeList by that user, so go and change your password as soon as possible.\n\n\n---\n[i]This is an automated message sent using your account. Please do not reply to this. If any questions arise, contact [url=https://myanimelist.net/profile/FoxInFlame]FoxInFlame[/url].[/i]"
+        })
+      });
+      $.ajax({ // Get their profile info (name, id)
         url: "https://www.matomari.tk/api/0.3/user/info/" + username + ".json",
         method: "GET",
         dataType: "json",
         error: function(jqXHR, textStatus, errorThrown) {
           console.log("Error querying to matomari for user info : ");
           console.log(jqXHR);
+          Materialize.toast(jqXHR.responseText, 4000);
         },
-        success: function(data) {
-          Materialize.toastRemove();
+        success: function(data2) {
           if(data.error) {
-            console.log("Error querying to matomari for user info : " + data.error);
-            chrome.storage.sync.set({
-              user_username: username,
-              user_password: password,
-              user_image_64: "/images/default_user.png",
-              user_verified: true
-            }, function() {
-              $(".verified").prop("checked", true);
-              $("#loggedIn img").attr("src", "/images/default_user.png");
-            });
+            console.log("Error querying to matomari for user info : " + data2.error);
+            Materialize.toastRemove();
+            Materialize.toast(data2.error, 4000);
             return;
           }
           var xhr = new XMLHttpRequest();
           xhr.responseType = "blob";
-          xhr.open("GET", "https://www.foxinflame.tk/dev/matomari/api/0.4/methods/user.image.ID.php?id=" + data.id, true);
+          xhr.open("GET", "https://www.matomari.tk/api/0.4/methods/user.image.ID.php?id=" + data2.id, true); // Get their profile picture
           var imageBase64;
           xhr.onload = function(e) {
             if(xhr.status == 400) {
               chrome.storage.sync.set({
-                user_username: data.username,
+                user_username: data2.username,
                 user_password: password,
-                user_image_64: "/images/default_user.png"
+                user_image_64: "/images/default_user.png",
+                user_verified: true
               }, function() {
+                Materialize.toastRemove();
                 $(".verified").prop("checked", true);
                 $("#loggedIn img").attr("src", imageBase64);
                 $("#loggedIn h2").html(username);
                 reloadSidebar();
+                document.getElementById("loggedIn").style.display = "block";
+                Materialize.toast("Done!", 4000);
               });
             } else {
               var reader = new FileReader();
-              reader.onloadend = function() {
+              reader.onloadend = function() { // Base64 the profile picture
                 imageBase64 = reader.result;
                 chrome.storage.sync.set({
-                  user_username: data.username,
+                  user_username: data2.username,
                   user_password: password,
-                  user_image_64: imageBase64
+                  user_image_64: imageBase64,
+                  user_verified: true
                 }, function() {
+                  Materialize.toastRemove();
+                  if(chrome.runtime.lastError) {
+                    Materialize.toast("ERROR: " + chrome.runtime.lastError.message, 4000);
+                    console.log(chrome.runtime.lastError);
+                    return;
+                  }
                   $(".verified").prop("checked", true);
                   $("#loggedIn img").attr("src", imageBase64);
                   $("#loggedIn h2").html(username);
                   reloadSidebar();
+                  document.getElementById("loggedIn").style.display = "block";
+                  Materialize.toast("Done!", 4000);
                 });
               };
               reader.readAsDataURL(xhr.response);

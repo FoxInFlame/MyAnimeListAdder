@@ -26,6 +26,7 @@
     "*://www.matomari.tk/*",
     "*://*.kissanime.to/*",
     "*://*.kissanime.ru/*",
+    "*://*.9anime.to/*",
     "*://*.myanimelist.net/*",
     "https://myanimelist.cdn-dena.com/*"
   ],
@@ -52,6 +53,7 @@
       "*://www.foxinflame.tk/QuickMyAnimeList/*",
       "*://*.kissanime.to/*",
       "*://*.kissanime.ru/*",
+      "*://*.9anime.to/*",
       "*://*.myanimelist.net/*"
     ],
     "exclude_matches": [
@@ -91,6 +93,7 @@
   "web_accessible_resources": [
     "options/*",
     "inpage/*",
-    "images/*"
+    "images/*",
+    "injectscript.js"
   ]
 }

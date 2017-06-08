@@ -12,8 +12,34 @@ var loginUsername,
     
 
 
+function loadScript(src, callback) {
+  var scriptElem = document.createElement("script");
+  scriptElem.type = "text/javascript";
+  scriptElem.onload = function() {
+    if(callback) {
+      callback();
+    }
+  };
+  scriptElem.src = src;
+  document.getElementsByTagName("head")[0].appendChild(scriptElem);
+}
+function loadStylesheet(src, callback) {
+  var linkElem = document.createElement("link");
+  linkElem.type = "text/css";
+  linkElem.rel = "stylesheet";
+  linkElem.onload = function() {
+    if(callback) {
+      callback();
+    }
+  };
+  linkElem.href = src;
+  document.getElementsByTagName("head")[0].appendChild(linkElem);
+}
+
 function insertJS(jsLink) {
-  $.getScript(jsLink).fail(function(jqxhr, settings, exception) {
+  $.getScript(jsLink).done(function() {
+    if(callback) callback();
+  }).fail(function(jqxhr, settings, exception) {
     console.log("$.getScript returned an error with " + jsLink + "! Details:");
     console.log(jqxhr);
     console.log(settings);
@@ -37,6 +63,7 @@ function enableCSS(cssLink) {
 function disableCSS(cssLink) {
   $("link[href='" + cssLink + "']").attr("disabled", "disabled");
 }
+
 // -- Document Ready Function
 $(document).ready(function() {
   // -- Get the usernames stored on Chrome Settings
@@ -83,19 +110,22 @@ $(document).ready(function() {
         insertJS("popups/qmal_popup_1.2.1.js");
         return false;
       } else if(popup_theme == 2) {
-        //QuickMAL Popup
-        disableCSS("libraries/Bootstrap/bootstrap.min.css");
-        disableCSS("styles.css");
-        enableCSS("popups/qmal_popup_MaterializeCSS.css");
-        enableCSS("libraries/Google/MaterialIcons.css");
-        enableCSS("libraries/MaterializeCSS/materialize.min.css");
-        enableCSS("libraries/RateYo/jquery.rateyo.min.css");
-        enableCSS("libraries/Select2/select2.min.css");
-        $("#qmal_popup_mainContent").load("popups/qmal_popup.html #qmal_popup_mainContentLoad");
-        insertJS("libraries/Bez/jquery.bez.min.js");
-        insertJS("libraries/QuickFit/jquery.quickfit.js");
-        insertJS("libraries/ColorThief/color-thief.min.js");
-        insertJS("popups/qmal_popup.js");
+        $("#qmal_popup_mainContent").html("Loading...");
+        window.setTimeout(function() {
+          //QuickMAL Popup
+          disableCSS("libraries/Bootstrap/bootstrap.min.css");
+          disableCSS("styles.css");
+          enableCSS("popups/qmal_popup_MaterializeCSS.css");
+          enableCSS("libraries/Google/MaterialIcons.css");
+          enableCSS("libraries/MaterializeCSS/materialize.min.css");
+          enableCSS("libraries/RateYo/jquery.rateyo.min.css");
+          enableCSS("libraries/Select2/select2.min.css");
+          $("#qmal_popup_mainContent").load("popups/qmal_popup.html #qmal_popup_mainContentLoad");
+          insertJS("libraries/Bez/jquery.bez.min.js");
+          insertJS("libraries/QuickFit/jquery.quickfit.js");
+          insertJS("libraries/ColorThief/color-thief.min.js");
+          insertJS("popups/qmal_popup.js");
+        }, 1500);
       }
     } else if(popup_action_open == 2) {
       //List embed in Popup
