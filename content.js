@@ -299,7 +299,8 @@ $.fn.inputNumberButtons = function(data) {
 
 let dialog_counter = 0; // Number of dialoges
 // Custom amazing function below, one of my best works :)
-var QMALdialog = function(option, value, status, time, extra) {
+const QMALdialog = function(option, value, status, time, extra) {
+  console.log(option);
   if(option instanceof jQuery) {
     if(!value && !status && !time && !extra) {
       // If first parameter is a jQuery object, return if that is visible.
@@ -490,10 +491,12 @@ var QMALdialog = function(option, value, status, time, extra) {
     $("#qmal-dialogs").append("<div" + id + " class='qmal-dialog-material qmal-dialog-" + status + "' data-qmal-dialog-id='" + nativecounter.toString() + "'>"+
       "<div class='qmal-dialog-container'>" +
         icon_dom +
-        "<div class='qmal-dialog-text'>" +
-          dom +
+        "<div class='qmal-dialog-content'>" +
+          "<div class='qmal-dialog-text'>" +
+            dom +
+          "</div>" +
+          action +
         "</div>" +
-        action +
       "</div>" +
     "</div>");
     QMALdialog("show", $("[data-qmal-dialog-id='" + nativecounter.toString() + "']"), function() {
@@ -547,14 +550,14 @@ function lookUpPersonalDetails(id, callback) {
         // Doesn't exist in list
         callback(false);
       } else {
-        QMALdialog("dialog", "Error [$$] The Matomari API responded with an error (" + jqXHR.status.toString() + ").", "critical", 10000);
+        QMALdialog("dialog", "Error [$$] The Matomari API responded with an error (" + jqXHR.status.toString() + ").", "critical");
       }
     },
     success: function(data) {
       // Does exist in list
       callback(data);
     }
-  })
+  });
 }
 
 function contentScriptAnimeSite() {
@@ -565,15 +568,15 @@ function contentScriptAnimeSite() {
       var splitLocation = window.location.href.split("/");
       if(splitLocation.length == 5 || (splitLocation.length == 6 && splitLocation[5] == "") && splitLocation[4] == "Anime") {
         // Detect anime and display information in your list regarding that:
-        var detecting = QMALdialog("dialog", "Detecting... [$$] Detecting anime from page DOM...", "loading");
+        var detectingBox = QMALdialog("dialog", "Detecting... [$$] Detecting anime from page DOM...", "loading");
         var anime_name = $("#container .bigBarContainer .barContent .bigChar").text().replace(" (Sub)", "").replace(" (Dub)", "");
         if(anime_name == "") {
-          QMALdialog(detecting, "Error [$$] QMAL could not detect the anime from the page.", "warning", 7500);
+          QMALdialog(detectingBox, "Error [$$] QMAL could not detect the anime from the page.", "warning", 7500);
           return;
         } else {
-          QMALdialog(detecting, "Searching... [$$] Detected " + anime_name + ". Searching...", "loading");
+          QMALdialog(detectingBox, "Searching... [$$] Detected " + anime_name + ". Searching...", "loading");
         }
-        animeInfoPage(detecting, anime_name);
+        animeInfoPage(detectingBox, anime_name);
       }
     }
   } else if(window.location.href.contains("9anime.to")) {
@@ -586,7 +589,7 @@ function contentScriptAnimeSite() {
     });
     animeInfoPage(null, null);
   }
-  function animeInfoPage(detecting, anime_name) {
+  function animeInfoPage(detectingBox, anime_name) {
     var search_result_data;
     $.ajax({
       url: "https://www.matomari.tk/api/0.3/anime/search/" + encodeURIComponent(anime_name) + ".json", // Properly encode because having "?" in name will be mistaken as a parameter
@@ -595,7 +598,7 @@ function contentScriptAnimeSite() {
       type: "GET",
       cache: true,
       error: function(jqXHR, textStatus, errorThrown) {
-        QMALdialog("hide", detecting, function() {
+        QMALdialog("hide", detectingBox, function() {
           QMALdialog("dialog", "AJAX Error (" + jqXHR.status + ") [$$] Check the console for more information.", "critical");
         });
         console.error("[QMAL@KissAnime] AJAX Aborted:", jqXHR);
@@ -603,7 +606,7 @@ function contentScriptAnimeSite() {
         console.info("Error HTML: " + errorThrown);
       },
       success: function(data) {
-        QMALdialog("hide", detecting); // Hide "searching..." dialog
+        QMALdialog("hide", detectingBox); // Hide "searching..." dialog
         if(data.error) {
           QMALdialog("dialog", "AJAX Error (200) [$$] " + data.error);
           return;
@@ -615,14 +618,14 @@ function contentScriptAnimeSite() {
         search_result_data = data;
       }
     }).done(function() {
-      // Done only fires if successful
+      // .done() only fires if successful
       var select_box = "";
       console.log(search_result_data);
       for(var i = 0; i < search_result_data.results.length; i++) {
         select_box += "<option value=" + search_result_data.results[i].id + ">" + search_result_data.results[i].title + "</option>";
       }
       select_box = "<div class='qmal-dialog-select-wrapper'><select id='qmal-dialog-choose-select'>" + select_box + "</select></div>";
-      var is_in_list = false;
+      let is_in_list = false;
       // Only one result
       lookUpPersonalDetails(search_result_data.results[0].id, function(details) {
         console.log(details);
@@ -769,20 +772,22 @@ function contentScriptAnimeSite() {
           '<div class="qmal-dialog-icon">' +
             '<img src="http://i.imgur.com/I1Ipr8q.png">' +
           '</div>' +
-          '<div class="qmal-dialog-text">' +
-            '<div class="qmal-dialog-title">Update MyAnimeList?</div>' +
-            '<div class="qmal-dialog-body">QMAL has detected that you are <span id="qmal-detected-verb">watching</span>:' +
-              '<div class="qmal-dialog-select-wrapper qmal-select"><select id="qmal-detected-anime-name"></select></div>' +
-              'You can choose to <span id="qmal-detected-action-verb">add this anime to your list and</span> change the episode count <span style="color:#ffb63c"><span id="qmal-detected-original-episode"></span> to the current one (<b><span id="qmal-detected-episode-text"></span></b>)</span>.<br>' +
-              '<div id="qmal-update-anime-rewatching"><div class="qmal-dialog-checkbox-wrapper">' +
-                '<label><input type="checkbox" id="qmal-update-anime-rewatching-enable">Set as rewatching</label>' +
-              '</div></div>' +
+          '<div class="qmal-dialog-content">' +
+            '<div class="qmal-dialog-text">' +
+              '<div class="qmal-dialog-title">Update MyAnimeList?</div>' +
+              '<div class="qmal-dialog-body">QMAL has detected that you are <span id="qmal-detected-verb">watching</span>:' +
+                '<div class="qmal-dialog-select-wrapper qmal-select"><select id="qmal-detected-anime-name"></select></div>' +
+                'You can choose to <span id="qmal-detected-action-verb">add this anime to your list and</span> change the episode  count <span style="color:#ffb63c"><span id="qmal-detected-original-episode"></span> to the current one (<b><span id="qmal-detected-episode-text"></span></b>)</span>.<br>' +
+                '<div id="qmal-update-anime-rewatching"><div class="qmal-dialog-checkbox-wrapper">' +
+                  '<label><input type="checkbox" id="qmal-update-anime-rewatching-enable">Set as rewatching</label>' +
+                '</div></div>' +
+              '</div>' +
             '</div>' +
-          '</div>' +
-          '<div class="qmal-dialog-actions">' +
-            '<a class="qmal-dialog-button" id="qmal-update-no" href="javascript:void(0);">Don\'t Update</a>' +
-            '<a class="qmal-dialog-button" id="qmal-update-later" href="javascript:void(0);">Remind me Later</a>' +
-            '<a class="qmal-dialog-button" id="qmal-update-yes" href="javascript:void(0);">Update Now</a>' +
+            '<div class="qmal-dialog-actions">' +
+              '<a class="qmal-dialog-button" id="qmal-update-no" href="javascript:void(0);">Don\'t Update</a>' +
+              '<a class="qmal-dialog-button" id="qmal-update-later" href="javascript:void(0);">Remind me Later</a>' +
+              '<a class="qmal-dialog-button" id="qmal-update-yes" href="javascript:void(0);">Update Now</a>' +
+            '</div>' +
           '</div>' +
         '</div>' +
       '</div>' +
@@ -840,7 +845,7 @@ function contentScriptAnimeSite() {
         '</div>' +
       '</div>-->'
     );
-    // Register Events
+    // Register Event
     initialiseFloatingButtonEvents($("#qmal-dialog-main"));
     initialiseFloatingButtonEvents($("#qmal-dialog-updateadd"));
     // Try and get Anime Name
@@ -865,13 +870,13 @@ function contentScriptAnimeSite() {
         anime_episode = "1";
       }
       
-      var detecting = QMALdialog("dialog", "qmal-dialog-loading-detected {$$} QMAL has detected that you are watching " + anime_name + "! Searching...", "loading");
+      var detecting = QMALdialog("dialog", "qmal-dialog-loading-detected {$$} Searching... [$$] QMAL has detected that you are watching " + anime_name + "...", "loading");
       animeEpisodePage(detecting, anime_name);
     }
     
     function animeEpisodePage(detecting, anime_name) {
-      var search_result_data;
-      var chosen_search_result;
+      let search_result_data,
+          chosen_search_result;
       // Get correct anime and total count from API.
       $.ajax({
         url: "https://www.matomari.tk/api/0.3/anime/search/" + encodeURIComponent(anime_name) + ".json", // Properly encode because having "?" in name will be mistaken as a parameter
@@ -900,7 +905,6 @@ function contentScriptAnimeSite() {
         }
       }).done(function() {
         var select_box = "";
-        console.log(search_result_data);
         chosen_search_result = search_result_data.results[0]; // First one is automatically selected
         for(var i = 0; i < search_result_data.results.length; i++) {
           select_box += "<option data-url='" + search_result_data.results[i].url + "' data-episodes='" + search_result_data.results[i].episodes + "' value='" + search_result_data.results[i].id + "'>" + search_result_data.results[i].type + " - " + search_result_data.results[i].title + "</option>";
@@ -957,7 +961,7 @@ function contentScriptAnimeSite() {
                 if(data.status === 2) {
                   // It's completed as list, show Rewatching checkbox
                   $("#qmal-update-anime-rewatching-enable").prop("checked", data.rewatching).off("change").on("change", function() {
-                    changeTextVerbToRewatching(this)
+                    changeTextVerbToRewatching(this);
                   });
                   changeTextVerbToRewatching($("#qmal-update-anime-rewatching-enable")[0]); // Change verb if already set
                   function changeTextVerbToRewatching(elem) {
