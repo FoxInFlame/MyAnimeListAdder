@@ -1,26 +1,28 @@
-//Content on website
-let username = "";
-let password = "";
-let verified = false;
-
-var URL_anime;
-var anime_name;
-var search_result;
-var first_result;
-var result_multiple;
-var search_result_anime_names = [];
-var search_result_anime_ids = [];
-var search_result_anime_episodes = [];
-var search_result_anime_url = [];
-var search_result_chosen_anime_episode;
-
-var isTop;
-
-let QMAL_settings = {
+// Content script on website
+/*jshint esversion: 6*/
+let QMAL = {
+  account: {
+    username: "",
+    password: "",
+    verified: false
+  },
   showSeriesRating: false,
   showEpisodeRating: true,
-  showSeriesComment: true // Default values, set in chrome.storage.set
+  showSeriesComment: true
 };
+
+let URL_anime,
+    anime_name,
+    search_result,
+    first_result,
+    result_multiple,
+    search_result_anime_names = [],
+    search_result_anime_ids = [],
+    search_result_anime_episodes = [],
+    search_result_anime_url = [],
+    search_result_chosen_anime_episode;
+
+let isTop;
 
 String.prototype.replaceAll = function(find, replace) {
   return this.replace(new RegExp(escapeRegExp(find), 'g'), replace);
@@ -42,12 +44,12 @@ String.prototype.hashCode = function() {
   return hash;
 };
 
-var update_later = false;
+let update_later = false; // Will be changed when "Later" button is clicked.
 
 // -- Document Ready Function
 $(document).ready(function() {
   // -- Get the usernames stored on Chrome Settings
-  console.log("In-page QMAL Initialized!");
+  console.info("In-page QMAL Initialized!"); // Tell log we're ready :)
   chrome.storage.sync.get({
   // ---- Default credentials when none are specified
     user_username: "ExampleAccount",
@@ -59,15 +61,16 @@ $(document).ready(function() {
     inpage_showseriescomment: true,
     inpage_enable: true
   }, function(items) {
-    username = items.user_username;
-    password = items.user_password;
-    verified = items.user_verified;
+    QMAL.account.username = items.user_username;
+    QMAL.account.password = items.user_password;
+    QMAL.account.verified = items.user_verified;
     inpage_enable = items.inpage_enable;
-    QMAL_settings.showSeriesRating = items.inpage_showseriesrating;
-    QMAL_settings.showEpisodeRating = items.inpage_showepisoderating;
-    QMAL_settings.showSeriesComment = items.inpage_showseriescomment;
+    QMAL.showSeriesRating = items.inpage_showseriesrating;
+    QMAL.showEpisodeRating = items.inpage_showepisoderating;
+    QMAL.showSeriesComment = items.inpage_showseriescomment;
     inpage_sites = items.inpage_sites;
     inpage_sites.forEach(function(index) {
+      // Check if the current site is in the allowed-site list
       if(window.location.href.contains(index)) {
         var location = window.location.href;
         if(location.contains("myanimelist")) {
@@ -81,17 +84,14 @@ $(document).ready(function() {
           }
         }
         $("head").append("<link rel='stylesheet' href='//www.foxinflame.tk/QuickMyAnimeList/source/content.css' type='text/css'>");
-        loadStatus();
-        if(location.contains("gogoanime.io")) contentScriptAnimeSite();
-        if(location.contains("9anime.to")) contentScriptAnimeSite();
-        if(location.contains("crunchyroll.com")) contentScriptAnimeSite();
-        if(location.contains("kissanime")) contentScriptAnimeSite();
-      }
+        loadNews();
+        contentScriptAnimeSite();
+      } // else do nothing.
     });
   });
 });
 
-function loadStatus() {
+function loadNews() {
   $.ajax({
     url: "https://www.foxinflame.tk/QuickMyAnimeList/source/news.json",
     method: "GET",
@@ -135,34 +135,30 @@ function smallerVersion(a, b, c) {
 }
 
 function sortStyleStatus(data) {
-  var messages = data.messages;
-  var count = 0;
-  messages.forEach(function(data) {
+  const news = data.messages; // Amount of news
+  let count = 0;
+  news.forEach(function(data) {
     count++;
-    if(!data.priority) data.priority = 1;
-    if(!data.style) data.style = "critical";
-    if(undefined === data.dismissable) data.dismissable = true;
-    if(!data.message) data.message = "Message not specified!";
-    $("body").prepend("<div class='qmal-status-alert' id='qmal-status-alert-" + count + "'><span class='qmal-status-alert-span'>" + data.message + "</a></div>");
-    element = $("#qmal-status-alert-" + count);
-    if(!element) return; // You know, the usual returning.
-    
+    if(!data.priority) data.priority = 1; // if priority not set, set as 1 (highest)
+    if(!data.style) data.style = "critical"; // if priority not set, set as critical
+    if(data.dismissable === undefined) data.dismissable = true; // default to dismissable
+    if(!data.message) data.message = "Message not specified!"; // Default message    
     // Okay, let's sort this.
     if(data.condition) {
       // Condition is specified. At this point only accept version conditions
       conditionVersion = data.condition.substring(14);
-      if(conditionVersion == chrome.runtime.getManifest().version) {
-        // Condition Fulfilled.
-      } else {
-        // Condition not Fulfilled.
-        $(element).remove();
+      if(conditionVersion != chrome.runtime.getManifest().version) {
+        // Version number is not the same :)
         return;
       }
     }
+    $("body").prepend("<div class='qmal-status-alert' id='qmal-status-alert-" + count + "'><span class='qmal-status-alert-span'>" + data.message + "</a></div>"); // Assign id from index so it can be accessed later
+    element = $("#qmal-status-alert-" + count);
+    if(!element) return; // If for some reason it didn't prepend, return to avoid further errors
     
     // Priorities / z-indexes
-    var priority = 10 - parseInt(data.priority);
-    $(element).css("z-index", "100" + priority.toString());
+    let priority = 10 - parseInt(data.priority); // Since 1 is highest, z-index needs to be reversed
+    $(element).css("z-index", "100" + priority.toString()); // Minimum of 100
     
     // Dismissables
     if(data.dismissable === true) {
@@ -173,7 +169,7 @@ function sortStyleStatus(data) {
       $(element).addClass("qmal-status-alert-cannot-dismiss").attr("data-content", "Cannot Dismiss!");
     }
     
-    // Style
+    // Add specific class (critical, success, etc)
     $(element).children().addClass(data.style);
   });
 }
@@ -295,7 +291,7 @@ $.fn.inputNumberButtons = function(data) {
       });
     }
   });
-}
+};
 
 let dialog_counter = 0; // Number of dialoges
 // Custom amazing function below, one of my best works :)
@@ -390,7 +386,7 @@ const QMALdialog = function(option, value, status, time, extra) {
               });
             }, time);
           });
-        };
+        }
       }
     }
   } else if(option == "show") {
@@ -428,33 +424,33 @@ const QMALdialog = function(option, value, status, time, extra) {
     return $("#qmal-dialogs .qmal-dialog-material:visible").length;
   } else if(option == "dialog") {
     // If first parameter is "dialog", the second parameter is the text. The third will either be an Array (with links), or will be skipped. Fourth is the status, and fifth is the time. Last is an extra incase Arary is specified.
-    var nativecounter = dialog_counter;
+    let nativecounter = dialog_counter;
     dialog_counter++;
-    if($("#qmal-dialogs").length === 0) $("body").append("<div id='qmal-dialogs'></div>");
-    var dom; // Text part of DOM
-    var action = ""; // Action part of DOM
-    var id = ""; // ID of the dialog
-    var icon_dom = ""; // Icon part of DOM
+    if($("#qmal-dialogs").length === 0) $("body").append("<div id='qmal-dialogs'></div>"); // Attach parent container if it doesn't exist
+    let dom_content, // Text part of DOM
+        dom_action = "", // Action part of DOM
+        dialog_id = "", // ID of the dialog
+        dom_icon = ""; // Icon part of DOM
     
     if(value.indexOf(" {$$} ") !== -1) { // I just chose a combination that would probably never be used in the text
       // Contains a set id!
-      id = " id='" + value.split(" {$$} ")[0] + "'";
+      dialog_id = " id='" + value.split(" {$$} ")[0] + "'";
       value = value.split(" {$$} ")[1];
     }
     if(value.indexOf(" [$$] ") !== -1) { // Another combination
       // Contains a title!
-      dom = "<div class='qmal-dialog-title'>" + value.split(" [$$] ")[0] + "</div>" + "<div class='qmal-dialog-body'>" + value.split(" [$$] ")[1] + "</div>";
+      dom_content = "<div class='qmal-dialog-title'>" + value.split(" [$$] ")[0] + "</div>" + "<div class='qmal-dialog-body'>" + value.split(" [$$] ")[1] + "</div>";
     } else {
-      dom = "<div class='qmal-dialog-body'>" + value + "</div>"
+      dom_content = "<div class='qmal-dialog-body'>" + value + "</div>";
     }
     if(status && status.constructor === Array) {
       // The third parameter is an array! => Which means it has some action buttons!
-      action = "<div class='qmal-dialog-actions'>";
-      for(var i = 0; i < status.length; i++) {
+      dom_action = "<div class='qmal-dialog-actions'>";
+      for(let i = 0; i < status.length; i++) {
         if(!status[i].link || !status[i].id || !status[i].text) continue;
-        action += "<a class='qmal-dialog-button' id='" + status[i].id + "' href='" + status[i].link + "'>" + status[i].text + "</a>";
+        dom_action += "<a class='qmal-dialog-button' id='" + status[i].id + "' href='" + status[i].link + "'>" + status[i].text + "</a>";
       }
-      action += "</div>";
+      dom_action += "</div>";
       // If the time (status) is defined set the third parameter to status
       if(time) {
         status = time;
@@ -464,24 +460,27 @@ const QMALdialog = function(option, value, status, time, extra) {
         time = extra;
       }
     }
+    dom_icon = "<div class='qmal-dialog-icon'>" +
+                 "<img src='" + chrome.runtime.getURL(status == "info" ? "images/inpage_icon_info.png" : (status == "loading" ? "images/inpage_icon_loading.svg" : (status == "warning" ? "images/inpage_icon_warning.png" : (status == "critical" ? "images/inpage_icon_critical" : (status == "success" ? "images/inpage_icon_success.png" : "#")))) )+ "'>" +
+               "</div>";
     if(status == "info") {
-      icon_dom = "<div class='qmal-dialog-icon'>" +
+      dom_icon = "<div class='qmal-dialog-icon'>" +
                    "<img src='" + chrome.runtime.getURL("images/inpage_icon_info.png") + "'>" +
                  "</div>";
     } else if(status == "loading") {
-      icon_dom = "<div class='qmal-dialog-icon'>" +
+      dom_icon = "<div class='qmal-dialog-icon'>" +
                    "<img src='" + chrome.runtime.getURL("images/inpage_icon_loading.svg") + "'>" +
                  "</div>";
     } else if(status == "warning") {
-      icon_dom = "<div class='qmal-dialog-icon'>" +
+      dom_icon = "<div class='qmal-dialog-icon'>" +
                    "<img src='" + chrome.runtime.getURL("images/inpage_icon_warning.png") + "'>" +
                  "</div>";
     } else if(status == "critical") {
-      icon_dom = "<div class='qmal-dialog-icon'>" +
+      dom_icon = "<div class='qmal-dialog-icon'>" +
                    "<img src='" + chrome.runtime.getURL("images/inpage_icon_critical.png") + "'>" +
                  "</div>";
     } else if(status == "success") {
-      icon_dom = "<div class='qmal-dialog-icon'>" +
+      dom_icon = "<div class='qmal-dialog-icon'>" +
                    "<img src='" + chrome.runtime.getURL("images/inpage_icon_success.png") + "'>" +
                  "</div>";
     }
@@ -490,12 +489,12 @@ const QMALdialog = function(option, value, status, time, extra) {
     if(window.location.href.contains("kissanime.ru")) status += " qmal-dialog-kissanime";
     $("#qmal-dialogs").append("<div" + id + " class='qmal-dialog-material qmal-dialog-" + status + "' data-qmal-dialog-id='" + nativecounter.toString() + "'>"+
       "<div class='qmal-dialog-container'>" +
-        icon_dom +
+        dom_icon +
         "<div class='qmal-dialog-content'>" +
           "<div class='qmal-dialog-text'>" +
-            dom +
+            dom_content +
           "</div>" +
-          action +
+          dom_action +
         "</div>" +
       "</div>" +
     "</div>");
@@ -512,7 +511,7 @@ const QMALdialog = function(option, value, status, time, extra) {
   } else {
     throw new Error("'option' needs to be a valid value!");
   }
-}
+};
 
 var initialiseFloatingButtonEvents = function(dialog) {
   const floatingbutton = dialog.find(".qmal-dialog-floatingbutton");
@@ -527,7 +526,7 @@ var initialiseFloatingButtonEvents = function(dialog) {
       QMALdialog("maximise", dialog);
     }
   });
-}
+};
 /*
 =====================================================
 -----------------------------------------------------
@@ -543,8 +542,8 @@ function lookUpPersonalDetails(id, callback) {
     dataType: "json",
     type: "GET",
     cache: true,
-    username: username,
-    password: password,
+    username: QMAL.account.username,
+    password: QMAL.account.password,
     error: function(jqXHR) {
       if(jqXHR.status == 404) {
         // Doesn't exist in list
@@ -625,10 +624,8 @@ function contentScriptAnimeSite() {
         select_box += "<option value=" + search_result_data.results[i].id + ">" + search_result_data.results[i].title + "</option>";
       }
       select_box = "<div class='qmal-dialog-select-wrapper'><select id='qmal-dialog-choose-select'>" + select_box + "</select></div>";
-      let is_in_list = false;
       // Only one result
       lookUpPersonalDetails(search_result_data.results[0].id, function(details) {
-        console.log(details);
         if(!details) {
           // Not in list
           QMALdialog("dialog", "qmal-dialog-choose {$$} " + select_box + "<br>This anime is not in your list. <a href=''>Add it now</a>.", "info");
@@ -686,7 +683,7 @@ function contentScriptAnimeSite() {
                 if(otherdetails.score == "") otherdetails.score = "0";
                 $('#qmal-dialog-choose-info').html("You <b>" + verb + "</b>. You have watched <span style='color:#ffb63c'><b>" + otherdetails.episodes + "</b> episodes</span>, and have rated it <span style='color:#ffb63c'>" + otherdetails.score + "</span>/10 so far.");
               }
-            })
+            });
             return false;
           });
         }
@@ -694,7 +691,7 @@ function contentScriptAnimeSite() {
     });
     return;
   }
-  if(verified === false) {
+  if(QMAL.account.verified === false) {
     QMALdialog("dialog", "Verify Credentials [$$] You have not yet verified your credentials with QMAL. <br>You really should, really. It's for your own good.", [
       {
         "id": "verify_options_go",
@@ -713,30 +710,32 @@ function contentScriptAnimeSite() {
     // QMALdialog("dialog", "Well then. [$$] Even though there is 'episode' in the URL, it doesn't look like it's an actual watching page. Sucks.", "warning", 10000);
     return;
   }
-  if(verified === true) {
-    function initExpandTextarea() {
-      $(".autoExpand").each(function() {
-        resize($(this));
-      });
-      // Applied globally on all textareas with the "autoExpand" class
-      $(document).one('focus.autoExpand', 'textarea.autoExpand', function(){
-        var savedValue = this.value;
-        this.value = '';
-        this.offsetHeight = this.scrollHeight;
-        this.value = savedValue;
-      }).on('input.autoExpand', 'textarea.autoExpand', resize);
-      function resize(element) {
+  if(QMAL.account.verified === true) {
+    var initExpandTextarea = function() {
+      // Declare expand function 
+      var resizeTextArea = function(element) {
         if(element instanceof jQuery) element = element[0];
         if(element.target) element = element.target;
         const originalvisibility = $("#qmal-dialog-updateadd").is(":visible");
         if(!originalvisibility) $("#qmal-dialog-updateadd").show();
-        var minRows = element.getAttribute('data-min-rows')|0, rows;
+        let minRows = element.getAttribute('data-min-rows')|0, rows;
         element.rows = minRows;
         rows = Math.ceil((element.scrollHeight - element.offsetHeight) / 16); // line-height in CSS (it is important that this stays constant)
         element.rows = minRows + rows;
         if(!originalvisibility) $("#qmal-dialog-updateadd").hide();
-      }
-    }
+      };
+
+      $(".autoExpand").each(function() {
+        resizeTextArea($(this));
+      });
+      // Applied globally on all textareas with the "autoExpand" class
+      $(document).one('focus.autoExpand', 'textarea.autoExpand', function() {
+        let savedValue = this.value;
+        this.value = '';
+        this.offsetHeight = this.scrollHeight;
+        this.value = savedValue;
+      }).on('input.autoExpand', 'textarea.autoExpand', resizeTextArea);
+    };
     
     let optional_dom_seriesrating = "",
         optional_dom_episoderating = "",
@@ -848,33 +847,31 @@ function contentScriptAnimeSite() {
     // Register Event
     initialiseFloatingButtonEvents($("#qmal-dialog-main"));
     initialiseFloatingButtonEvents($("#qmal-dialog-updateadd"));
+
     // Try and get Anime Name
-    var URL_anime,
-        anime_name,
-        anime_episode;
+    // Detect anime name (for each site, a different if block)
     if(window.location.href.contains("kissanime")) {
       // Detect the anime and the episode
-      var anime_name_element;
-      anime_name_element = $("#containerRoot #headnav #navsubbar p a").text().split("\n")[2];
-      anime_name = anime_name_element.replace(" (Sub)", "").replace(" (Dub)", "").trim().replaceAll(" ", "+");
+      let kissanime_anime_name = $("#containerRoot #headnav #navsubbar p a").text().split("\n")[2];
+      kissanime_anime_name = kissanime_anime_name.replace(" (Sub)", "").replace(" (Dub)", "").trim().replaceAll(" ", "+");
       
-      URL_anime = window.location.href.split("/");
-      URL_anime = URL_anime[URL_anime.length - 1]; // Last item
+      kissanime_anime_url = window.location.href.split("/");
+      kissanime_anime_url = kissanime_anime_url[kissanime_anime_url.length - 1]; // Last item (/Episode-014?id=137321&s=default)
       if(window.location.href.contains("/Movie")) {
         anime_episode = "1";
       } else if(window.location.href.contains("/Episode")) {
-        URL_anime_parts1 = URL_anime.split("?")[0];
-        anime_episode = parseInt(URL_anime_parts1.split("-")[1], 10);
-        if(isNaN(anime_episode)) anime_episode = "1";
+        kissanime_anime_episode = kissanime_anime_url.split("?")[0];
+        kissanime_anime_episode = parseInt(kissanime_anime_episode.split("-")[1], 10); // (, 10) because round to whole number
+        if(isNaN(kissanime_anime_episode)) kissanime_anime_episode = "1"; // If for some reason parseInt doesn't work on the episode
       } else if(window.location.href.contains("/OVA")) {
-        anime_episode = "1";
+        anime_episode = "1"; // TODO: Support multiple episode OVAs
       }
       
-      var detecting = QMALdialog("dialog", "qmal-dialog-loading-detected {$$} Searching... [$$] QMAL has detected that you are watching " + anime_name + "...", "loading");
-      animeEpisodePage(detecting, anime_name);
+      let searchingDialog = QMALdialog("dialog", "qmal-dialog-loading-detected {$$} Searching... [$$] QMAL has detected that you are watching " + kissanime_anime_name + "...", "loading");
+      animeEpisodePage(searchingDialog, kissanime_anime_name);
     }
     
-    function animeEpisodePage(detecting, anime_name) {
+    var animeEpisodePage = function(detecting, anime_name) {
       let search_result_data,
           chosen_search_result;
       // Get correct anime and total count from API.
